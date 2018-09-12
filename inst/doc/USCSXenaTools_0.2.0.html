@@ -12,9 +12,9 @@
 
 <meta name="author" content="Shixiang Wang ShanghaiTech. University" />
 
-<meta name="date" content="2018-08-15" />
+<meta name="date" content="2018-09-04" />
 
-<title>UCSCXenaTools: Download Public Data from UCSC Xena Hubs</title>
+<title>UCSCXenaTools: Download Public Cancer Genomic Data from UCSC Xena Hubs</title>
 
 
 
@@ -69,16 +69,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <section class="page-header">
-<h1 class="title toc-ignore project-name">UCSCXenaTools: Download Public Data from UCSC Xena Hubs</h1>
+<h1 class="title toc-ignore project-name">UCSCXenaTools: Download Public Cancer Genomic Data from UCSC Xena Hubs</h1>
 <h4 class="author project-author">Shixiang Wang<br />
 ShanghaiTech. University</h4>
-<h4 class="date project-date">2018-08-15</h4>
+<h4 class="date project-date">2018-09-04</h4>
 </section>
 
 
 <div id="TOC" class="toc">
 <ul>
 <li><a href="#installation">Installation</a></li>
+<li><a href="#data-hub-list">Data Hub List</a></li>
 <li><a href="#usage">Usage</a><ul>
 <li><a href="#xenadata-data.frame">XenaData data.frame</a></li>
 <li><a href="#generate-a-xenahub-object">Generate a XenaHub object</a></li>
@@ -88,13 +89,15 @@ ShanghaiTech. University</h4>
 <li><a href="#prepare">Prepare</a></li>
 <li><a href="#sessioninfo">SessionInfo</a></li>
 </ul></li>
+<li><a href="#new-feature">New feature</a></li>
 <li><a href="#acknowledgement">Acknowledgement</a></li>
 <li><a href="#license">LICENSE</a></li>
+<li><a href="#todo">ToDo</a></li>
 </ul>
 </div>
 
 <section class="main-content">
-<p><strong>Current Version: 0.2.0</strong></p>
+<p><strong>Current Version: 0.2.3</strong></p>
 <p><code>UCSCXenaTools</code> is a R package download and explore data from <strong>UCSC Xena data hubs</strong>, which are</p>
 <blockquote>
 <p>A collection of UCSC-hosted public databases such as TCGA, ICGC, TARGET, GTEx, CCLE, and others. Databases are normalized so they can be combined, linked, filtered, explored and downloaded.</p>
@@ -108,13 +111,28 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <p>Read this vignettes.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">browseVignettes</span>(<span class="st">&quot;UCSCXenaTools&quot;</span>)</code></pre></div>
 </div>
+<div id="data-hub-list" class="section level2">
+<h2>Data Hub List</h2>
+<p>All datasets are available at <a href="https://xenabrowser.net/datapages/" class="uri">https://xenabrowser.net/datapages/</a>.</p>
+<p>Currently, <code>UCSCXenaTools</code> support all 7 data hubs of UCSC Xena.</p>
+<ul>
+<li><a href="https://xenabrowser.net/datapages/?host=https%3A%2F%2Fucscpublic.xenahubs.net">UCSC Public Hub</a>: <a href="https://ucscpublic.xenahubs.net" class="uri">https://ucscpublic.xenahubs.net</a></li>
+<li><a href="https://xenabrowser.net/datapages/?host=https%3A%2F%2Ftcga.xenahubs.net">TCGA Hub</a>: <a href="https://tcga.xenahubs.net" class="uri">https://tcga.xenahubs.net</a></li>
+<li><a href="https://xenabrowser.net/datapages/?host=https%3A%2F%2Fgdc.xenahubs.net">GDC Xena Hub</a>: <a href="https://gdc.xenahubs.net" class="uri">https://gdc.xenahubs.net</a></li>
+<li><a href="https://xenabrowser.net/datapages/?host=https%3A%2F%2Ficgc.xenahubs.net">ICGC Xena Hub</a>: <a href="https://icgc.xenahubs.net" class="uri">https://icgc.xenahubs.net</a></li>
+<li><a href="https://xenabrowser.net/datapages/?host=https%3A%2F%2Fpancanatlas.xenahubs.net">Pan-Cancer Atlas Hub</a>: <a href="https://pancanatlas.xenahubs.net" class="uri">https://pancanatlas.xenahubs.net</a></li>
+<li><a href="https://xenabrowser.net/datapages/?host=https%3A%2F%2Ftoil.xenahubs.net">GA4GH (TOIL) Hub</a>: <a href="https://toil.xenahubs.net" class="uri">https://toil.xenahubs.net</a></li>
+<li><a href="https://xenabrowser.net/datapages/?host=https%3A%2F%2Fxena.treehouse.gi.ucsc.edu">Treehouse Hub</a>: <a href="https://xena.treehouse.gi.ucsc.edu" class="uri">https://xena.treehouse.gi.ucsc.edu</a></li>
+</ul>
+<p>If the <code>API</code> changed, please remind me by email to <a href="mailto:w_shixiang@163.com">w_shixiang@163.com</a> or open an issue on <a href="https://github.com/ShixiangWang/UCSCXenaTools/issues">GitHub</a>.</p>
+</div>
 <div id="usage" class="section level2">
 <h2>Usage</h2>
 <p>Download UCSC Xena Datasets and load them into R by <code>UCSCXenaTools</code> is a workflow in <code>generate</code>, <code>filter</code>, <code>query</code>, <code>download</code> and <code>prepare</code> 5 steps, which are implemented as <code>XenaGenerate</code>, <code>XenaFilter</code>, <code>XenaQuery</code>, <code>XenaDownload</code> and <code>XenaPrepare</code>, respectively. They are very clear and easy to use and combine with other packages like <code>dplyr</code>.</p>
 <p>The following use clinical data download of LUNG, LUAD, LUSC from TCGA (hg19 version) as an example.</p>
 <div id="xenadata-data.frame" class="section level3">
 <h3>XenaData data.frame</h3>
-<p>From version <code>0.2.0</code>, <code>UCSCXenaTools</code> use built-in R <code>data.frame</code> object <code>XenaData</code> to generate an instance of <code>XenaHub</code> class, which communicate with API of UCSC Xena Data Hubs.</p>
+<p>Begin from version <code>0.2.0</code>, <code>UCSCXenaTools</code> use a <code>data.frame</code> object (built in package) <code>XenaData</code> to generate an instance of <code>XenaHub</code> class, which communicate with API of UCSC Xena Data Hubs.</p>
 <p>You can load <code>XenaData</code> after loading <code>UCSCXenaTools</code> into R.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(UCSCXenaTools)
 <span class="kw">data</span>(XenaData)
@@ -153,20 +171,22 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <span class="co">#&gt;   https://gdc.xenahubs.net</span>
 <span class="co">#&gt;   https://icgc.xenahubs.net</span>
 <span class="co">#&gt;   https://toil.xenahubs.net</span>
-<span class="co">#&gt; cohorts() (131 total):</span>
+<span class="co">#&gt;   https://pancanatlas.xenahubs.net</span>
+<span class="co">#&gt;   https://xena.treehouse.gi.ucsc.edu</span>
+<span class="co">#&gt; cohorts() (134 total):</span>
 <span class="co">#&gt;   1000_genomes</span>
 <span class="co">#&gt;   Acute lymphoblastic leukemia (Mullighan 2008)</span>
 <span class="co">#&gt;   B cells (Basso 2005)</span>
 <span class="co">#&gt;   ...</span>
-<span class="co">#&gt;   TCGA and TARGET Pan-Cancer (PANCAN)</span>
-<span class="co">#&gt;   TCGA TARGET GTEx</span>
-<span class="co">#&gt; datasets() (1521 total):</span>
+<span class="co">#&gt;   Treehouse PED v8</span>
+<span class="co">#&gt;   Treehouse public expression dataset (July 2017)</span>
+<span class="co">#&gt; datasets() (1549 total):</span>
 <span class="co">#&gt;   1000_genomes/BRCA2</span>
 <span class="co">#&gt;   1000_genomes/BRCA1</span>
 <span class="co">#&gt;   mullighan2008_public/mullighan2008_500K_genomicMatrix</span>
 <span class="co">#&gt;   ...</span>
-<span class="co">#&gt;   TcgaTargetGtex_rsem_isoform_tpm</span>
-<span class="co">#&gt;   TcgaTargetGtex_rsem_isopct</span></code></pre></div>
+<span class="co">#&gt;   treehouse_public_samples_unique_ensembl_expected_count.2017-09-11.tsv</span>
+<span class="co">#&gt;   treehouse_public_samples_unique_hugo_log2_tpm_plus_1.2017-09-11.tsv</span></code></pre></div>
 <p>We can set <code>subset</code> argument to narrow datasets.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">XenaGenerate</span>(<span class="dt">subset =</span> XenaHostNames<span class="op">==</span><span class="st">&quot;TCGA&quot;</span>)
 <span class="co">#&gt; class: XenaHub </span>
@@ -288,7 +308,7 @@ xe2_query
 <p>Default, data will be downloaded to <code>XenaData</code> directory under system temp directory. You can specify the path.</p>
 <p>If the data exists, command will not run to download them, but you can force it by <code>force</code> option.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xe2_download =<span class="st"> </span><span class="kw">XenaDownload</span>(xe2_query)
-<span class="co">#&gt; We will download files to directory D:\tmp\Rtmps3AnNJXenaData.</span>
+<span class="co">#&gt; We will download files to directory /var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T//Rtmp9Iq0Y6.</span>
 <span class="co">#&gt; Downloading TCGA.LUSC.sampleMap__LUSC_clinicalMatrix.gz</span>
 <span class="co">#&gt; Downloading TCGA.LUNG.sampleMap__LUNG_clinicalMatrix.gz</span>
 <span class="co">#&gt; Downloading TCGA.LUAD.sampleMap__LUAD_clinicalMatrix.gz</span>
@@ -335,35 +355,54 @@ cli4 =<span class="st"> </span><span class="kw">XenaPrepare</span>(xe2_download)
 <h3>SessionInfo</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()
 <span class="co">#&gt; R version 3.5.1 (2018-07-02)</span>
-<span class="co">#&gt; Platform: x86_64-w64-mingw32/x64 (64-bit)</span>
-<span class="co">#&gt; Running under: Windows 7 x64 (build 7601) Service Pack 1</span>
+<span class="co">#&gt; Platform: x86_64-apple-darwin15.6.0 (64-bit)</span>
+<span class="co">#&gt; Running under: macOS High Sierra 10.13.6</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Matrix products: default</span>
+<span class="co">#&gt; BLAS: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib</span>
+<span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; locale:</span>
-<span class="co">#&gt; [1] LC_COLLATE=Chinese (Simplified)_People's Republic of China.936 </span>
-<span class="co">#&gt; [2] LC_CTYPE=Chinese (Simplified)_People's Republic of China.936   </span>
-<span class="co">#&gt; [3] LC_MONETARY=Chinese (Simplified)_People's Republic of China.936</span>
-<span class="co">#&gt; [4] LC_NUMERIC=C                                                   </span>
-<span class="co">#&gt; [5] LC_TIME=Chinese (Simplified)_People's Republic of China.936    </span>
+<span class="co">#&gt; [1] zh_CN.UTF-8/zh_CN.UTF-8/zh_CN.UTF-8/C/zh_CN.UTF-8/zh_CN.UTF-8</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; attached base packages:</span>
 <span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt; [1] UCSCXenaTools_0.2.0 devtools_1.13.6     pacman_0.4.6       </span>
+<span class="co">#&gt; [1] UCSCXenaTools_0.2.3 devtools_1.13.6     pacman_0.4.6       </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
-<span class="co">#&gt;  [1] Rcpp_0.12.18     rstudioapi_0.7   knitr_1.20       xml2_1.2.0      </span>
-<span class="co">#&gt;  [5] magrittr_1.5     roxygen2_6.1.0   hms_0.4.2        R6_2.2.2        </span>
-<span class="co">#&gt;  [9] rlang_0.2.1      stringr_1.3.1    httr_1.3.1       tools_3.5.1     </span>
-<span class="co">#&gt; [13] withr_2.1.2      htmltools_0.3.6  commonmark_1.5   assertthat_0.2.0</span>
-<span class="co">#&gt; [17] yaml_2.2.0       rprojroot_1.3-2  digest_0.6.15    tibble_1.4.2    </span>
-<span class="co">#&gt; [21] crayon_1.3.4     purrr_0.2.5      readr_1.1.1      prettydoc_0.2.1 </span>
-<span class="co">#&gt; [25] curl_3.2         memoise_1.1.0    evaluate_0.11    rmarkdown_1.10  </span>
-<span class="co">#&gt; [29] stringi_1.1.7    pillar_1.3.0     compiler_3.5.1   desc_1.2.0      </span>
-<span class="co">#&gt; [33] backports_1.1.2  jsonlite_1.5     pkgconfig_2.0.1</span></code></pre></div>
+<span class="co">#&gt;  [1] Rcpp_0.12.18         pillar_1.3.0         compiler_3.5.1      </span>
+<span class="co">#&gt;  [4] later_0.7.3          bindr_0.1.1          prettydoc_0.2.1     </span>
+<span class="co">#&gt;  [7] tools_3.5.1          digest_0.6.16        jsonlite_1.5        </span>
+<span class="co">#&gt; [10] evaluate_0.11        memoise_1.1.0        tibble_1.4.2        </span>
+<span class="co">#&gt; [13] pkgconfig_2.0.2      rlang_0.2.2          shiny_1.1.0         </span>
+<span class="co">#&gt; [16] rstudioapi_0.7       commonmark_1.5       curl_3.2            </span>
+<span class="co">#&gt; [19] yaml_2.2.0           bindrcpp_0.2.2       knitr_1.20          </span>
+<span class="co">#&gt; [22] withr_2.1.2          httr_1.3.1           stringr_1.3.1       </span>
+<span class="co">#&gt; [25] dplyr_0.7.6          roxygen2_6.1.0       xml2_1.2.0          </span>
+<span class="co">#&gt; [28] desc_1.2.0           htmlwidgets_1.2      hms_0.4.2           </span>
+<span class="co">#&gt; [31] rprojroot_1.3-2      DT_0.4               shinydashboard_0.7.0</span>
+<span class="co">#&gt; [34] tidyselect_0.2.4     glue_1.3.0           R6_2.2.2            </span>
+<span class="co">#&gt; [37] rmarkdown_1.10       readr_1.1.1          purrr_0.2.5         </span>
+<span class="co">#&gt; [40] magrittr_1.5         backports_1.1.2      promises_1.0.1      </span>
+<span class="co">#&gt; [43] htmltools_0.3.6      assertthat_0.2.0     xtable_1.8-2        </span>
+<span class="co">#&gt; [46] mime_0.5             httpuv_1.4.5         stringi_1.2.4       </span>
+<span class="co">#&gt; [49] crayon_1.3.4</span></code></pre></div>
 </div>
+</div>
+<div id="new-feature" class="section level2">
+<h2>New feature</h2>
+<ul>
+<li>Add easy download function and Xena information for TCGA data</li>
+</ul>
+<pre><code># download RNASeq data (use UVM as example)
+tcgaEasyDownload(project = &quot;UVM&quot;,
+                 data_type = &quot;Gene Expression RNASeq&quot;,
+                  file_type = &quot;IlluminaHiSeq RNASeqV2&quot;)</code></pre>
+<p>Run shiny by</p>
+<pre><code>UCSCXenaTools::XenaShiny()</code></pre>
+<p>Download by shiny is under consideration, I am try learning more about how to operate shiny.</p>
 </div>
 <div id="acknowledgement" class="section level2">
 <h2>Acknowledgement</h2>
@@ -373,6 +412,13 @@ cli4 =<span class="st"> </span><span class="kw">XenaPrepare</span>(xe2_download)
 <h2>LICENSE</h2>
 <p>GPL-3</p>
 <p>please note, code from XenaR package under Apache 2.0 license.</p>
+</div>
+<div id="todo" class="section level2">
+<h2>ToDo</h2>
+<ul>
+<li>Shinny</li>
+<li>More easier download workflow</li>
+</ul>
 </div>
 </section>
 

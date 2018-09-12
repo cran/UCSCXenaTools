@@ -1,5 +1,14 @@
 # UCSCXenaTools 
 
+## v0.2.4
+
+* add new function `getTCGAdata` to help user download TCGA data by projects and biological data type
+
+## v0.2.3
+
+* add shiny app to show TCGA datasets information of Xena
+* add `downloadTCGA` function to help user quickly download TCGA datasets
+
 ## v0.2.2
 
 * fix question about using temp directory

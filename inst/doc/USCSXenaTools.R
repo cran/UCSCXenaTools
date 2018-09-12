@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 ## ---- eval=FALSE---------------------------------------------------------
 #  browseVignettes("UCSCXenaTools")
 #  # or
-#  ?UCSCXenaTools
+#  ??UCSCXenaTools
 
 ## ------------------------------------------------------------------------
 library(UCSCXenaTools)
@@ -44,6 +44,13 @@ head(datasets(xe))
 XenaFilter(xe2, filterDatasets = "LUAD|LUSC|LUNG") -> xe2
 
 ## ------------------------------------------------------------------------
+suppressMessages(require(dplyr))
+
+xe %>% 
+    XenaFilter(filterDatasets = "clinical") %>% 
+    XenaFilter(filterDatasets = "luad|lusc|lung")
+
+## ------------------------------------------------------------------------
 xe2_query = XenaQuery(xe2)
 xe2_query
 
@@ -56,6 +63,45 @@ xe2_download = XenaDownload(xe2_query)
 # way4: xenadownload object
 cli4 = XenaPrepare(xe2_download)
 names(cli4)
+
+## ------------------------------------------------------------------------
+args(getTCGAdata)
+
+# or run
+# ??getTCGAdata to read documentation
+
+## ------------------------------------------------------------------------
+getTCGAdata(c("UVM", "LUAD"))
+
+tcga_data = getTCGAdata(c("UVM", "LUAD"))
+
+# only return XenaHub object
+tcga_data$Xena
+
+# only return datasets information
+tcga_data$DataInfo
+
+## ------------------------------------------------------------------------
+# only download clinical data
+getTCGAdata(c("UVM", "LUAD"), download = TRUE)
+
+## ---- eval=FALSE---------------------------------------------------------
+#  # download RNASeq data (use UVM as an example)
+#  downloadTCGA(project = "UVM",
+#                   data_type = "Gene Expression RNASeq",
+#                    file_type = "IlluminaHiSeq RNASeqV2")
+
+## ------------------------------------------------------------------------
+args(downloadTCGA)
+
+## ------------------------------------------------------------------------
+availTCGA()
+
+## ---- eval=FALSE---------------------------------------------------------
+#  View(showTCGA())
+
+## ---- eval=FALSE---------------------------------------------------------
+#  UCSCXenaTools::XenaShiny()
 
 ## ------------------------------------------------------------------------
 sessionInfo()
