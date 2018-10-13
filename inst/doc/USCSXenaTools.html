@@ -12,7 +12,7 @@
 
 <meta name="author" content="Shixiang Wang ShanghaiTech. University" />
 
-<meta name="date" content="2018-09-12" />
+<meta name="date" content="2018-10-13" />
 
 <title>UCSCXenaTools: Download Public Cancer Genomic Data from UCSC Xena Hubs</title>
 
@@ -72,7 +72,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h1 class="title toc-ignore project-name">UCSCXenaTools: Download Public Cancer Genomic Data from UCSC Xena Hubs</h1>
 <h4 class="author project-author">Shixiang Wang<br />
 ShanghaiTech. University</h4>
-<h4 class="date project-date">2018-09-12</h4>
+<h4 class="date project-date">2018-10-13</h4>
 </section>
 
 
@@ -101,7 +101,7 @@ ShanghaiTech. University</h4>
 </div>
 
 <section class="main-content">
-<p><strong>Current Version: 0.2.4</strong></p>
+<p><strong>Current Version: 0.2.5</strong></p>
 <p><code>UCSCXenaTools</code> is a R package download and explore data from <strong>UCSC Xena data hubs</strong>, which are</p>
 <blockquote>
 <p>A collection of UCSC-hosted public databases such as TCGA, ICGC, TARGET, GTEx, CCLE, and others. Databases are normalized so they can be combined, linked, filtered, explored and downloaded.</p>
@@ -122,15 +122,16 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <div id="data-hub-list" class="section level2">
 <h2>Data Hub List</h2>
 <p>All datasets are available at <a href="https://xenabrowser.net/datapages/" class="uri">https://xenabrowser.net/datapages/</a>.</p>
-<p>Currently, <code>UCSCXenaTools</code> support all 7 data hubs of UCSC Xena.</p>
+<p>Currently, <code>UCSCXenaTools</code> support all 8 data hubs of UCSC Xena.</p>
 <ul>
-<li><a href="https://xenabrowser.net/datapages/?host=https%3A%2F%2Fucscpublic.xenahubs.net">UCSC Public Hub</a>: <a href="https://ucscpublic.xenahubs.net" class="uri">https://ucscpublic.xenahubs.net</a></li>
-<li><a href="https://xenabrowser.net/datapages/?host=https%3A%2F%2Ftcga.xenahubs.net">TCGA Hub</a>: <a href="https://tcga.xenahubs.net" class="uri">https://tcga.xenahubs.net</a></li>
-<li><a href="https://xenabrowser.net/datapages/?host=https%3A%2F%2Fgdc.xenahubs.net">GDC Xena Hub</a>: <a href="https://gdc.xenahubs.net" class="uri">https://gdc.xenahubs.net</a></li>
-<li><a href="https://xenabrowser.net/datapages/?host=https%3A%2F%2Ficgc.xenahubs.net">ICGC Xena Hub</a>: <a href="https://icgc.xenahubs.net" class="uri">https://icgc.xenahubs.net</a></li>
-<li><a href="https://xenabrowser.net/datapages/?host=https%3A%2F%2Fpancanatlas.xenahubs.net">Pan-Cancer Atlas Hub</a>: <a href="https://pancanatlas.xenahubs.net" class="uri">https://pancanatlas.xenahubs.net</a></li>
-<li><a href="https://xenabrowser.net/datapages/?host=https%3A%2F%2Ftoil.xenahubs.net">GA4GH (TOIL) Hub</a>: <a href="https://toil.xenahubs.net" class="uri">https://toil.xenahubs.net</a></li>
-<li><a href="https://xenabrowser.net/datapages/?host=https%3A%2F%2Fxena.treehouse.gi.ucsc.edu">Treehouse Hub</a>: <a href="https://xena.treehouse.gi.ucsc.edu" class="uri">https://xena.treehouse.gi.ucsc.edu</a></li>
+<li>UCSC Public Hub: <a href="https://ucscpublic.xenahubs.net" class="uri">https://ucscpublic.xenahubs.net</a></li>
+<li>TCGA Hub: <a href="https://tcga.xenahubs.net" class="uri">https://tcga.xenahubs.net</a></li>
+<li>GDC Xena Hub: <a href="https://gdc.xenahubs.net" class="uri">https://gdc.xenahubs.net</a></li>
+<li>ICGC Xena Hub: <a href="https://icgc.xenahubs.net" class="uri">https://icgc.xenahubs.net</a></li>
+<li>Pan-Cancer Atlas Hub: <a href="https://pancanatlas.xenahubs.net" class="uri">https://pancanatlas.xenahubs.net</a></li>
+<li>GA4GH (TOIL) Hub: <a href="https://toil.xenahubs.net" class="uri">https://toil.xenahubs.net</a></li>
+<li>Treehouse Hub: <a href="https://xena.treehouse.gi.ucsc.edu" class="uri">https://xena.treehouse.gi.ucsc.edu</a></li>
+<li>PCAWG: <a href="https://pcawg.xenahubs.net" class="uri">https://pcawg.xenahubs.net</a></li>
 </ul>
 <p>If the <code>API</code> changed, please remind me by email to <a href="mailto:w_shixiang@163.com">w_shixiang@163.com</a> or open an issue on <a href="https://github.com/ShixiangWang/UCSCXenaTools/issues">GitHub</a>.</p>
 </div>
@@ -154,19 +155,19 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <span class="co">#&gt; 5 https://ucscpublic.xenahubs.net   UCSC_Public</span>
 <span class="co">#&gt; 6 https://ucscpublic.xenahubs.net   UCSC_Public</span>
 <span class="co">#&gt;                                     XenaCohorts</span>
-<span class="co">#&gt; 1                                  1000_genomes</span>
-<span class="co">#&gt; 2                                  1000_genomes</span>
+<span class="co">#&gt; 1 Acute lymphoblastic leukemia (Mullighan 2008)</span>
+<span class="co">#&gt; 2 Acute lymphoblastic leukemia (Mullighan 2008)</span>
 <span class="co">#&gt; 3 Acute lymphoblastic leukemia (Mullighan 2008)</span>
-<span class="co">#&gt; 4 Acute lymphoblastic leukemia (Mullighan 2008)</span>
-<span class="co">#&gt; 5 Acute lymphoblastic leukemia (Mullighan 2008)</span>
-<span class="co">#&gt; 6                          B cells (Basso 2005)</span>
+<span class="co">#&gt; 4                   Breast Cancer (Caldas 2007)</span>
+<span class="co">#&gt; 5                   Breast Cancer (Caldas 2007)</span>
+<span class="co">#&gt; 6                   Breast Cancer (Caldas 2007)</span>
 <span class="co">#&gt;                                               XenaDatasets</span>
-<span class="co">#&gt; 1                                       1000_genomes/BRCA2</span>
-<span class="co">#&gt; 2                                       1000_genomes/BRCA1</span>
-<span class="co">#&gt; 3    mullighan2008_public/mullighan2008_500K_genomicMatrix</span>
-<span class="co">#&gt; 4 mullighan2008_public/mullighan2008_public_clinicalMatrix</span>
-<span class="co">#&gt; 5    mullighan2008_public/mullighan2008_SNP6_genomicMatrix</span>
-<span class="co">#&gt; 6         basso2005_public/basso2005_public_clinicalMatrix</span></code></pre></div>
+<span class="co">#&gt; 1    mullighan2008_public/mullighan2008_500K_genomicMatrix</span>
+<span class="co">#&gt; 2 mullighan2008_public/mullighan2008_public_clinicalMatrix</span>
+<span class="co">#&gt; 3    mullighan2008_public/mullighan2008_SNP6_genomicMatrix</span>
+<span class="co">#&gt; 4              Caldas2007/chinSF2007_public_clinicalMatrix</span>
+<span class="co">#&gt; 5             Caldas2007/chinSFGenomeBio2007_genomicMatrix</span>
+<span class="co">#&gt; 6                   Caldas2007/naderi2007Exp_genomicMatrix</span></code></pre></div>
 </div>
 <div id="generate-a-xenahub-object" class="section level3">
 <h3>Generate a XenaHub object</h3>
@@ -181,20 +182,21 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <span class="co">#&gt;   https://toil.xenahubs.net</span>
 <span class="co">#&gt;   https://pancanatlas.xenahubs.net</span>
 <span class="co">#&gt;   https://xena.treehouse.gi.ucsc.edu</span>
-<span class="co">#&gt; cohorts() (134 total):</span>
-<span class="co">#&gt;   1000_genomes</span>
+<span class="co">#&gt;   https://pcawg.xenahubs.net</span>
+<span class="co">#&gt; cohorts() (126 total):</span>
 <span class="co">#&gt;   Acute lymphoblastic leukemia (Mullighan 2008)</span>
-<span class="co">#&gt;   B cells (Basso 2005)</span>
+<span class="co">#&gt;   Breast Cancer (Caldas 2007)</span>
+<span class="co">#&gt;   Breast Cancer (Chin 2006)</span>
 <span class="co">#&gt;   ...</span>
-<span class="co">#&gt;   Treehouse PED v8</span>
-<span class="co">#&gt;   Treehouse public expression dataset (July 2017)</span>
-<span class="co">#&gt; datasets() (1549 total):</span>
-<span class="co">#&gt;   1000_genomes/BRCA2</span>
-<span class="co">#&gt;   1000_genomes/BRCA1</span>
+<span class="co">#&gt;   PCAWG (donor centric)</span>
+<span class="co">#&gt;   PCAWG (specimen centric)</span>
+<span class="co">#&gt; datasets() (1583 total):</span>
 <span class="co">#&gt;   mullighan2008_public/mullighan2008_500K_genomicMatrix</span>
+<span class="co">#&gt;   mullighan2008_public/mullighan2008_public_clinicalMatrix</span>
+<span class="co">#&gt;   mullighan2008_public/mullighan2008_SNP6_genomicMatrix</span>
 <span class="co">#&gt;   ...</span>
-<span class="co">#&gt;   treehouse_public_samples_unique_ensembl_expected_count.2017-09-11.tsv</span>
-<span class="co">#&gt;   treehouse_public_samples_unique_hugo_log2_tpm_plus_1.2017-09-11.tsv</span></code></pre></div>
+<span class="co">#&gt;   relativePromoterActivity.sp</span>
+<span class="co">#&gt;   promoterCentricTable_0.2_1.0.sp</span></code></pre></div>
 <p>We can set <code>subset</code> argument to narrow datasets.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">XenaGenerate</span>(<span class="dt">subset =</span> XenaHostNames<span class="op">==</span><span class="st">&quot;TCGA&quot;</span>)
 <span class="co">#&gt; class: XenaHub </span>
@@ -260,20 +262,20 @@ datasets() (4 total):
 <span class="co">#&gt; class: XenaHub </span>
 <span class="co">#&gt; hosts():</span>
 <span class="co">#&gt;   https://tcga.xenahubs.net</span>
-<span class="co">#&gt; cohorts() (39 total):</span>
-<span class="co">#&gt;   (unassigned)</span>
+<span class="co">#&gt; cohorts() (37 total):</span>
 <span class="co">#&gt;   TCGA Acute Myeloid Leukemia (LAML)</span>
 <span class="co">#&gt;   TCGA Adrenocortical Cancer (ACC)</span>
+<span class="co">#&gt;   TCGA Bile Duct Cancer (CHOL)</span>
 <span class="co">#&gt;   ...</span>
+<span class="co">#&gt;   TCGA Thyroid Cancer (THCA)</span>
 <span class="co">#&gt;   TCGA Uterine Carcinosarcoma (UCS)</span>
-<span class="co">#&gt;   TCGA lower grade glioma and glioblastoma (GBMLGG)</span>
 <span class="co">#&gt; datasets() (37 total):</span>
-<span class="co">#&gt;   TCGA.OV.sampleMap/OV_clinicalMatrix</span>
-<span class="co">#&gt;   TCGA.DLBC.sampleMap/DLBC_clinicalMatrix</span>
-<span class="co">#&gt;   TCGA.KIRC.sampleMap/KIRC_clinicalMatrix</span>
+<span class="co">#&gt;   TCGA.LAML.sampleMap/LAML_clinicalMatrix</span>
+<span class="co">#&gt;   TCGA.ACC.sampleMap/ACC_clinicalMatrix</span>
+<span class="co">#&gt;   TCGA.CHOL.sampleMap/CHOL_clinicalMatrix</span>
 <span class="co">#&gt;   ...</span>
-<span class="co">#&gt;   TCGA.READ.sampleMap/READ_clinicalMatrix</span>
-<span class="co">#&gt;   TCGA.MESO.sampleMap/MESO_clinicalMatrix</span></code></pre></div>
+<span class="co">#&gt;   TCGA.THCA.sampleMap/THCA_clinicalMatrix</span>
+<span class="co">#&gt;   TCGA.UCS.sampleMap/UCS_clinicalMatrix</span></code></pre></div>
 <p>Then select <code>LUAD</code>, <code>LUSC</code> and <code>LUNG</code> 3 datasets.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">XenaFilter</span>(xe2, <span class="dt">filterDatasets =</span> <span class="st">&quot;LUAD|LUSC|LUNG&quot;</span>) -&gt;<span class="st"> </span>xe2</code></pre></div>
 <p>Pipe can be used here.</p>
@@ -285,17 +287,14 @@ xe <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="co">#&gt; class: XenaHub </span>
 <span class="co">#&gt; hosts():</span>
 <span class="co">#&gt;   https://tcga.xenahubs.net</span>
-<span class="co">#&gt; cohorts() (39 total):</span>
-<span class="co">#&gt;   (unassigned)</span>
-<span class="co">#&gt;   TCGA Acute Myeloid Leukemia (LAML)</span>
-<span class="co">#&gt;   TCGA Adrenocortical Cancer (ACC)</span>
-<span class="co">#&gt;   ...</span>
-<span class="co">#&gt;   TCGA Uterine Carcinosarcoma (UCS)</span>
-<span class="co">#&gt;   TCGA lower grade glioma and glioblastoma (GBMLGG)</span>
+<span class="co">#&gt; cohorts() (3 total):</span>
+<span class="co">#&gt;   TCGA Lung Adenocarcinoma (LUAD)</span>
+<span class="co">#&gt;   TCGA Lung Cancer (LUNG)</span>
+<span class="co">#&gt;   TCGA Lung Squamous Cell Carcinoma (LUSC)</span>
 <span class="co">#&gt; datasets() (3 total):</span>
-<span class="co">#&gt;   TCGA.LUSC.sampleMap/LUSC_clinicalMatrix</span>
+<span class="co">#&gt;   TCGA.LUAD.sampleMap/LUAD_clinicalMatrix</span>
 <span class="co">#&gt;   TCGA.LUNG.sampleMap/LUNG_clinicalMatrix</span>
-<span class="co">#&gt;   TCGA.LUAD.sampleMap/LUAD_clinicalMatrix</span></code></pre></div>
+<span class="co">#&gt;   TCGA.LUSC.sampleMap/LUSC_clinicalMatrix</span></code></pre></div>
 </div>
 <div id="query" class="section level3">
 <h3>Query</h3>
@@ -303,23 +302,23 @@ xe <span class="op">%&gt;%</span><span class="st"> </span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xe2_query =<span class="st"> </span><span class="kw">XenaQuery</span>(xe2)
 xe2_query
 <span class="co">#&gt;                       hosts                                datasets</span>
-<span class="co">#&gt; 1 https://tcga.xenahubs.net TCGA.LUSC.sampleMap/LUSC_clinicalMatrix</span>
+<span class="co">#&gt; 1 https://tcga.xenahubs.net TCGA.LUAD.sampleMap/LUAD_clinicalMatrix</span>
 <span class="co">#&gt; 2 https://tcga.xenahubs.net TCGA.LUNG.sampleMap/LUNG_clinicalMatrix</span>
-<span class="co">#&gt; 3 https://tcga.xenahubs.net TCGA.LUAD.sampleMap/LUAD_clinicalMatrix</span>
+<span class="co">#&gt; 3 https://tcga.xenahubs.net TCGA.LUSC.sampleMap/LUSC_clinicalMatrix</span>
 <span class="co">#&gt;                                                                             url</span>
-<span class="co">#&gt; 1 https://tcga.xenahubs.net/download/TCGA.LUSC.sampleMap/LUSC_clinicalMatrix.gz</span>
+<span class="co">#&gt; 1 https://tcga.xenahubs.net/download/TCGA.LUAD.sampleMap/LUAD_clinicalMatrix.gz</span>
 <span class="co">#&gt; 2 https://tcga.xenahubs.net/download/TCGA.LUNG.sampleMap/LUNG_clinicalMatrix.gz</span>
-<span class="co">#&gt; 3 https://tcga.xenahubs.net/download/TCGA.LUAD.sampleMap/LUAD_clinicalMatrix.gz</span></code></pre></div>
+<span class="co">#&gt; 3 https://tcga.xenahubs.net/download/TCGA.LUSC.sampleMap/LUSC_clinicalMatrix.gz</span></code></pre></div>
 </div>
 <div id="download" class="section level3">
 <h3>Download</h3>
 <p>Default, data will be downloaded to system temp directory. You can specify the path.</p>
 <p>If the data exists, command will not run to download them, but you can force it by <code>force</code> option.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xe2_download =<span class="st"> </span><span class="kw">XenaDownload</span>(xe2_query)
-<span class="co">#&gt; We will download files to directory /var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T//RtmpyoNA6R.</span>
-<span class="co">#&gt; Downloading TCGA.LUSC.sampleMap__LUSC_clinicalMatrix.gz</span>
-<span class="co">#&gt; Downloading TCGA.LUNG.sampleMap__LUNG_clinicalMatrix.gz</span>
+<span class="co">#&gt; We will download files to directory /Volumes/Data/Rtmp/Rtmp3cRrrb.</span>
 <span class="co">#&gt; Downloading TCGA.LUAD.sampleMap__LUAD_clinicalMatrix.gz</span>
+<span class="co">#&gt; Downloading TCGA.LUNG.sampleMap__LUNG_clinicalMatrix.gz</span>
+<span class="co">#&gt; Downloading TCGA.LUSC.sampleMap__LUSC_clinicalMatrix.gz</span>
 <span class="co">#&gt; Note fileNames transfromed from datasets name and / chracter all changed to __ character.</span>
 ## not run
 <span class="co">#xe2_download = XenaDownload(xe2_query, destdir = &quot;E:/Github/XenaData/test/&quot;)</span></code></pre></div>
@@ -355,9 +354,9 @@ names(cli3)
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># way4: xenadownload object</span>
 cli4 =<span class="st"> </span><span class="kw">XenaPrepare</span>(xe2_download)
 <span class="kw">names</span>(cli4)
-<span class="co">#&gt; [1] &quot;TCGA.LUSC.sampleMap__LUSC_clinicalMatrix.gz&quot;</span>
+<span class="co">#&gt; [1] &quot;TCGA.LUAD.sampleMap__LUAD_clinicalMatrix.gz&quot;</span>
 <span class="co">#&gt; [2] &quot;TCGA.LUNG.sampleMap__LUNG_clinicalMatrix.gz&quot;</span>
-<span class="co">#&gt; [3] &quot;TCGA.LUAD.sampleMap__LUAD_clinicalMatrix.gz&quot;</span></code></pre></div>
+<span class="co">#&gt; [3] &quot;TCGA.LUSC.sampleMap__LUSC_clinicalMatrix.gz&quot;</span></code></pre></div>
 </div>
 </div>
 <div id="tcga-common-data-easy-download" class="section level2">
@@ -431,8 +430,8 @@ tcga_data<span class="op">$</span>DataInfo
 <p>Set <code>download=TRUE</code> to download data, default data will be downloaded to system temp directory (you can specify the path with <code>destdir</code> option):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># only download clinical data</span>
 <span class="kw">getTCGAdata</span>(<span class="kw">c</span>(<span class="st">&quot;UVM&quot;</span>, <span class="st">&quot;LUAD&quot;</span>), <span class="dt">download =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; We will download files to directory /var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T//RtmpyoNA6R.</span>
-<span class="co">#&gt; /var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T//RtmpyoNA6R/TCGA.LUAD.sampleMap__LUAD_clinicalMatrix.gz, the file has been download!</span>
+<span class="co">#&gt; We will download files to directory /Volumes/Data/Rtmp/Rtmp3cRrrb.</span>
+<span class="co">#&gt; /Volumes/Data/Rtmp/Rtmp3cRrrb/TCGA.LUAD.sampleMap__LUAD_clinicalMatrix.gz, the file has been download!</span>
 <span class="co">#&gt; Downloading TCGA.UVM.sampleMap__UVM_clinicalMatrix.gz</span>
 <span class="co">#&gt; Note fileNames transfromed from datasets name and / chracter all changed to __ character.</span></code></pre></div>
 <div id="support-data-type-and-options" class="section level4">
@@ -583,22 +582,21 @@ tcga_data<span class="op">$</span>DataInfo
 <span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt; [1] bindrcpp_0.2.2      dplyr_0.7.6         UCSCXenaTools_0.2.4</span>
+<span class="co">#&gt; [1] bindrcpp_0.2.2      dplyr_0.7.6         UCSCXenaTools_0.2.5</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
-<span class="co">#&gt;  [1] Rcpp_0.12.18         knitr_1.20           bindr_0.1.1         </span>
+<span class="co">#&gt;  [1] Rcpp_0.12.19         knitr_1.20           bindr_0.1.1         </span>
 <span class="co">#&gt;  [4] magrittr_1.5         hms_0.4.2            tidyselect_0.2.4    </span>
-<span class="co">#&gt;  [7] xtable_1.8-2         R6_2.2.2             rlang_0.2.2         </span>
+<span class="co">#&gt;  [7] xtable_1.8-3         R6_2.3.0             rlang_0.2.2         </span>
 <span class="co">#&gt; [10] httr_1.3.1           stringr_1.3.1        tools_3.5.1         </span>
 <span class="co">#&gt; [13] shinydashboard_0.7.0 htmltools_0.3.6      yaml_2.2.0          </span>
-<span class="co">#&gt; [16] rprojroot_1.3-2      digest_0.6.16        assertthat_0.2.0    </span>
+<span class="co">#&gt; [16] rprojroot_1.3-2      digest_0.6.18        assertthat_0.2.0    </span>
 <span class="co">#&gt; [19] tibble_1.4.2         crayon_1.3.4         shiny_1.1.0         </span>
-<span class="co">#&gt; [22] readr_1.1.1          later_0.7.3          purrr_0.2.5         </span>
-<span class="co">#&gt; [25] promises_1.0.1       prettydoc_0.2.1      curl_3.2            </span>
-<span class="co">#&gt; [28] mime_0.5             glue_1.3.0           evaluate_0.11       </span>
-<span class="co">#&gt; [31] rmarkdown_1.10       stringi_1.2.4        compiler_3.5.1      </span>
-<span class="co">#&gt; [34] pillar_1.3.0         backports_1.1.2      jsonlite_1.5        </span>
-<span class="co">#&gt; [37] httpuv_1.4.5         pkgconfig_2.0.2</span></code></pre></div>
+<span class="co">#&gt; [22] readr_1.1.1          later_0.7.5          purrr_0.2.5         </span>
+<span class="co">#&gt; [25] promises_1.0.1       prettydoc_0.2.1      mime_0.6            </span>
+<span class="co">#&gt; [28] glue_1.3.0           evaluate_0.12        rmarkdown_1.10      </span>
+<span class="co">#&gt; [31] stringi_1.2.4        compiler_3.5.1       pillar_1.3.0        </span>
+<span class="co">#&gt; [34] backports_1.1.2      httpuv_1.4.5         pkgconfig_2.0.2</span></code></pre></div>
 </div>
 <div id="bug-report" class="section level2">
 <h2>Bug Report</h2>

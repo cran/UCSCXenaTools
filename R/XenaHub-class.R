@@ -21,7 +21,8 @@ xena_default_hosts = function() {
       "https://icgc.xenahubs.net",
       "https://toil.xenahubs.net",
       "https://pancanatlas.xenahubs.net",
-      "https://xena.treehouse.gi.ucsc.edu"
+      "https://xena.treehouse.gi.ucsc.edu",
+      "https://pcawg.xenahubs.net"
       )
 }
 
@@ -39,7 +40,7 @@ xena_default_hosts = function() {
 ##' for substitute this.
 ##' @param cohorts default is empty character vector, all cohorts will be returned.
 ##' @param datasets default is empty character vector, all datasets will be returned.
-##' @param hostName one to seven of \code{c("UCSC_Public", "TCGA", "GDC", "ICGC", "Toil", "PanCancer", "Treehouse")}. This is
+##' @param hostName one to seven of \code{c("UCSC_Public", "TCGA", "GDC", "ICGC", "Toil", "PanCancer", "Treehouse", "PCAWG")}. This is
 ##' a easier option for user than \code{hosts} option. Note, this option will overlap \code{hosts}.
 ##' @return a \code{XenaHub} object
 ##' @author Shixiang Wang <w_shixiang@163.com>
@@ -61,14 +62,14 @@ xena_default_hosts = function() {
 ##' samples(xe)   # get samples
 ##' }
 XenaHub = function(hosts=xena_default_hosts(), cohorts=character(),
-             datasets=character(), hostName=c("UCSC_Public", "TCGA", "GDC", "ICGC", "Toil", "PanCancer", "Treehouse")){
+             datasets=character(), hostName=c("UCSC_Public", "TCGA", "GDC", "ICGC", "Toil", "PanCancer", "Treehouse", "PCAWG")){
 
     stopifnot(is.character(hosts), is.character(cohorts),
               is.character(datasets))
 
     hostName = unique(hostName)
 
-    if(length(hostName) != 7 & all(hostName %in% c("UCSC_Public", "TCGA", "GDC", "ICGC", "Toil", "PanCancer", "Treehouse")) ){
+    if(length(hostName) != 7 & all(hostName %in% c("UCSC_Public", "TCGA", "GDC", "ICGC", "Toil", "PanCancer", "Treehouse", "PCAWG")) ){
       hostNames = data.frame(UCSC_Public="https://ucscpublic.xenahubs.net",
                              TCGA="https://tcga.xenahubs.net",
                              GDC="https://gdc.xenahubs.net",
@@ -76,6 +77,7 @@ XenaHub = function(hosts=xena_default_hosts(), cohorts=character(),
                              Toil="https://toil.xenahubs.net",
                              PanCancer="https://pancanatlas.xenahubs.net",
                              Treehouse="https://xena.treehouse.gi.ucsc.edu",
+                             PCAWG="https://pcawg.xenahubs.net",
                              stringsAsFactors = FALSE)
       hosts = as.character(hostNames[, hostName])
     }
@@ -119,12 +121,6 @@ XenaHub = function(hosts=xena_default_hosts(), cohorts=character(),
 ##' @return a \code{data.frame} contains all datasets information of Xena.
 ##' @author Shixiang Wang <w_shixiang@163.com>
 ##' @export
-##' @examples
-##'
-##' \donttest{
-##'  XenaDataUpdate() # update newest information to local directory for use
-##'  newest_Xena = XenaDataUpdate(saveTolocal=FALSE) # just get info, not save
-##' }
 XenaDataUpdate = function(saveTolocal=TRUE){
     hosts = xena_default_hosts()
     XenaList = sapply(hosts, function(x){
@@ -164,14 +160,15 @@ XenaDataUpdate = function(saveTolocal=TRUE){
         resDF = rbind(resDF, res)
     }
 
-    XenaHostNames = c("UCSC_Public", "TCGA", "GDC", "ICGC", "Toil", "PanCancer", "Treehouse")
+    XenaHostNames = c("UCSC_Public", "TCGA", "GDC", "ICGC", "Toil", "PanCancer", "Treehouse", "PCAWG")
     names(XenaHostNames) = c("https://ucscpublic.xenahubs.net",
                              "https://tcga.xenahubs.net",
                              "https://gdc.xenahubs.net",
                              "https://icgc.xenahubs.net",
                              "https://toil.xenahubs.net",
                              "https://pancanatlas.xenahubs.net",
-                             "https://xena.treehouse.gi.ucsc.edu")
+                             "https://xena.treehouse.gi.ucsc.edu",
+                             "https://pcawg.xenahubs.net")
 
     resDF$XenaHostNames = XenaHostNames[resDF$XenaHosts]
     XenaData = resDF[, c("XenaHosts", "XenaHostNames", "XenaCohorts", "XenaDatasets")]
@@ -192,9 +189,7 @@ XenaDataUpdate = function(saveTolocal=TRUE){
 ##'
 ##' Major function of \code{UCSCXenatools}. It is used to filter
 ##' \code{XenaHub} object according to cohorts, datasets. All datasets can be found
-##' at <https://xenabrowser.net/datapages/>. Note, the change for filtering cohorts and
-##' datasets are independent.
-##'
+##' at <https://xenabrowser.net/datapages/>.
 ##'
 ##' @param x a \code{XenaHub} object
 ##' @param filterCohorts default is \code{NULL}. A character used to filter cohorts,
@@ -220,6 +215,9 @@ XenaFilter = function(x, filterCohorts=NULL, filterDatasets=NULL, ignore.case=TR
     cohorts_select = character()
     datasets_select = character()
 
+    # suppress binding notes
+    XenaHosts = XenaCohorts = XenaDatasets = NULL
+
     if (!is.null(filterCohorts)){
         cohorts_select = grep(pattern = filterCohorts, x@cohorts, ignore.case = ignore.case, value = TRUE)
     }
@@ -228,7 +226,19 @@ XenaFilter = function(x, filterCohorts=NULL, filterDatasets=NULL, ignore.case=TR
         datasets_select = grep(pattern = filterDatasets, x@datasets, ignore.case = ignore.case, value = TRUE)
     }
 
-    XenaHub(hosts = x@hosts, cohorts = cohorts_select, datasets = datasets_select)
+    if (identical(cohorts_select, character()) & identical(datasets_select, character())) {
+         warning("No valid cohorts or datasets find! Please check your input.")
+    }else{
+        if(identical(cohorts_select, character()) & !identical(datasets_select, character())){
+            UCSCXenaTools::XenaGenerate(subset = XenaHosts %in% x@hosts & XenaDatasets %in% datasets_select)
+        }else{
+            if(!identical(cohorts_select, character()) & identical(datasets_select, character())){
+                UCSCXenaTools::XenaGenerate(subset = XenaHosts %in% x@hosts & XenaCohorts %in% cohorts_select)
+            }else{
+                UCSCXenaTools::XenaGenerate(subset = XenaHosts %in% x@hosts & XenaCohorts %in% cohorts_select & XenaDatasets %in% datasets_select)
+            }
+        }
+    }
 }
 
 ##' Get hosts of XenaHub object

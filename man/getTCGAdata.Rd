@@ -63,8 +63,8 @@ germline copy number variation. Default is \code{TRUE}.}
 \item{...}{other argument to \code{download.file} function}
 }
 \value{
-if \code{download=TRUE}, return nothing, otherwise return a list including \code{XenaHub} object and
-datasets information
+if \code{download=TRUE}, return \code{data.frame} from \code{XenaDownload},
+otherwise return a list including \code{XenaHub} object and datasets information
 }
 \description{
 This is the most useful function for user to download common TCGA datasets,
@@ -96,7 +96,7 @@ getTCGAdata(project = "LUAD")
 getTCGAdata(project = c("LUAD", "LUSC"), clinical = TRUE, download = TRUE)
 
 # 4 download clinical, RPPA and gene mutation datasets of LUAD and LUSC
-getTCGAdata(project = c("LUAD", "LUSC"), clinical = TRUE, RPPAArray = TRUE, GeneMutation = TRUE)
+# getTCGAdata(project = c("LUAD", "LUSC"), clinical = TRUE, RPPAArray = TRUE, GeneMutation = TRUE)
 }
 }
 \author{

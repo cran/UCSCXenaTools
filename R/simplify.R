@@ -89,8 +89,8 @@
 ##'@param CopyNumberSegment logical. if \code{TRUE}, download Copy Number Segment data. Default is \code{FALSE}.
 ##'@param RemoveGermlineCNV logical. if \code{TRUE}, download Copy Number Segment data which has removed
 ##'germline copy number variation. Default is \code{TRUE}.
-##'@return if \code{download=TRUE}, return nothing, otherwise return a list including \code{XenaHub} object and
-##'datasets information
+##'@return if \code{download=TRUE}, return \code{data.frame} from \code{XenaDownload},
+##' otherwise return a list including \code{XenaHub} object and datasets information
 ##'@import dplyr
 ##'@export
 ##'@examples
@@ -111,7 +111,7 @@
 ##'getTCGAdata(project = c("LUAD", "LUSC"), clinical = TRUE, download = TRUE)
 ##'
 ##'# 4 download clinical, RPPA and gene mutation datasets of LUAD and LUSC
-##'getTCGAdata(project = c("LUAD", "LUSC"), clinical = TRUE, RPPAArray = TRUE, GeneMutation = TRUE)
+##'# getTCGAdata(project = c("LUAD", "LUSC"), clinical = TRUE, RPPAArray = TRUE, GeneMutation = TRUE)
 ##'}
 getTCGAdata = function(project=NULL, clinical=TRUE, download=FALSE, forceDownload=FALSE, destdir = tempdir(),
                        mRNASeq=FALSE, mRNAArray=FALSE, mRNASeqType = "normalized",
@@ -310,10 +310,12 @@ getTCGAdata = function(project=NULL, clinical=TRUE, download=FALSE, forceDownloa
 ##' @import dplyr
 ##' @export
 ##' @examples
+##' \donttest{
 ##' # download RNASeq data (use UVM as example)
 ##' downloadTCGA(project = "UVM",
 ##'                  data_type = "Gene Expression RNASeq",
 ##'                  file_type = "IlluminaHiSeq RNASeqV2")
+##' }
 ##' @seealso \code{\link[UCSCXenaTools]{XenaQuery}},
 ##' \code{\link[UCSCXenaTools]{XenaFilter}},
 ##' \code{\link[UCSCXenaTools]{XenaDownload}},
