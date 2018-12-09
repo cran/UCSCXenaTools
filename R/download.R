@@ -122,13 +122,26 @@ XenaDownload = function(xquery, destdir=tempdir(), force=FALSE, ...){
 ##' @param objects a object of character vector or data.frame. If \code{objects} is data.frame,
 ##' it should be returned object of \code{XenaDownload} function. More easier way is
 ##' that objects can be character vector specify local files/directory and download urls.
-##' @param objectsName specify objectsName of result
+##' @param objectsName specify names for elements of return object, i.e. names of list
+##' @param use_chunk default is \code{FALSE}. If you want to select subset of original data, please set it to
+##' \code{TRUE} and specify corresponding arguments: \code{chunk_size}, \code{select_direction}, \code{select_names},
+##' \code{callback}
+##' @param chunk_size the number of rows to include in each chunk
+##' @param subset_rows logical expression indicating elements or rows to keep: missing values are taken as false.
+##' \code{x} can be a representation of data frame you wanna do subset operation. Of note, the first colname of most of
+##'  datasets in Xena will be set to "sample", you can use it to select rows,
+##' @param select_cols expression, indicating columns to select from a data frame. 'x' can be a representation of data frame you
+##'  wanna do subset operation, e.g. \code{select_cols = colnames(x)[1:3]} will keep only first to third column.
+##' @param callback a function to call on each chunk, default is \code{NULL}, this option will overvide operations of
+##' subset_rows and select_cols.
 ##' @param comment a character specify comment rows in files
 ##' @param na a character vectory specify \code{NA} values in files
-##' @param ... other arguments transfer to \code{read_tsv} function of \code{readr} package
+##' @param ... other arguments transfer to \code{read_tsv} function or \code{read_tsv_chunked} function (when \code{use_chunk} is \code{TRUE}) of \code{readr} package
 ##' @return a list contains file data, which in way of tibbles
 ##' @export
 ##' @importFrom readr read_tsv
+##' @importFrom readr read_tsv_chunked
+##' @importFrom readr cols
 ##' @examples
 ##' xe = XenaGenerate(subset = XenaHostNames == "TCGA")
 ##' hosts(xe)
@@ -138,9 +151,16 @@ XenaDownload = function(xquery, destdir=tempdir(), force=FALSE, ...){
 ##' # dat = XenaPrepare(xe_download)
 ##'
 
-XenaPrepare = function(objects, objectsName=NULL, comment="#", na=c("", "NA", "[Discrepancy]"), ...){
+XenaPrepare = function(objects, objectsName=NULL,
+                       use_chunk=FALSE, chunk_size = 100, subset_rows=TRUE,
+                       select_cols = TRUE, callback = NULL,
+                       comment="#", na=c("", "NA", "[Discrepancy]"), ...){
     # objects can be url, local files/directory or xena object from xena download process
-    stopifnot(is.character(objects) | is.data.frame(objects))
+    stopifnot(is.character(objects) | is.data.frame(objects), is.logical(use_chunk))
+
+    subset_rows = substitute(subset_rows)
+    select_cols = substitute(select_cols)
+#    subset_direction = match.arg(subset_direction)
 
     objects2 = objects
 
@@ -155,7 +175,24 @@ XenaPrepare = function(objects, objectsName=NULL, comment="#", na=c("", "NA", "[
             }else{
                 files = paste0(objects, "/", dir(objects))
                 res = lapply(files, function(x){
-                    y = suppressMessages(read_tsv(x, comment=comment, na=na, ...))
+                    if (use_chunk) {
+                        if (is.null(callback)) {
+                            f = function(x, pos){
+                                subset(x, eval(subset_rows), select=eval(select_cols))
+                            }
+
+                        } else {
+                            f = callback
+                        }
+
+                        y = readr::read_tsv_chunked(x, readr::DataFrameCallback$new(f),
+                                                    chunk_size = chunk_size, comment = comment,
+                                                    na = na,
+                                                    col_types = readr::cols())
+                    } else {
+                        y = readr::read_tsv(x, comment=comment, na=na, col_types = readr::cols(), ...)
+                    }
+
                     y
             })
             if(is.null(objectsName)){
@@ -166,8 +203,26 @@ XenaPrepare = function(objects, objectsName=NULL, comment="#", na=c("", "NA", "[
 
         }else if(all(file.exists(objects))){
             res = lapply(objects, function(x){
-                y = suppressMessages(read_tsv(x, comment=comment, na=na, ...))
-                y})
+                if (use_chunk) {
+                    if (is.null(eval(callback))) {
+                        f = function(x, pos){
+                            subset(x, eval(subset_rows), select=eval(select_cols))
+                        }
+
+                    } else {
+                        f = callback
+                    }
+
+                    y = readr::read_tsv_chunked(x, readr::DataFrameCallback$new(f),
+                                                chunk_size = chunk_size, comment = comment,
+                                                na = na,
+                                                col_types = readr::cols())
+                } else {
+                    y = readr::read_tsv(x, comment=comment, na=na, col_types = readr::cols(), ...)
+                }
+
+                y
+            })
             if(is.null(objectsName)){
                 objectsName = make.names(basename(objects))
                 names(res) = objectsName
@@ -183,10 +238,48 @@ XenaPrepare = function(objects, objectsName=NULL, comment="#", na=c("", "NA", "[
             if(any(all_right)){
                 objects = objects[all_right]
                 if(length(objects) == 1){
-                    res = suppressMessages(read_tsv(objects, comment=comment, na=na, ...))
+                    if (use_chunk) {
+                        if (is.null(callback)) {
+                            f = function(x, pos){
+                                subset(x, eval(subset_rows), select=eval(select_cols))
+                            }
+
+                        } else {
+                            f = callback
+                        }
+
+                        res = readr::read_tsv_chunked(objects, readr::DataFrameCallback$new(f),
+                                                    chunk_size = chunk_size, comment = comment,
+                                                    na = na,
+                                                    col_types = readr::cols())
+                    } else {
+                        res = readr::read_tsv(objects, comment=comment, na=na, col_types = readr::cols(), ...)
+                    }
+
+                    #res = suppressMessages(read_tsv(objects, comment=comment, na=na, ...))
                 }else{
                     res = lapply(objects, function(x){
-                        y = suppressMessages(read_tsv(x, comment=comment, na=na, ...))})
+                        if (use_chunk) {
+                            if (is.null(callback)) {
+                                f = function(x, pos){
+                                    subset(x, eval(subset_rows), select=eval(select_cols))
+                                }
+
+                            } else {
+                                f = callback
+                            }
+
+                            y = readr::read_tsv_chunked(x, readr::DataFrameCallback$new(f),
+                                                        chunk_size = chunk_size, comment = comment,
+                                                        na = na,
+                                                        col_types = readr::cols())
+                        } else {
+                            y = readr::read_tsv(x, comment=comment, na=na, col_types = readr::cols(), ...)
+                        }
+
+                        y
+
+                    })
 
                     # use for loop
                     # res = list()
@@ -215,8 +308,17 @@ XenaPrepare = function(objects, objectsName=NULL, comment="#", na=c("", "NA", "[
         }
 
         files = objects$destfiles
-        res = XenaPrepare(files, objectsName = objectsName, comment = comment, na=na, ...)
+        res = XenaPrepare(files, objectsName = objectsName,
+                          use_chunk = use_chunk, chunk_size = chunk_size, subset_rows = subset_rows,
+                          select_cols = select_cols, callback = callback,
+                          comment = comment, na=na, ...)
     }
 
     return(res)
 }
+
+
+# # only read some rows or some columns of data
+# XenaPrepareSubset = function(){
+#
+# }
