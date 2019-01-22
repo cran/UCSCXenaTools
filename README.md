@@ -1,23 +1,25 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# UCSCXenaTools: A R package download and explore data from **UCSC Xena data hubs**
+# UCSCXenaTools <img src='man/figures/logo.png' align="right" height="139" />
 
-<img src="https://github.com/ShixiangWang/UCSCXenaTools/blob/master/inst/figures/UCSCXenaTools.png" height="200" align="right" />
+<!-- badges: start -->
 
-![](http://www.r-pkg.org/badges/version-last-release/UCSCXenaTools)
-[![GitHub
-tag](https://img.shields.io/github/tag/ShixiangWang/UCSCXenaTools.svg?label=Github)](https://github.com/ShixiangWang/UCSCXenaTools)
-![](http://cranlogs.r-pkg.org/badges/UCSCXenaTools)
-![](http://cranlogs.r-pkg.org/badges/grand-total/UCSCXenaTools)
+[![CRAN](http://www.r-pkg.org/badges/version-last-release/UCSCXenaTools)](https://cran.r-project.org/package=UCSCXenaTools)
 [![AppVeyor Build
 Status](https://ci.appveyor.com/api/projects/status/github/ShixiangWang/UCSCXenaTools?branch=master&svg=true)](https://ci.appveyor.com/project/ShixiangWang/UCSCXenaTools)
+[![Travis build
+status](https://travis-ci.org/ShixiangWang/UCSCXenaTools.svg?branch=master)](https://travis-ci.org/ShixiangWang/UCSCXenaTools)
+
+![](http://cranlogs.r-pkg.org/badges/UCSCXenaTools)
+![](http://cranlogs.r-pkg.org/badges/grand-total/UCSCXenaTools)
 [![Coverage
 Status](https://img.shields.io/codecov/c/github/ShixiangWang/UCSCXenaTools/master.svg)](https://codecov.io/github/ShixiangWang/UCSCXenaTools?branch=master)
 [![GitHub
 issues](https://img.shields.io/github/issues/ShixiangWang/UCSCXenaTools.svg)](https://github.com/ShixiangWang/UCSCXenaTools/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+)
-
-**Current Version: 0.2.6**
+[![Closed
+issues](https://img.shields.io/github/issues-closed/ShixiangWang/UCSCXenaTools.svg)](https://github.com/ShixiangWang/UCSCXenaTools/issues?q=is%3Aissue+is%3Aclosed)
+<!-- badges: end -->
 
 `UCSCXenaTools` is a R package download and explore data from **UCSC
 Xena data hubs**, which are
@@ -30,7 +32,7 @@ Xena data hubs**, which are
 
 If you use this package in academic field, please cite:
 
-*Wang, Shixiang, et al. “APOBEC3B and APOBEC mutational signature as
+*Wang, Shixiang, et al. “APOBEC3B and APOBEC mutational signature as
 potential predictive markers for immunotherapy response in non-small
 cell lung cancer.” Oncogene (2018).*
 
@@ -141,6 +143,7 @@ XenaGenerate()
 #>   https://pancanatlas.xenahubs.net
 #>   https://xena.treehouse.gi.ucsc.edu
 #>   https://pcawg.xenahubs.net
+#>   https://atacseq.xenahubs.net
 #> cohorts() (126 total):
 #>   Acute lymphoblastic leukemia (Mullighan 2008)
 #>   Breast Cancer (Caldas 2007)
@@ -148,13 +151,13 @@ XenaGenerate()
 #>   ...
 #>   PCAWG (donor centric)
 #>   PCAWG (specimen centric)
-#> datasets() (1583 total):
+#> datasets() (1591 total):
 #>   mullighan2008_public/mullighan2008_500K_genomicMatrix
 #>   mullighan2008_public/mullighan2008_public_clinicalMatrix
 #>   mullighan2008_public/mullighan2008_SNP6_genomicMatrix
 #>   ...
-#>   relativePromoterActivity.sp
-#>   promoterCentricTable_0.2_1.0.sp
+#>   brca/pam50
+#>   brca/TCGA-BRCA.methylation450.tsv
 ```
 
 We can set `subset` argument to narrow datasets.
@@ -259,22 +262,9 @@ XenaFilter(xe2, filterDatasets = "LUAD|LUSC|LUNG") -> xe2
 Pipe can be used here.
 
 ``` r
-suppressMessages(require(dplyr))
-
 xe %>% 
     XenaFilter(filterDatasets = "clinical") %>% 
     XenaFilter(filterDatasets = "luad|lusc|lung")
-#> class: XenaHub 
-#> hosts():
-#>   https://tcga.xenahubs.net
-#> cohorts() (3 total):
-#>   TCGA Lung Adenocarcinoma (LUAD)
-#>   TCGA Lung Cancer (LUNG)
-#>   TCGA Lung Squamous Cell Carcinoma (LUSC)
-#> datasets() (3 total):
-#>   TCGA.LUAD.sampleMap/LUAD_clinicalMatrix
-#>   TCGA.LUNG.sampleMap/LUNG_clinicalMatrix
-#>   TCGA.LUSC.sampleMap/LUSC_clinicalMatrix
 ```
 
 ### Query
@@ -304,7 +294,7 @@ force it by `force` option.
 
 ``` r
 xe2_download = XenaDownload(xe2_query)
-#> We will download files to directory /tmp/RtmpNXm4j5.
+#> We will download files to directory /var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T//RtmpH0xadn.
 #> Downloading TCGA.LUAD.sampleMap__LUAD_clinicalMatrix.gz
 #> Downloading TCGA.LUNG.sampleMap__LUNG_clinicalMatrix.gz
 #> Downloading TCGA.LUSC.sampleMap__LUSC_clinicalMatrix.gz
@@ -353,6 +343,20 @@ names(cli4)
 #> [2] "TCGA.LUNG.sampleMap__LUNG_clinicalMatrix.gz"
 #> [3] "TCGA.LUSC.sampleMap__LUSC_clinicalMatrix.gz"
 ```
+
+From v0.2.6, `XenaPrepare()` can enable chunk feature when file is too
+big and user only need subset of file.
+
+Following code show how to subset some rows or columns of files,
+`sample` is the name of the first column, user can directly use it in
+logical expression, `x` can be a representation of data frame user wanna
+do subset operation. More custom operation can be set as a function and
+pass to `callback` option.
+
+    # select rows which sample (gene symbol here) in "HIF3A" or "RNF17"
+    testRNA = UCSCXenaTools::XenaPrepare("~/Download/HiSeqV2.gz", use_chunk = TRUE, subset_rows = sample %in% c("HIF3A", "RNF17"))
+    # only keep 1 to 3 columns
+    testRNA = UCSCXenaTools::XenaPrepare("~/Download/HiSeqV2.gz", use_chunk = TRUE, select_cols = colnames(x)[1:3])
 
 ## TCGA Common Data Easy Download
 
@@ -442,10 +446,6 @@ system temp directory (you can specify the path with `destdir` option):
 ``` r
 # only download clinical data
 getTCGAdata(c("UVM", "LUAD"), download = TRUE)
-#> We will download files to directory /tmp/RtmpNXm4j5.
-#> /tmp/RtmpNXm4j5/TCGA.LUAD.sampleMap__LUAD_clinicalMatrix.gz, the file has been download!
-#> Downloading TCGA.UVM.sampleMap__UVM_clinicalMatrix.gz
-#> Note fileNames transfromed from datasets name and / chracter all changed to __ character.
 ```
 
 #### Support Data Type and Options
@@ -614,42 +614,36 @@ how to operate shiny.
 
 ``` r
 sessionInfo()
-#> R version 3.5.1 (2018-07-02)
-#> Platform: x86_64-pc-linux-gnu (64-bit)
-#> Running under: elementary OS 5.0 Juno
+#> R version 3.5.2 (2018-12-20)
+#> Platform: x86_64-apple-darwin15.6.0 (64-bit)
+#> Running under: macOS High Sierra 10.13.6
 #> 
 #> Matrix products: default
-#> BLAS: /home/zd/anaconda3/lib/R/lib/libRblas.so
-#> LAPACK: /home/zd/anaconda3/lib/R/lib/libRlapack.so
+#> BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
+#> LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
 #> 
 #> locale:
-#>  [1] LC_CTYPE=zh_CN.UTF-8       LC_NUMERIC=C              
-#>  [3] LC_TIME=zh_CN.UTF-8        LC_COLLATE=zh_CN.UTF-8    
-#>  [5] LC_MONETARY=zh_CN.UTF-8    LC_MESSAGES=zh_CN.UTF-8   
-#>  [7] LC_PAPER=zh_CN.UTF-8       LC_NAME=C                 
-#>  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-#> [11] LC_MEASUREMENT=zh_CN.UTF-8 LC_IDENTIFICATION=C       
+#> [1] zh_CN.UTF-8/zh_CN.UTF-8/zh_CN.UTF-8/C/zh_CN.UTF-8/zh_CN.UTF-8
 #> 
 #> attached base packages:
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] bindrcpp_0.2.2       dplyr_0.7.6          UCSCXenaTools_0.2.5 
-#> [4] RevoUtils_11.0.1     RevoUtilsMath_11.0.0
+#> [1] bindrcpp_0.2.2      UCSCXenaTools_0.2.6 pacman_0.5.0       
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] Rcpp_0.12.18         knitr_1.20           bindr_0.1.1         
-#>  [4] magrittr_1.5         hms_0.4.2            tidyselect_0.2.4    
-#>  [7] xtable_1.8-2         R6_2.2.2             rlang_0.2.1         
-#> [10] httr_1.3.1           stringr_1.3.1        tools_3.5.1         
-#> [13] shinydashboard_0.7.1 htmltools_0.3.6      yaml_2.2.0          
-#> [16] rprojroot_1.3-2      digest_0.6.15        assertthat_0.2.0    
-#> [19] tibble_1.4.2         crayon_1.3.4         shiny_1.1.0         
-#> [22] readr_1.1.1          later_0.7.3          purrr_0.2.5         
-#> [25] promises_1.0.1       mime_0.5             glue_1.3.0          
-#> [28] evaluate_0.11        rmarkdown_1.10       stringi_1.2.4       
-#> [31] compiler_3.5.1       pillar_1.3.0         backports_1.1.2     
-#> [34] httpuv_1.4.5         pkgconfig_2.0.1
+#>  [1] Rcpp_1.0.0           knitr_1.21           bindr_0.1.1         
+#>  [4] magrittr_1.5         hms_0.4.2            tidyselect_0.2.5    
+#>  [7] xtable_1.8-3         R6_2.3.0             rlang_0.3.1         
+#> [10] httr_1.4.0           stringr_1.3.1        dplyr_0.7.8         
+#> [13] tools_3.5.2          shinydashboard_0.7.1 xfun_0.4            
+#> [16] htmltools_0.3.6      yaml_2.2.0           digest_0.6.18       
+#> [19] assertthat_0.2.0     tibble_2.0.0         crayon_1.3.4        
+#> [22] shiny_1.2.0          readr_1.3.1          later_0.7.5         
+#> [25] purrr_0.2.5          promises_1.0.1       mime_0.6            
+#> [28] glue_1.3.0           evaluate_0.12        rmarkdown_1.11      
+#> [31] stringi_1.2.4        compiler_3.5.2       pillar_1.3.1        
+#> [34] httpuv_1.4.5.1       pkgconfig_2.0.2
 ```
 
 ## Bug Report

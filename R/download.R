@@ -1,6 +1,6 @@
 # Generate, query, download and prepare functions
 
-##' Generate and Subset a \code{XenaHub} Object from \code{XenaData}
+##' Generate and Subset a XenaHub Object from XenaData
 ##'
 ##' @author Shixiang Wang <w_shixiang@163.com>
 ##' @param XenaData a data.frame. Default is \code{data(XenaData)}. The input of this
@@ -16,15 +16,18 @@
 ##' # 3
 ##' XenaGenerate(subset = grepl("BRCA", XenaCohorts))
 
-XenaGenerate = function(XenaData = UCSCXenaTools::XenaData, subset = TRUE){
+XenaGenerate = function(XenaData = UCSCXenaTools::XenaData,
+                        subset = TRUE) {
     enclos = parent.frame()
     subset = substitute(subset)
     row_selector = eval(subset, XenaData, enclos)
-    XenaData = XenaData[row_selector, ]
+    XenaData = XenaData[row_selector,]
 
-    .XenaHub(hosts=unique(XenaData$XenaHosts),
-             cohorts=unique(XenaData$XenaCohorts),
-             datasets=XenaData$XenaDatasets)
+    .XenaHub(
+        hosts = unique(XenaData$XenaHosts),
+        cohorts = unique(XenaData$XenaCohorts),
+        datasets = XenaData$XenaDatasets
+    )
 }
 
 ##' Query url of datasets before download
@@ -33,25 +36,44 @@ XenaGenerate = function(XenaData = UCSCXenaTools::XenaData, subset = TRUE){
 ##' @return a \code{tibble} contains hosts, datasets and url
 ##' @export
 ##' @examples
+##' \donttest{
 ##' xe = XenaGenerate(subset = XenaHostNames == "TCGA")
 ##' hosts(xe)
 ##' xe_query = XenaQuery(xe)
-XenaQuery = function(x){
+##' }
+XenaQuery = function(x) {
     hostsName = hosts(x)
     datasetsName = datasets(x)
 
-    if(length(hostsName) == 1){
-        dlink = paste0(hostsName,"/download/",datasetsName,".gz")
-        query = data.frame(hosts = hostsName, datasets = datasetsName, url = dlink, stringsAsFactors = FALSE)
-    }else{
+    message("This will check url status, please be patient.")
+    if (length(hostsName) == 1) {
+        urls = paste0(hostsName, "/download/", datasetsName)
+        # if file and file.gz all exist, download file # see issue#2
+        dlink = ifelse(!sapply(urls, httr::http_error),
+                       urls, paste0(urls, ".gz"))
+        query = data.frame(
+            hosts = hostsName,
+            datasets = datasetsName,
+            url = dlink,
+            stringsAsFactors = FALSE
+        )
+    } else{
         # identify relationship of hosts and datasets
-        query = data.frame(hosts = "NA", datasets = datasetsName, url = "NA", stringsAsFactors = FALSE)
-        for(onehost in hostsName){
+        query = data.frame(
+            hosts = "NA",
+            datasets = datasetsName,
+            url = "NA",
+            stringsAsFactors = FALSE
+        )
+        for (onehost in hostsName) {
             xe = XenaHub(hosts = onehost)
             dataset_list = datasets(xe)
             query$hosts[query$datasets %in% dataset_list] = hosts(xe)
         }
-        query$url = paste0(query$hosts, "/download/", query$datasets, ".gz")
+        urls = paste0(query$hosts, "/download/", query$datasets)
+        # if file and file.gz all exist, download file # see issue#2
+        query$url = ifelse(!sapply(urls, httr::http_error),
+                           urls, paste0(urls, ".gz"))
 
     }
 
@@ -72,46 +94,58 @@ XenaQuery = function(x){
 ##' @export
 ##' @importFrom utils download.file
 ##' @examples
+##' \donttest{
 ##' xe = XenaGenerate(subset = XenaHostNames == "TCGA")
 ##' hosts(xe)
 ##' xe_query = XenaQuery(xe)
-##' # xe_download = XenaDownload(xe_query)
-##'
+##' xe_download = XenaDownload(xe_query)
+##' }
 
-XenaDownload = function(xquery, destdir=tempdir(), force=FALSE, ...){
+XenaDownload = function(xquery,
+                        destdir = tempdir(),
+                        force = FALSE,
+                        ...) {
     stopifnot(is.data.frame(xquery), c("url") %in% names(xquery))
 
-    xquery$fileNames = gsub(pattern = "/", replacement = "__", x = xquery$datasets)
-    xquery$fileNames = paste0(xquery$fileNames, ".gz")
+    xquery$fileNames = gsub(pattern = "/",
+                            replacement = "__",
+                            x = xquery$datasets)
+    xquery$fileNames = ifelse(grepl("\\.gz", xquery$url),
+                              paste0(xquery$fileNames, ".gz"),
+                              xquery$fileNames)
     #destdir = paste0(destdir,"/")
-    xquery$destfiles = paste0(destdir, "/", xquery$fileNames)
+    xquery$destfiles = file.path(destdir, xquery$fileNames)
 
-    if(!dir.exists(destdir)) {
+    if (!dir.exists(destdir)) {
         dir.create(destdir, recursive = TRUE)
     }
 
     message("We will download files to directory ", destdir, ".")
 
-    apply(xquery, 1, function(x){
+    apply(xquery, 1, function(x) {
         tryCatch({
-            if(!file.exists(x[5]) | force){
+            if (!file.exists(x[5]) | force) {
                 message("Downloading ", x[4])
                 download.file(x[3], destfile = x[5], ...)
-            }else{
+            } else{
                 message(x[5], ", the file has been download!")
             }
-            }, error = function(e){
-                message("Can not find file", x[4], ", this file maybe not compressed.")
-                x[3] = gsub(pattern = "\\.gz$", "", x[3])
-                x[4] = gsub(pattern = "\\.gz$", "", x[4])
-                x[5] = gsub(pattern = "\\.gz$", "", x[5])
-                message("Try downloading file", x[4], "...")
-                download.file(x[3], destfile = x[5], ...)
-            })
+        }, error = function(e) {
+            message("Can not find file",
+                    x[4],
+                    ", this file maybe not compressed.")
+            x[3] = gsub(pattern = "\\.gz$", "", x[3])
+            x[4] = gsub(pattern = "\\.gz$", "", x[4])
+            x[5] = gsub(pattern = "\\.gz$", "", x[5])
+            message("Try downloading file", x[4], "...")
+            download.file(x[3], destfile = x[5], ...)
+        })
 
     })
 
-    message("Note fileNames transfromed from datasets name and / chracter all changed to __ character.")
+    message(
+        "Note fileNames transfromed from datasets name and / chracter all changed to __ character."
+    )
     invisible(xquery)
 }
 
@@ -143,91 +177,124 @@ XenaDownload = function(xquery, destdir=tempdir(), force=FALSE, ...){
 ##' @importFrom readr read_tsv_chunked
 ##' @importFrom readr cols
 ##' @examples
+##' \donttest{
 ##' xe = XenaGenerate(subset = XenaHostNames == "TCGA")
 ##' hosts(xe)
 ##' xe_query = XenaQuery(xe)
 ##'
-##' # xe_download = XenaDownload(xe_query)
-##' # dat = XenaPrepare(xe_download)
-##'
+##' xe_download = XenaDownload(xe_query)
+##' dat = XenaPrepare(xe_download)
+##' }
 
-XenaPrepare = function(objects, objectsName=NULL,
-                       use_chunk=FALSE, chunk_size = 100, subset_rows=TRUE,
-                       select_cols = TRUE, callback = NULL,
-                       comment="#", na=c("", "NA", "[Discrepancy]"), ...){
+XenaPrepare = function(objects,
+                       objectsName = NULL,
+                       use_chunk = FALSE,
+                       chunk_size = 100,
+                       subset_rows = TRUE,
+                       select_cols = TRUE,
+                       callback = NULL,
+                       comment = "#",
+                       na = c("", "NA", "[Discrepancy]"),
+                       ...) {
     # objects can be url, local files/directory or xena object from xena download process
-    stopifnot(is.character(objects) | is.data.frame(objects), is.logical(use_chunk))
+    stopifnot(is.character(objects) |
+                  is.data.frame(objects),
+              is.logical(use_chunk))
 
     subset_rows = substitute(subset_rows)
     select_cols = substitute(select_cols)
-#    subset_direction = match.arg(subset_direction)
+    #    subset_direction = match.arg(subset_direction)
 
     objects2 = objects
 
-    if(is.character(objects)){
-
-        if(length(objects) == 0) stop("Please check you input!")
+    if (is.character(objects)) {
+        if (length(objects) == 0)
+            stop("Please check you input!")
 
         # the input are directory?
-        if(all(dir.exists(objects)) & !all(file.exists(objects))){
-            if(length(objects) > 1){
+        if (all(dir.exists(objects)) & !all(file.exists(objects))) {
+            if (length(objects) > 1) {
                 stop("We do not accept multiple directories as input.")
-            }else{
+            } else{
                 files = paste0(objects, "/", dir(objects))
-                res = lapply(files, function(x){
+                res = lapply(files, function(x) {
                     if (use_chunk) {
                         if (is.null(callback)) {
-                            f = function(x, pos){
-                                subset(x, eval(subset_rows), select=eval(select_cols))
+                            f = function(x, pos) {
+                                subset(x,
+                                       eval(subset_rows),
+                                       select = eval(select_cols))
                             }
 
                         } else {
                             f = callback
                         }
 
-                        y = readr::read_tsv_chunked(x, readr::DataFrameCallback$new(f),
-                                                    chunk_size = chunk_size, comment = comment,
-                                                    na = na,
-                                                    col_types = readr::cols())
+                        y = readr::read_tsv_chunked(
+                            x,
+                            readr::DataFrameCallback$new(f),
+                            chunk_size = chunk_size,
+                            comment = comment,
+                            na = na,
+                            col_types = readr::cols()
+                        )
                     } else {
-                        y = readr::read_tsv(x, comment=comment, na=na, col_types = readr::cols(), ...)
+                        y = readr::read_tsv(
+                            x,
+                            comment = comment,
+                            na = na,
+                            col_types = readr::cols(),
+                            ...
+                        )
                     }
 
                     y
-            })
-            if(is.null(objectsName)){
+                })
+                if (is.null(objectsName)) {
                     objectsName = make.names(dir(objects))
                     names(res) = objectsName
-                    }
                 }
+            }
 
-        }else if(all(file.exists(objects))){
-            res = lapply(objects, function(x){
+        } else if (all(file.exists(objects))) {
+            res = lapply(objects, function(x) {
                 if (use_chunk) {
                     if (is.null(eval(callback))) {
-                        f = function(x, pos){
-                            subset(x, eval(subset_rows), select=eval(select_cols))
+                        f = function(x, pos) {
+                            subset(x,
+                                   eval(subset_rows),
+                                   select = eval(select_cols))
                         }
 
                     } else {
                         f = callback
                     }
 
-                    y = readr::read_tsv_chunked(x, readr::DataFrameCallback$new(f),
-                                                chunk_size = chunk_size, comment = comment,
-                                                na = na,
-                                                col_types = readr::cols())
+                    y = readr::read_tsv_chunked(
+                        x,
+                        readr::DataFrameCallback$new(f),
+                        chunk_size = chunk_size,
+                        comment = comment,
+                        na = na,
+                        col_types = readr::cols()
+                    )
                 } else {
-                    y = readr::read_tsv(x, comment=comment, na=na, col_types = readr::cols(), ...)
+                    y = readr::read_tsv(
+                        x,
+                        comment = comment,
+                        na = na,
+                        col_types = readr::cols(),
+                        ...
+                    )
                 }
 
                 y
             })
-            if(is.null(objectsName)){
+            if (is.null(objectsName)) {
                 objectsName = make.names(basename(objects))
                 names(res) = objectsName
             }
-            if (length(res) == 1){
+            if (length(res) == 1) {
                 res = res[[1]]
             }
         }
@@ -235,46 +302,70 @@ XenaPrepare = function(objects, objectsName=NULL,
             # check urls
             all_right = grepl(pattern = "http", x = objects)
 
-            if(any(all_right)){
+            if (any(all_right)) {
                 objects = objects[all_right]
-                if(length(objects) == 1){
+                if (length(objects) == 1) {
                     if (use_chunk) {
                         if (is.null(callback)) {
-                            f = function(x, pos){
-                                subset(x, eval(subset_rows), select=eval(select_cols))
+                            f = function(x, pos) {
+                                subset(x,
+                                       eval(subset_rows),
+                                       select = eval(select_cols))
                             }
 
                         } else {
                             f = callback
                         }
 
-                        res = readr::read_tsv_chunked(objects, readr::DataFrameCallback$new(f),
-                                                    chunk_size = chunk_size, comment = comment,
-                                                    na = na,
-                                                    col_types = readr::cols())
+                        res = readr::read_tsv_chunked(
+                            objects,
+                            readr::DataFrameCallback$new(f),
+                            chunk_size = chunk_size,
+                            comment = comment,
+                            na = na,
+                            col_types = readr::cols()
+                        )
                     } else {
-                        res = readr::read_tsv(objects, comment=comment, na=na, col_types = readr::cols(), ...)
+                        res = readr::read_tsv(
+                            objects,
+                            comment = comment,
+                            na = na,
+                            col_types = readr::cols(),
+                            ...
+                        )
                     }
 
                     #res = suppressMessages(read_tsv(objects, comment=comment, na=na, ...))
-                }else{
-                    res = lapply(objects, function(x){
+                } else{
+                    res = lapply(objects, function(x) {
                         if (use_chunk) {
                             if (is.null(callback)) {
-                                f = function(x, pos){
-                                    subset(x, eval(subset_rows), select=eval(select_cols))
+                                f = function(x, pos) {
+                                    subset(x,
+                                           eval(subset_rows),
+                                           select = eval(select_cols))
                                 }
 
                             } else {
                                 f = callback
                             }
 
-                            y = readr::read_tsv_chunked(x, readr::DataFrameCallback$new(f),
-                                                        chunk_size = chunk_size, comment = comment,
-                                                        na = na,
-                                                        col_types = readr::cols())
+                            y = readr::read_tsv_chunked(
+                                x,
+                                readr::DataFrameCallback$new(f),
+                                chunk_size = chunk_size,
+                                comment = comment,
+                                na = na,
+                                col_types = readr::cols()
+                            )
                         } else {
-                            y = readr::read_tsv(x, comment=comment, na=na, col_types = readr::cols(), ...)
+                            y = readr::read_tsv(
+                                x,
+                                comment = comment,
+                                na = na,
+                                col_types = readr::cols(),
+                                ...
+                            )
                         }
 
                         y
@@ -289,29 +380,39 @@ XenaPrepare = function(objects, objectsName=NULL,
                     #     i = i + 1
                     # }
 
-                    if(is.null(objectsName)){
+                    if (is.null(objectsName)) {
                         objectsName = make.names(basename(objects))
                         names(res) = objectsName
                     }
                 }
             }
             all_wrong = !all_right
-            if(any(all_wrong)){
+            if (any(all_wrong)) {
                 bad_urls = objects2[all_wrong]
                 message("Some inputs are wrong, maybe you should check:")
                 print(bad_urls)
             }
         }
-    }else{
-        if(!"destfiles" %in% colnames(objects)){
-            stop("Input data.frame should contain 'destfiles' column which generated by XenaDownload functions. Please check your input.")
+    } else{
+        if (!"destfiles" %in% colnames(objects)) {
+            stop(
+                "Input data.frame should contain 'destfiles' column which generated by XenaDownload functions. Please check your input."
+            )
         }
 
         files = objects$destfiles
-        res = XenaPrepare(files, objectsName = objectsName,
-                          use_chunk = use_chunk, chunk_size = chunk_size, subset_rows = subset_rows,
-                          select_cols = select_cols, callback = callback,
-                          comment = comment, na=na, ...)
+        res = XenaPrepare(
+            files,
+            objectsName = objectsName,
+            use_chunk = use_chunk,
+            chunk_size = chunk_size,
+            subset_rows = subset_rows,
+            select_cols = select_cols,
+            callback = callback,
+            comment = comment,
+            na = na,
+            ...
+        )
     }
 
     return(res)

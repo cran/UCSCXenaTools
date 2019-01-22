@@ -43,12 +43,10 @@ head(datasets(xe))
 ## ------------------------------------------------------------------------
 XenaFilter(xe2, filterDatasets = "LUAD|LUSC|LUNG") -> xe2
 
-## ------------------------------------------------------------------------
-suppressMessages(require(dplyr))
-
-xe %>% 
-    XenaFilter(filterDatasets = "clinical") %>% 
-    XenaFilter(filterDatasets = "luad|lusc|lung")
+## ---- eval=FALSE---------------------------------------------------------
+#  xe %>%
+#      XenaFilter(filterDatasets = "clinical") %>%
+#      XenaFilter(filterDatasets = "luad|lusc|lung")
 
 ## ------------------------------------------------------------------------
 xe2_query = XenaQuery(xe2)
@@ -81,9 +79,9 @@ tcga_data$Xena
 # only return datasets information
 tcga_data$DataInfo
 
-## ------------------------------------------------------------------------
-# only download clinical data
-getTCGAdata(c("UVM", "LUAD"), download = TRUE)
+## ---- eval=FALSE---------------------------------------------------------
+#  # only download clinical data
+#  getTCGAdata(c("UVM", "LUAD"), download = TRUE)
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  # download RNASeq data (use UVM as an example)
