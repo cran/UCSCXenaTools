@@ -8,8 +8,8 @@ knitr::opts_chunk$set(
 #  install.packages("UCSCXenaTools")
 
 ## ----gh-installation, eval = FALSE---------------------------------------
-#  # install.packages("devtools")
-#  devtools::install_github("ShixiangWang/UCSCXenaTools", build_vignettes = TRUE)
+#  # install.packages("remotes")
+#  remotes::install_github("ShixiangWang/UCSCXenaTools", build_vignettes = TRUE)
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  browseVignettes("UCSCXenaTools")
@@ -37,16 +37,51 @@ head(cohorts(xe))
 # get datasets
 head(datasets(xe))
 
+## ---- message=FALSE------------------------------------------------------
+library(dplyr)
+XenaData %>% 
+    filter(XenaHostNames == "TCGA", grepl("BRCA", XenaCohorts), grepl("Path", XenaDatasets)) %>%
+    XenaGenerate()
+
 ## ------------------------------------------------------------------------
 (XenaFilter(xe, filterDatasets = "clinical") -> xe2)
 
 ## ------------------------------------------------------------------------
 XenaFilter(xe2, filterDatasets = "LUAD|LUSC|LUNG") -> xe2
 
+## ------------------------------------------------------------------------
+xe %>% 
+    XenaFilter(filterDatasets = "clinical") %>% 
+    XenaFilter(filterDatasets = "luad|lusc|lung")
+
+## ------------------------------------------------------------------------
+XenaGenerate(subset = XenaHostNames=="TCGA") %>%
+    XenaFilter(filterDatasets = "clinical") %>%
+    XenaFilter(filterDatasets = "LUAD") -> to_browse
+
+to_browse
+
+XenaGenerate(subset = XenaHostNames=="TCGA") %>%
+    XenaFilter(filterDatasets = "clinical") %>%
+    XenaFilter(filterDatasets = "LUAD|LUSC") -> to_browse2
+
+to_browse2
+
+## ----eval=FALSE----------------------------------------------------------
+#  # This will open you web browser
+#  XenaBrowse(to_browse)
+#  
+#  XenaBrowse(to_browse, type = "cohort")
+
+## ---- error=TRUE---------------------------------------------------------
+# This will throw error
+XenaBrowse(to_browse2)
+
+XenaBrowse(to_browse2, type = "cohort")
+
 ## ---- eval=FALSE---------------------------------------------------------
-#  xe %>%
-#      XenaFilter(filterDatasets = "clinical") %>%
-#      XenaFilter(filterDatasets = "luad|lusc|lung")
+#  XenaBrowse(to_browse2, multiple = TRUE)
+#  XenaBrowse(to_browse2, type = "cohort", multiple = TRUE)
 
 ## ------------------------------------------------------------------------
 xe2_query = XenaQuery(xe2)
@@ -54,8 +89,6 @@ xe2_query
 
 ## ------------------------------------------------------------------------
 xe2_download = XenaDownload(xe2_query)
-## not run
-#xe2_download = XenaDownload(xe2_query, destdir = "E:/Github/XenaData/test/")
 
 ## ------------------------------------------------------------------------
 # way4: xenadownload object
