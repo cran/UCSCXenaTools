@@ -21,11 +21,22 @@ issues](https://img.shields.io/github/issues/ShixiangWang/UCSCXenaTools.svg)](ht
 issues](https://img.shields.io/github/issues-closed/ShixiangWang/UCSCXenaTools.svg)](https://github.com/ShixiangWang/UCSCXenaTools/issues?q=is%3Aissue+is%3Aclosed)
 <!-- badges: end -->
 
-**UCSCXenaTools** is a R package download and explore data from [**UCSC
-Xena data hubs**](https://xenabrowser.net/datapages/), which are a
-collection of UCSC-hosted public databases such as TCGA, ICGC, TARGET,
-GTEx, CCLE, and others. Databases are normalized so they can be
-combined, linked, filtered, explored and downloaded.
+**UCSCXenaTools** is an R package for downloading and exploring data
+from [**UCSC Xena data hubs**](https://xenabrowser.net/datapages/),
+which are a collection of UCSC-hosted public databases such as TCGA,
+ICGC, TARGET, GTEx, CCLE, and others. Databases are normalized so they
+can be combined, linked, filtered, explored and downloaded.
+
+## Table of Contents
+
+  - [Installation](#installation)
+  - [Data Hub List](#data-hub-list)
+  - [Usage](#usage)
+  - [Documentation](#documentation)
+  - [Citation](#citation)
+  - [Acknowledgement](#acknowledgement)
+  - [LICENSE](#license)
+  - [Code of conduct](#code-of-conduct)
 
 ## Installation
 
@@ -65,9 +76,9 @@ GitHub](https://github.com/ShixiangWang/UCSCXenaTools/issues).
 
 ## Usage
 
-Download UCSC Xena Datasets and load them into R by **UCSCXenaTools** is
-a workflow in `generate`, `filter`, `query`, `download` and `prepare` 5
-steps, which are implemented as `XenaGenerate`, `XenaFilter`,
+Download UCSC Xena datasets and load them into R by **UCSCXenaTools** is
+a workflow with `generate`, `filter`, `query`, `download` and `prepare`
+5 steps, which are implemented as `XenaGenerate`, `XenaFilter`,
 `XenaQuery`, `XenaDownload` and `XenaPrepare` functions, respectively.
 They are very clear and easy to use and combine with other packages like
 `dplyr`.
@@ -78,15 +89,15 @@ of LUNG, LUAD, LUSC from TCGA (hg19 version) data hub.
 ### XenaData data.frame
 
 **UCSCXenaTools** uses a `data.frame` object (built in package)
-`XenaData` to generate an instance of `XenaHub` class, which communicate
-with API of UCSC Xena Data Hubs.
+`XenaData` to generate an instance of `XenaHub` class, which
+communicates with API of UCSC Xena Data Hubs.
 
 You can load `XenaData` after loading `UCSCXenaTools` into R.
 
 ``` r
 library(UCSCXenaTools)
 #> =========================================================================
-#> UCSCXenaTools version 0.2.7
+#> UCSCXenaTools version 1.0.0
 #> Github page: https://github.com/ShixiangWang/UCSCXenaTools
 #> Documentation: https://github.com/ShixiangWang/UCSCXenaTools
 #> If you use it in published research, please cite:
@@ -151,11 +162,12 @@ Query and download.
 XenaQuery(df_todo) %>%
   XenaDownload() -> xe_download
 #> This will check url status, please be patient.
-#> We will download files to directory /var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T//RtmpbUjCYB.
+#> We will download files to directory /var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T//RtmpOTE23c.
 #> Downloading TCGA.LUAD.sampleMap__LUAD_clinicalMatrix.gz
 #> Downloading TCGA.LUNG.sampleMap__LUNG_clinicalMatrix.gz
 #> Downloading TCGA.LUSC.sampleMap__LUSC_clinicalMatrix.gz
-#> Note fileNames transfromed from datasets name and / chracter all changed to __ character.
+#> Note file names inherit from names in datasets column
+#>   and '/' all changed to '__'.
 ```
 
 Prepare data into R for analysis.
@@ -223,10 +235,12 @@ XenaBrowse(to_browse, type = "cohort")
 ``` r
 # This will throw error
 XenaBrowse(to_browse2)
-#> Error in XenaBrowse(to_browse2): 没有"XenaBrowse"这个函数
+#> Error in XenaBrowse(to_browse2): This function limite 1 dataset to browse.
+#>  Set multiple to TRUE if you want to browse multiple links.
 
 XenaBrowse(to_browse2, type = "cohort")
-#> Error in XenaBrowse(to_browse2, type = "cohort"): 没有"XenaBrowse"这个函数
+#> Error in XenaBrowse(to_browse2, type = "cohort"): This function limite 1 cohort to browse. 
+#>  Set multiple to TRUE if you want to browse multiple links.
 ```
 
 When you make sure you want to open multiple links, you can set
@@ -237,9 +251,15 @@ XenaBrowse(to_browse2, multiple = TRUE)
 XenaBrowse(to_browse2, type = "cohort", multiple = TRUE)
 ```
 
+## Documentation
+
+More features and usages please read [online documentation on
+CRAN](https://cran.r-project.org/web/packages/UCSCXenaTools/vignettes/USCSXenaTools.html)
+or [Github website](https://shixiangwang.github.io/UCSCXenaTools/).
+
 ## Citation
 
-*Wang, Shixiang, et al. “APOBEC3B and APOBEC mutational signature as
+*Wang, Shixiang, et al. “APOBEC3B and APOBEC mutational signature as
 potential predictive markers for immunotherapy response in non-small
 cell lung cancer.” Oncogene (2018).*
 

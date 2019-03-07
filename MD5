@@ -1,6 +1,6 @@
-a88aafff815d6ebc91758ab03177efb1 *DESCRIPTION
+1d089e95bb4f5b248dafac4e366eada3 *DESCRIPTION
 d2bb1a6fdb966a8497094f83d7c8a636 *NAMESPACE
-de90cc26c95d221ae5ccc8f3245a2718 *NEWS.md
+ec694b5317a0f954666912650f2befb4 *NEWS.md
 b20fb3c4cbbf8ecf09fbce7921e995ba *R/XenaHub-class.R
 40e89a2e84abb069466f879ba3be5a08 *R/data.R
 4fc08a104427af5bc3a335dc6674236e *R/download.R
@@ -8,13 +8,13 @@ b20fb3c4cbbf8ecf09fbce7921e995ba *R/XenaHub-class.R
 9b0f49c282cdbee5eedb7f80f7ee3e00 *R/shiny.R
 42d05b918e350e49f542e5d8fdf3e14c *R/simplify.R
 8d2487dbf45064f33b08e5a80830b68e *R/utils-pipe.R
-72af6f20be6a979c55f570c389a1cf37 *R/zzz.R
-b0920bad5c7fcff1c6409d838334af32 *README.md
+f702aaa62a6517c6646f10dcfb01edbc *R/zzz.R
+3801ace21046c428c646ec0eb401b918 *README.md
 d98f39c93cb84682544e950a412b88ff *build/vignette.rds
 50805d95876fb9c8cfb7a1a3cee9edea *data/XenaData.rda
 17beaf7f26b24e7b7cf55677682e767c *inst/doc/USCSXenaTools.R
-05887ffba5772f43469507ac354f495c *inst/doc/USCSXenaTools.Rmd
-0bcafdb1399e406c555e58415c6fc58f *inst/doc/USCSXenaTools.html
+01046204b23d1d32bc6d1a4959aad1f0 *inst/doc/USCSXenaTools.Rmd
+ee4d364309db771d799abb608b057c56 *inst/doc/USCSXenaTools.html
 a80ee292b84feaf0e54d9b65151fa1b4 *man/XenaBrowse.Rd
 acde6bf7a480870bf75129b01432bd81 *man/XenaData.Rd
 f61d51a703a1da654c4588edff27caa6 *man/XenaDataUpdate.Rd
@@ -39,4 +39,4 @@ f31863fe6cf04b7f79e5f777a5e224f3 *man/hosts.Rd
 9d7a2a3e405bbad8b64cc1ac728ebfb2 *man/xena_default_hosts.Rd
 5eeb8d365ff7b0be49181f088ef42f4c *tests/testthat.R
 a2098e5b25102b562ca2ba84032c41e5 *tests/testthat/test-basic-workflow.R
-05887ffba5772f43469507ac354f495c *vignettes/USCSXenaTools.Rmd
+01046204b23d1d32bc6d1a4959aad1f0 *vignettes/USCSXenaTools.Rmd
