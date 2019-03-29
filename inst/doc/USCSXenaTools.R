@@ -23,13 +23,16 @@ data(XenaData)
 head(XenaData)
 
 ## ------------------------------------------------------------------------
+UCSCXenaTools:::.xena_hosts
+
+## ------------------------------------------------------------------------
 XenaGenerate()
 
 ## ------------------------------------------------------------------------
-XenaGenerate(subset = XenaHostNames=="TCGA")
+XenaGenerate(subset = XenaHostNames=="tcgaHub")
 
 ## ------------------------------------------------------------------------
-xe = XenaGenerate(subset = XenaHostNames=="TCGA")
+xe = XenaGenerate(subset = XenaHostNames=="tcgaHub")
 # get hosts
 hosts(xe)
 # get cohorts
@@ -40,7 +43,7 @@ head(datasets(xe))
 ## ---- message=FALSE------------------------------------------------------
 library(dplyr)
 XenaData %>% 
-    filter(XenaHostNames == "TCGA", grepl("BRCA", XenaCohorts), grepl("Path", XenaDatasets)) %>%
+    filter(XenaHostNames == "tcgaHub", grepl("BRCA", XenaCohorts), grepl("Path", XenaDatasets)) %>%
     XenaGenerate()
 
 ## ------------------------------------------------------------------------
@@ -55,13 +58,13 @@ xe %>%
     XenaFilter(filterDatasets = "luad|lusc|lung")
 
 ## ------------------------------------------------------------------------
-XenaGenerate(subset = XenaHostNames=="TCGA") %>%
+XenaGenerate(subset = XenaHostNames=="tcgaHub") %>%
     XenaFilter(filterDatasets = "clinical") %>%
     XenaFilter(filterDatasets = "LUAD") -> to_browse
 
 to_browse
 
-XenaGenerate(subset = XenaHostNames=="TCGA") %>%
+XenaGenerate(subset = XenaHostNames=="tcgaHub") %>%
     XenaFilter(filterDatasets = "clinical") %>%
     XenaFilter(filterDatasets = "LUAD|LUSC") -> to_browse2
 
