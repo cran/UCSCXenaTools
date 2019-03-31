@@ -33,6 +33,7 @@ can be combined, linked, filtered, explored and downloaded.
   - [Data Hub List](#data-hub-list)
   - [Usage](#usage)
   - [Documentation](#documentation)
+  - [APIs](#apis)
   - [Citation](#citation)
   - [Acknowledgement](#acknowledgement)
   - [LICENSE](#license)
@@ -98,7 +99,7 @@ You can load `XenaData` after loading `UCSCXenaTools` into R.
 ``` r
 library(UCSCXenaTools)
 #> =========================================================================
-#> UCSCXenaTools version 1.0.1.9000
+#> UCSCXenaTools version 1.2.0
 #> Github page: https://github.com/ShixiangWang/UCSCXenaTools
 #> Documentation: https://shixiangwang.github.io/UCSCXenaTools/
 #> If you use it in published research, please cite:
@@ -110,27 +111,19 @@ library(UCSCXenaTools)
 data(XenaData)
 
 head(XenaData)
-#>                         XenaHosts XenaHostNames
-#> 1 https://ucscpublic.xenahubs.net     publicHub
-#> 2 https://ucscpublic.xenahubs.net     publicHub
-#> 3 https://ucscpublic.xenahubs.net     publicHub
-#> 4 https://ucscpublic.xenahubs.net     publicHub
-#> 5 https://ucscpublic.xenahubs.net     publicHub
-#> 6 https://ucscpublic.xenahubs.net     publicHub
-#>                                     XenaCohorts
-#> 1 Acute lymphoblastic leukemia (Mullighan 2008)
-#> 2 Acute lymphoblastic leukemia (Mullighan 2008)
-#> 3 Acute lymphoblastic leukemia (Mullighan 2008)
-#> 4                   Breast Cancer (Caldas 2007)
-#> 5                   Breast Cancer (Caldas 2007)
-#> 6                   Breast Cancer (Caldas 2007)
-#>                                               XenaDatasets
-#> 1    mullighan2008_public/mullighan2008_500K_genomicMatrix
-#> 2 mullighan2008_public/mullighan2008_public_clinicalMatrix
-#> 3    mullighan2008_public/mullighan2008_SNP6_genomicMatrix
-#> 4              Caldas2007/chinSF2007_public_clinicalMatrix
-#> 5             Caldas2007/chinSFGenomeBio2007_genomicMatrix
-#> 6                   Caldas2007/naderi2007Exp_genomicMatrix
+#> # A tibble: 6 x 17
+#>   XenaHosts XenaHostNames XenaCohorts XenaDatasets SampleCount DataSubtype
+#>   <chr>     <chr>         <chr>       <chr>        <chr>       <chr>      
+#> 1 https://… publicHub     Acute lymp… mullighan20… 30          copy number
+#> 2 https://… publicHub     Acute lymp… mullighan20… 159         phenotype  
+#> 3 https://… publicHub     Acute lymp… mullighan20… 129         copy number
+#> 4 https://… publicHub     Breast Can… Caldas2007/… 242         phenotype  
+#> 5 https://… publicHub     Breast Can… Caldas2007/… 220         copy number
+#> 6 https://… publicHub     Breast Can… Caldas2007/… 135         gene expre…
+#> # … with 11 more variables: Label <chr>, Type <chr>,
+#> #   AnatomicalOrigin <chr>, SampleType <chr>, Tags <chr>, ProbeMap <chr>,
+#> #   LongTitle <chr>, Citation <chr>, Version <chr>, Unit <chr>,
+#> #   Platform <chr>
 ```
 
 ### Workflow
@@ -163,7 +156,7 @@ Query and download.
 XenaQuery(df_todo) %>%
   XenaDownload() -> xe_download
 #> This will check url status, please be patient.
-#> All downloaded files will under directory /var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T//RtmpaaFXhQ.
+#> All downloaded files will under directory /tmp/RtmpbMp5UD.
 #> The 'trans_slash' option is FALSE, keep same directory structure as Xena.
 #> Creating directories for datasets...
 #> Downloading TCGA.LUAD.sampleMap/LUAD_clinicalMatrix.gz
@@ -257,11 +250,34 @@ More features and usages please read [online documentation on
 CRAN](https://cran.r-project.org/web/packages/UCSCXenaTools/vignettes/USCSXenaTools.html)
 or [Github website](https://shixiangwang.github.io/UCSCXenaTools/).
 
+## APIs
+
+API functions can be used to query specified data (e.g. expression of a
+few genes for a few samples) or information instead of downloading the
+entire dataset.
+
+If you want to use APIs provided by **UCSCXenaTools** to access Xena
+Hubs, please read [this
+vignette](https://shixiangwang.github.io/UCSCXenaTools/articles/xena-apis.html).
+
 ## Citation
 
 *Wang, Shixiang, et al. “APOBEC3B and APOBEC mutational signature as
 potential predictive markers for immunotherapy response in non-small
 cell lung cancer.” Oncogene (2018).*
+
+Or
+
+    @article{wang2018apobec3b,
+      title={APOBEC3B and APOBEC mutational signature as potential predictive markers for immunotherapy response in non-small cell lung cancer},
+      author={Wang, Shixiang and Jia, Mingming and He, Zaoke and Liu, Xue-Song},
+      journal={Oncogene},
+      volume={37},
+      number={29},
+      pages={3924},
+      year={2018},
+      publisher={Nature Publishing Group}
+    }
 
 ## Acknowledgement
 
@@ -272,7 +288,7 @@ thanks [Martin Morgan](https://github.com/mtmorgan) for his work.
 
 GPL-3
 
-please note, code from XenaR package under Apache 2.0 license.
+Please note, code from XenaR package under Apache 2.0 license.
 
 ## Code of conduct
 

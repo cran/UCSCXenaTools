@@ -1,5 +1,17 @@
 # UCSCXenaTools 
 
+## v1.2.0
+
+* reformat code files
+* update `XenaData` & `XenaDataUpdate()` function to obtain more info
+* add `jsonlite` as import package
+* add metadata for all datasets into package `inst` dir
+
+## v1.1.1
+
+* update doc for APIs 
+* modify description for package
+
 ## v1.1.0
 
 * this version will change many variable names or functions. Update and Read the [documentation](https://github.com/ShixiangWang/UCSCXenaTools) are highly recommended!
