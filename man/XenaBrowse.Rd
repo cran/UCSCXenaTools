@@ -2,7 +2,7 @@
 % Please edit documentation in R/workflow.R
 \name{XenaBrowse}
 \alias{XenaBrowse}
-\title{View One Dataset or Cohort Using Web browser}
+\title{View Info of Dataset or Cohort at UCSC Xena Website Using Web browser}
 \usage{
 XenaBrowse(x, type = c("dataset", "cohort"), multiple = FALSE)
 }
@@ -19,9 +19,8 @@ in user's default browser.
 }
 \examples{
 \donttest{
-XenaGenerate(subset = XenaHostNames=="tcgaHub") \%>\%
+XenaGenerate(subset = XenaHostNames == "tcgaHub") \%>\%
   XenaFilter(filterDatasets = "clinical") \%>\%
   XenaFilter(filterDatasets = "LUAD") -> to_browse
-
 }
 }
