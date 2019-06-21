@@ -1,6 +1,6 @@
 Package: UCSCXenaTools
 Title: Download and Explore Datasets from UCSC Xena Data Hubs
-Version: 1.2.2
+Version: 1.2.3
 Authors@R: c(person("Shixiang", "Wang", email = "w_shixiang@163.com", role = c("aut", "cre"), 
             comment = c(ORCID = "0000-0001-9855-7357")),
             person("Martin", "Morgan", role="aut"))
@@ -16,12 +16,12 @@ Imports: httr, readr, methods, utils, dplyr, magrittr, jsonlite,
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Suggests: knitr, rmarkdown, prettydoc, testthat, covr
+Suggests: knitr, rmarkdown, prettydoc, testthat (>= 2.1.0), covr
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1
 NeedsCompilation: no
-Packaged: 2019-06-06 06:51:33 UTC; wsx
+Packaged: 2019-06-21 05:57:01 UTC; wsx
 Author: Shixiang Wang [aut, cre] (<https://orcid.org/0000-0001-9855-7357>),
   Martin Morgan [aut]
 Repository: CRAN
-Date/Publication: 2019-06-06 08:12:18 UTC
+Date/Publication: 2019-06-21 08:30:03 UTC

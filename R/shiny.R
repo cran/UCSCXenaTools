@@ -4,10 +4,10 @@
 # library(DT)
 
 ##' @title Xena Shiny App
-##' @import shiny
-##' @import shinydashboard
+##' @importFrom shinydashboard dashboardPage dashboardBody dashboardHeader dashboardSidebar sidebarMenu menuItem tabItem tabItems
+##' @importFrom shiny fluidRow column selectInput updateSelectInput runApp shinyApp icon
 ##' @export
-XenaShiny <- function() {
+XenaShiny <- function() { # nocov start
   data <- showTCGA()
   projects <- unique(data$ProjectID)
   datatypes <- unique(data$DataType)
@@ -19,11 +19,6 @@ XenaShiny <- function() {
       menuItem(
         "TCGA DataTable",
         tabName = "tcga_datatable",
-        icon = icon("list")
-      ),
-      menuItem(
-        "Xena Information",
-        tabName = "xena_info",
         icon = icon("list")
       )
     )),
@@ -100,6 +95,4 @@ XenaShiny <- function() {
 
   # run Shiny
   runApp(shinyApp(ui, server))
-}
-
-# XenaShiny()
+} # nocov end
