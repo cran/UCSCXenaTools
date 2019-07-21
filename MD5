@@ -1,7 +1,8 @@
-5cdc1e1c19e59bea529de0d599134acc *DESCRIPTION
-224447db3d8d00d524b1ef510fe49a29 *NAMESPACE
-594626cd76468b21eb3c6d92e2973606 *NEWS.md
+6ff0c2f54fae3ab1b029853686daedd7 *DESCRIPTION
+94c76d2ce27aa3e150611f0e03c7dbec *NAMESPACE
+388d33d9e41b21b00a7cde36abad423d *NEWS.md
 8494b3c0d13e647b16e8d3b486e0c70e *R/XenaHub-class.R
+45966b19ec33fe5f6201d80d1f713c4a *R/XenaScan.R
 082c82ab93c9f1b7d6f2f1ef2b5d6d75 *R/api_higher.R
 03ffea6d3323996e286a872e3f6157bc *R/api_inner.R
 c02e8825063590052a842da3a3592104 *R/api_xq.R
@@ -20,7 +21,7 @@ f66b01631d8e7e3554b36dee9cbcfd09 *inst/api.RData
 c8dd161a8d2c2c73ba440edd6d0daa25 *inst/develop.R
 bbc07ec72cddb8d28f1c2a7ab322f031 *inst/doc/USCSXenaTools.R
 fbcda1b65e0a51d057dd0fcbb3203c81 *inst/doc/USCSXenaTools.Rmd
-041bbb52ddf57c2aeae9c0eed579d26b *inst/doc/USCSXenaTools.html
+2a1530cfc6ffb8039c8d79b8d4678e7b *inst/doc/USCSXenaTools.html
 d4986e55b4019552eb3df980f9b1ae1f *inst/queries/allCohorts.xq
 3ccea1db668c36c82e66225d774a4acc *inst/queries/allDatasets.xq
 250a662301faf4c984b0d457bb08dde4 *inst/queries/allDatasetsN.xq
@@ -71,6 +72,7 @@ f61d51a703a1da654c4588edff27caa6 *man/XenaDataUpdate.Rd
 5369c16e1762de28f41c67870ebfa05d *man/XenaPrepare.Rd
 603ae1edb149023639ce8e322b9c1fd9 *man/XenaQuery.Rd
 02036b1da807d152d62969e98a4ada7f *man/XenaQueryProbeMap.Rd
+5fff23ca47889e64c268dd2391b80759 *man/XenaScan.Rd
 e08596653988e448187467e4afff01c9 *man/XenaShiny.Rd
 de31b34243d6b29a44433158358ee5f0 *man/availTCGA.Rd
 f06d10ecbbda8c492684e9263bfa93bb *man/cohorts.Rd
@@ -86,13 +88,6 @@ f06d10ecbbda8c492684e9263bfa93bb *man/cohorts.Rd
 199748deb490a1d0f632c67a51e4df4d *man/to_snake.Rd
 e84bb0c14beda7bd638cafacb00c016b *man/xena_default_hosts.Rd
 5eeb8d365ff7b0be49181f088ef42f4c *tests/testthat.R
-313c50e3d23168dbaa9c08f21f097947 *tests/testthat/test-basic-workflow.R
-8ad0448e46ed06201376a1506a58c994 *tests/testthat/test-full-tests.R
+6fb1a0578b77e747a81f952cf1b05a20 *tests/testthat/test-basic-workflow.R
+a30cde9380604ead2a309d677bf21923 *tests/testthat/test-full-tests.R
 fbcda1b65e0a51d057dd0fcbb3203c81 *vignettes/USCSXenaTools.Rmd
-ce659615885f33d928eb7fe276574106 *vignettes/USCSXenaTools_files/fonts/open-sans-400.woff
-72862e7cf19603ad24f26baf86dd0e08 *vignettes/USCSXenaTools_files/fonts/open-sans-700.woff
-1fe82904fcc72bf9f0e01873fdd4ba5a *vignettes/USCSXenaTools_files/images/body-bg.jpg
-1b8c3e06a7a1ecc4846635bff602b216 *vignettes/USCSXenaTools_files/images/body-bg.png
-403f57c3699b69abfeb606b7f30e4cc8 *vignettes/USCSXenaTools_files/images/header-bg.jpg
-cd3c93365bf076da65377bcc21084a86 *vignettes/USCSXenaTools_files/images/highlight-bg.jpg
-f4897a49e9b067c2f59b1a9201dd2f65 *vignettes/USCSXenaTools_files/style.css
