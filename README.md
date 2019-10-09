@@ -59,7 +59,7 @@ Development
 
 <td align="left">
 
-<a href="https://cran.r-project.org/"><img src="https://img.shields.io/badge/R%3E%3D-3.0.0-blue.svg" alt="minimal R version"></a>
+<a href="https://cran.r-project.org/"><img src="https://img.shields.io/badge/R%3E%3D-3.5.0-blue.svg" alt="minimal R version"></a>
 
 </td>
 
@@ -126,8 +126,7 @@ issues](https://img.shields.io/github/issues-closed/ropensci/UCSCXenaTools.svg)]
 
 <td align="left">
 
-[![Say
-Thanks\!](https://img.shields.io/badge/say-thanks-ff69b4.svg)](https://saythanks.io/to/ShixiangWang)
+<a href="https://CRAN.R-project.org/package=UCSCXenaTools"><img src="http://cranlogs.r-pkg.org/badges/UCSCXenaTools" alt="month-downloads"></a>
 
 </td>
 
@@ -216,7 +215,7 @@ Currently, **UCSCXenaTools** supports 10 data hubs of UCSC Xena.
   - Treehouse Hub: <https://xena.treehouse.gi.ucsc.edu>
   - PCAWG Hub: <https://pcawg.xenahubs.net>
   - ATAC-seq Hub: <https://atacseq.xenahubs.net>
-  - Singel Cell Xena hub: <https://singlecell.xenahubs.net>
+  - Singel Cell Xena hub: <https://singlecellnew.xenahubs.net>
 
 If any url of data hub is changed or a new data hub is online, please
 remind me by emailing to <w_shixiang@163.com> or [opening an issue on
@@ -246,17 +245,17 @@ You can load `XenaData` after loading `UCSCXenaTools` into R.
 
 ``` r
 library(UCSCXenaTools)
-#> =========================================================================
-#> UCSCXenaTools version 1.2.5
+#> =========================================================================================
+#> UCSCXenaTools version 1.2.6
 #> Project URL: https://github.com/ropensci/UCSCXenaTools
-#> Usages: https://shixiangwang.github.io/home/en/tools/#ucscxenatools
+#> Usages: https://cran.r-project.org/web/packages/UCSCXenaTools/vignettes/USCSXenaTools.html
 #> 
 #> If you use it in published research, please cite:
-#> Wang, Shixiang, et al. "The predictive power of tumor mutational burden
-#>     in lung cancer immunotherapy response is influenced by patients' sex."
-#>     International journal of cancer (2019).
-#> =========================================================================
-#> 
+#> Wang et al., (2019). The UCSCXenaTools R package: a toolkit for accessing genomics data
+#>   from UCSC Xena platform, from cancer multi-omics to single-cell RNA-seq.
+#>   Journal of Open Source Software, 4(40), 1627, https://doi.org/10.21105/joss.01627
+#> =========================================================================================
+#>                               -- Enjoy it--
 data(XenaData)
 
 head(XenaData)
@@ -305,7 +304,7 @@ Query and download.
 XenaQuery(df_todo) %>%
   XenaDownload() -> xe_download
 #> This will check url status, please be patient.
-#> All downloaded files will under directory /var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T//Rtmpcjbwj3.
+#> All downloaded files will under directory /var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T//RtmpehJIAP.
 #> The 'trans_slash' option is FALSE, keep same directory structure as Xena.
 #> Creating directories for datasets...
 #> Downloading TCGA.LUAD.sampleMap/LUAD_clinicalMatrix.gz

@@ -13,7 +13,7 @@
 
 <meta name="author" content="Shixiang Wang ShanghaiTech. University" />
 
-<meta name="date" content="2019-09-06" />
+<meta name="date" content="2019-10-09" />
 
 <title>UCSCXenaTools: an R package for Accessing Genomics Data from UCSC Xena platform, from Cancer Multi-omics to Single-cell RNA-seq</title>
 
@@ -135,7 +135,7 @@ code span.ot { color: #007020; }
 <h1 class="title toc-ignore project-name">UCSCXenaTools: an R package for Accessing Genomics Data from UCSC Xena platform, from Cancer Multi-omics to Single-cell RNA-seq</h1>
 <h4 class="author project-author">Shixiang Wang<br />
 ShanghaiTech. University</h4>
-<h4 class="date project-date">2019-09-06</h4>
+<h4 class="date project-date">2019-10-09</h4>
 </section>
 
 
@@ -149,6 +149,9 @@ ShanghaiTech. University</h4>
 <li><a href="#browse-datasets">Browse datasets</a></li>
 </ul></li>
 <li><a href="#more-usages">More usages</a></li>
+<li><a href="#qa">QA</a><ul>
+<li><a href="#how-to-resume-file-from-breakpoint">How to resume file from breakpoint</a></li>
+</ul></li>
 <li><a href="#citation">Citation</a></li>
 <li><a href="#acknowledgments">Acknowledgments</a></li>
 </ul>
@@ -200,7 +203,7 @@ ShanghaiTech. University</h4>
 <p>You can load <code>XenaData</code> after loading <code>UCSCXenaTools</code> into R.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">library</span>(UCSCXenaTools)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; =========================================================================================</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; UCSCXenaTools version 1.2.6</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; UCSCXenaTools version 1.2.7</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; Project URL: https://github.com/ropensci/UCSCXenaTools</span></a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; Usages: https://cran.r-project.org/web/packages/UCSCXenaTools/vignettes/USCSXenaTools.html</span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; </span></a>
@@ -209,19 +212,19 @@ ShanghaiTech. University</h4>
 <a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;   from UCSC Xena platform, from cancer multi-omics to single-cell RNA-seq.</span></a>
 <a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;   Journal of Open Source Software, 4(40), 1627, https://doi.org/10.21105/joss.01627</span></a>
 <a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; =========================================================================================</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt;                               -- Enjoy it--</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt;                               --Enjoy it--</span></a>
 <a class="sourceLine" id="cb4-13" data-line-number="13"><span class="kw">data</span>(XenaData)</a>
 <a class="sourceLine" id="cb4-14" data-line-number="14"></a>
 <a class="sourceLine" id="cb4-15" data-line-number="15"><span class="kw">head</span>(XenaData)</a>
 <a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; # A tibble: 6 x 17</span></a>
 <a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt;   XenaHosts XenaHostNames XenaCohorts XenaDatasets SampleCount DataSubtype</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;         &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt;       &lt;chr&gt;      </span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; 1 https://… publicHub     Acute lymp… mullighan20… 30          copy number</span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; 2 https://… publicHub     Acute lymp… mullighan20… 159         phenotype  </span></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; 3 https://… publicHub     Acute lymp… mullighan20… 129         copy number</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt; 4 https://… publicHub     Breast Can… Caldas2007/… 242         phenotype  </span></a>
-<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt; 5 https://… publicHub     Breast Can… Caldas2007/… 220         copy number</span></a>
-<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt; 6 https://… publicHub     Breast Can… Caldas2007/… 135         gene expre…</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;         &lt;chr&gt;       &lt;chr&gt;              &lt;int&gt; &lt;chr&gt;      </span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; 1 https://… publicHub     Breast Can… ucsfNeve_pu…          51 gene expre…</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; 2 https://… publicHub     Breast Can… ucsfNeve_pu…          57 phenotype  </span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; 3 https://… publicHub     Glioma (Ko… kotliarov20…         194 copy number</span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt; 4 https://… publicHub     Glioma (Ko… kotliarov20…         194 phenotype  </span></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt; 5 https://… publicHub     Lung Cance… weir2007_pu…         383 copy number</span></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt; 6 https://… publicHub     Lung Cance… weir2007_pu…         383 phenotype  </span></a>
 <a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co">#&gt; # … with 11 more variables: Label &lt;chr&gt;, Type &lt;chr&gt;,</span></a>
 <a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co">#&gt; #   AnatomicalOrigin &lt;chr&gt;, SampleType &lt;chr&gt;, Tags &lt;chr&gt;, ProbeMap &lt;chr&gt;,</span></a>
 <a class="sourceLine" id="cb4-27" data-line-number="27"><span class="co">#&gt; #   LongTitle &lt;chr&gt;, Citation &lt;chr&gt;, Version &lt;chr&gt;, Unit &lt;chr&gt;,</span></a>
@@ -240,12 +243,12 @@ ShanghaiTech. University</h4>
 <a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; hosts():</span></a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt;   https://tcga.xenahubs.net</span></a>
 <a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; cohorts() (3 total):</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt;   TCGA Lung Adenocarcinoma (LUAD)</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt;   TCGA Lung Cancer (LUNG)</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt;   TCGA Lung Cancer (LUNG)</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt;   TCGA Lung Adenocarcinoma (LUAD)</span></a>
 <a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt;   TCGA Lung Squamous Cell Carcinoma (LUSC)</span></a>
 <a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt; datasets() (3 total):</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt;   TCGA.LUAD.sampleMap/LUAD_clinicalMatrix</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt;   TCGA.LUNG.sampleMap/LUNG_clinicalMatrix</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt;   TCGA.LUNG.sampleMap/LUNG_clinicalMatrix</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt;   TCGA.LUAD.sampleMap/LUAD_clinicalMatrix</span></a>
 <a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt;   TCGA.LUSC.sampleMap/LUSC_clinicalMatrix</span></a></code></pre></div>
 <p>Sometimes we only know some keywords, <code>XenaScan()</code> can be used to scan all rows to detect if the keywords exist in <code>XenaData</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">x1 =<span class="st"> </span><span class="kw">XenaScan</span>(<span class="dt">pattern =</span> <span class="st">'Blood'</span>)</a>
@@ -258,19 +261,19 @@ ShanghaiTech. University</h4>
 <a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt;   https://ucscpublic.xenahubs.net</span></a>
 <a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt;   https://tcga.xenahubs.net</span></a>
 <a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; cohorts() (6 total):</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt;   Acute lymphoblastic leukemia (Mullighan 2008)</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt;   Connectivity Map</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt;   Connectivity Map</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt;   TARGET Acute Lymphoblastic Leukemia</span></a>
 <a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt;   Pediatric tumor (Khan)</span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt;   TARGET Acute Lymphoblastic Leukemia</span></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt;   TCGA Acute Myeloid Leukemia (LAML)</span></a>
-<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt;   TCGA Pan-Cancer (PANCAN)</span></a>
+<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt;   Acute lymphoblastic leukemia (Mullighan 2008)</span></a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt;   TCGA Pan-Cancer (PANCAN)</span></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt;   TCGA Acute Myeloid Leukemia (LAML)</span></a>
 <a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; datasets() (34 total):</span></a>
-<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt;   mullighan2008_public/mullighan2008_500K_genomicMatrix</span></a>
-<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt;   mullighan2008_public/mullighan2008_SNP6_genomicMatrix</span></a>
-<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt;   cmap/rankMatrix_reverse</span></a>
+<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt;   cmap/rankMatrix_reverse</span></a>
+<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt;   TARGET_ALL/TARGETcnv_genomicMatrix</span></a>
+<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt;   TARGET_ALL/TARGETexp_genomicMatrix</span></a>
 <a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">#&gt;   ...</span></a>
-<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt;   TCGA.PANCAN.sampleMap/SNP6_genomicSegment</span></a>
-<a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt;   TCGA.PANCAN.sampleMap/HiSeqV2_exon</span></a>
+<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt;   TCGA.LAML.sampleMap/mutation_wustl</span></a>
+<a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt;   TCGA.LAML.sampleMap/Pathway_Paradigm_RNASeq_And_Copy_Number</span></a>
 <a class="sourceLine" id="cb6-24" data-line-number="24">x2 <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-25" data-line-number="25"><span class="st">    </span><span class="kw">XenaGenerate</span>()</a>
 <a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co">#&gt; class: XenaHub </span></a>
@@ -289,18 +292,18 @@ ShanghaiTech. University</h4>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">XenaQuery</span>(df_todo) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw">XenaDownload</span>() -&gt;<span class="st"> </span>xe_download</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; This will check url status, please be patient.</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; All downloaded files will under directory /var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T//RtmpRNUKkN.</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; All downloaded files will under directory /var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T//RtmpNjqKIQ.</span></a>
 <a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; The 'trans_slash' option is FALSE, keep same directory structure as Xena.</span></a>
 <a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; Creating directories for datasets...</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; Downloading TCGA.LUAD.sampleMap/LUAD_clinicalMatrix.gz</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; Downloading TCGA.LUNG.sampleMap/LUNG_clinicalMatrix.gz</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; Downloading TCGA.LUNG.sampleMap/LUNG_clinicalMatrix.gz</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; Downloading TCGA.LUAD.sampleMap/LUAD_clinicalMatrix.gz</span></a>
 <a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; Downloading TCGA.LUSC.sampleMap/LUSC_clinicalMatrix.gz</span></a></code></pre></div>
 <p>Prepare data into R for analysis.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">cli =<span class="st"> </span><span class="kw">XenaPrepare</span>(xe_download)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">class</span>(cli)</a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; [1] &quot;list&quot;</span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="kw">names</span>(cli)</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; [1] &quot;LUAD_clinicalMatrix.gz&quot; &quot;LUNG_clinicalMatrix.gz&quot;</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; [1] &quot;LUNG_clinicalMatrix.gz&quot; &quot;LUAD_clinicalMatrix.gz&quot;</span></a>
 <a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; [3] &quot;LUSC_clinicalMatrix.gz&quot;</span></a></code></pre></div>
 </div>
 <div id="browse-datasets" class="section level3">
@@ -363,6 +366,25 @@ ShanghaiTech. University</h4>
 <li><a href="https://shixiangwang.github.io/home/en/tools/ucscxenatools-api/">APIs of UCSCXenaTools</a> - <a href="https://shixiangwang.github.io/home/en/tools/ucscxenatools-api.pdf">PDF</a></li>
 </ul>
 <p>A use case for survival analysis has been published on rOpenSci, please read <a href="https://ropensci.org/technotes/2019/09/06/ucscxenatools-surv/">UCSCXenaTools: Retrieve Gene Expression and Clinical Information from UCSC Xena for Survival Analysis</a>.</p>
+</div>
+<div id="qa" class="section level2">
+<h2>QA</h2>
+<div id="how-to-resume-file-from-breakpoint" class="section level3">
+<h3>How to resume file from breakpoint</h3>
+<p>Thanks to the UCSC Xena team, the new feature ‘resume from breakpoint’ is added and can be done by <strong>XenaDownload()</strong> with the <code>method</code> and <code>extra</code> flags specified.</p>
+<p>Of note, the corresponding <code>wget</code> or <code>curl</code> command must be installed by your OS and can be found by R.</p>
+<p>The folliwng code gives a test example, the data can be viewed on <a href="https://xenabrowser.net/datapages/?dataset=TcgaTargetGtex_expected_count&amp;host=https%3A%2F%2Ftoil.xenahubs.net&amp;removeHub=https%3A%2F%2Fxena.treehouse.gi.ucsc.edu%3A443">web page</a>.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">library</span>(UCSCXenaTools)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">xe =<span class="st"> </span><span class="kw">XenaGenerate</span>(<span class="dt">subset =</span> XenaDatasets <span class="op">==</span><span class="st"> &quot;TcgaTargetGtex_expected_count&quot;</span>)</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">xe</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">xq =<span class="st"> </span><span class="kw">XenaQuery</span>(xe)</a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co"># You cannot resume from breakpoint in default mode</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="kw">XenaDownload</span>(xq, <span class="dt">destdir =</span> <span class="st">&quot;~/test/&quot;</span>, <span class="dt">force =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co"># You can do it with 'curl' command</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="kw">XenaDownload</span>(xq, <span class="dt">destdir =</span> <span class="st">&quot;~/test/&quot;</span>, <span class="dt">method =</span> <span class="st">&quot;curl&quot;</span>, <span class="dt">extra =</span> <span class="st">&quot;-C -&quot;</span>, <span class="dt">force =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co"># You can do it with 'wget' command</span></a>
+<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="kw">XenaDownload</span>(xq, <span class="dt">destdir =</span> <span class="st">&quot;~/test/&quot;</span>, <span class="dt">method =</span> <span class="st">&quot;wget&quot;</span>, <span class="dt">extra =</span> <span class="st">&quot;-c&quot;</span>, <span class="dt">force =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+</div>
 </div>
 <div id="citation" class="section level2">
 <h2>Citation</h2>
