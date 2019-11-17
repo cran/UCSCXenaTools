@@ -1,26 +1,26 @@
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  install.packages("UCSCXenaTools")
 
-## ----gh-installation, eval = FALSE---------------------------------------
+## ----gh-installation, eval = FALSE--------------------------------------------
 #  # install.packages("remotes")
 #  remotes::install_github("ropensci/UCSCXenaTools")
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  remotes::install_github("ropensci/UCSCXenaTools", build_vignettes = TRUE, dependencies = TRUE)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(UCSCXenaTools)
 data(XenaData)
 
 head(XenaData)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # The options in XenaFilter function support Regular Expression
 XenaGenerate(subset = XenaHostNames=="tcgaHub") %>% 
   XenaFilter(filterDatasets = "clinical") %>% 
@@ -28,7 +28,7 @@ XenaGenerate(subset = XenaHostNames=="tcgaHub") %>%
 
 df_todo
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 x1 = XenaScan(pattern = 'Blood')
 x2 = XenaScan(pattern = 'LUNG', ignore.case = FALSE)
 
@@ -37,16 +37,16 @@ x1 %>%
 x2 %>%
     XenaGenerate()
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 XenaQuery(df_todo) %>%
   XenaDownload() -> xe_download
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 cli = XenaPrepare(xe_download)
 class(cli)
 names(cli)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 XenaGenerate(subset = XenaHostNames=="tcgaHub") %>%
     XenaFilter(filterDatasets = "clinical") %>%
     XenaFilter(filterDatasets = "LUAD") -> to_browse
@@ -59,19 +59,19 @@ XenaGenerate(subset = XenaHostNames=="tcgaHub") %>%
 
 to_browse2
 
-## ----eval=FALSE----------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  # This will open you web browser
 #  XenaBrowse(to_browse)
 #  
 #  XenaBrowse(to_browse, type = "cohort")
 
-## ---- error=TRUE---------------------------------------------------------
+## ---- error=TRUE--------------------------------------------------------------
 # This will throw error
 XenaBrowse(to_browse2)
 
 XenaBrowse(to_browse2, type = "cohort")
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  XenaBrowse(to_browse2, multiple = TRUE)
 #  XenaBrowse(to_browse2, type = "cohort", multiple = TRUE)
 

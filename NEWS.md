@@ -1,3 +1,10 @@
+# v1.2.8
+
+## Bug fixes
+
+* #14 fixed
+* #15 fixed
+
 # v1.2.7
 
 ## Changes

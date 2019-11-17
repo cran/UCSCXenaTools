@@ -1,6 +1,6 @@
 Package: UCSCXenaTools
 Title: Download and Explore Datasets from UCSC Xena Data Hubs
-Version: 1.2.7
+Version: 1.2.8
 Authors@R: c(person("Shixiang", "Wang", email = "w_shixiang@163.com", role = c("aut", "cre"), 
             comment = c(ORCID = "0000-0001-9855-7357")),
             person("Xue-Song", "Liu", role = "aut", comment = c(ORCID = "0000-0002-7736-0077")),
@@ -21,9 +21,9 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.0
 NeedsCompilation: no
-Packaged: 2019-10-09 01:57:07 UTC; wsx
+Packaged: 2019-11-17 17:12:31 UTC; Shixiang
 Author: Shixiang Wang [aut, cre] (<https://orcid.org/0000-0001-9855-7357>),
   Xue-Song Liu [aut] (<https://orcid.org/0000-0002-7736-0077>),
   Martin Morgan [ctb],
@@ -32,4 +32,4 @@ Author: Shixiang Wang [aut, cre] (<https://orcid.org/0000-0001-9855-7357>),
   Carl Ganz [rev] (Carl reviewed the package for ropensci, see
     <https://github.com/ropensci/software-review/issues/315>)
 Repository: CRAN
-Date/Publication: 2019-10-09 04:30:05 UTC
+Date/Publication: 2019-11-17 17:40:02 UTC
