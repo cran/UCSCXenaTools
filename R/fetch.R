@@ -28,6 +28,7 @@
 #' @param use_probeMap if `TRUE`, will check if the dataset has ProbeMap firstly.
 #' When the dataset you want to query has a identifier-to-gene mapping, identifiers can be
 #' gene symbols even the identifiers of dataset are probes or others.
+#' @param time_limit time limit for getting response in seconds.
 #' @return a `matirx` or character vector.
 #' @examples
 #' library(UCSCXenaTools)
@@ -38,16 +39,16 @@
 #' probes <- c("ENSG00000282740.1", "ENSG00000000005.5", "ENSG00000000419.12")
 #' genes <- c("TP53", "RB1", "PIK3CA")
 #'
+#' \donttest{
 #' # Fetch samples
 #' fetch_dataset_samples(host, dataset, 2)
 #' # Fetch identifiers
-#' \donttest{
 #' fetch_dataset_identifiers(host, dataset)
-#' }
 #' # Fetch expression value by probes
 #' fetch_dense_values(host, dataset, probes, samples, check = FALSE)
 #' # Fetch expression value by gene symbol (if the dataset has probeMap)
 #' fetch_dense_values(host, dataset, genes, samples, check = FALSE, use_probeMap = TRUE)
+#' }
 #' @export
 fetch <- function(host, dataset) {
   message("This function is used to build consistent documentation.")
@@ -56,7 +57,8 @@ fetch <- function(host, dataset) {
 
 #' @describeIn fetch fetches values from a dense matrix.
 #' @export
-fetch_dense_values <- function(host, dataset, identifiers = NULL, samples = NULL, check = TRUE, use_probeMap = FALSE) {
+fetch_dense_values <- function(host, dataset, identifiers = NULL, samples = NULL,
+                               check = TRUE, use_probeMap = FALSE, time_limit = 30) {
   stopifnot(
     length(host) == 1, length(dataset) == 1,
     is.character(host), is.character(dataset),
@@ -78,9 +80,12 @@ fetch_dense_values <- function(host, dataset, identifiers = NULL, samples = NULL
       if (!is.character(identifiers)) stop("Bad type for identifiers.")
       if (!all(identifiers %in% all_identifiers)) {
         which_in <- identifiers %in% all_identifiers
-        message("The following identifiers have been removed fro host ", host, " dataset ", dataset)
+        message("The following identifiers have been removed from host ", host, " dataset ", dataset)
         print(identifiers[!which_in])
         identifiers <- identifiers[which_in]
+        if (length(identifiers) == 0) {
+          stop("Bad identifiers, no one left, check input?")
+        }
       }
     }
     message("-> Done.")
@@ -92,9 +97,12 @@ fetch_dense_values <- function(host, dataset, identifiers = NULL, samples = NULL
       if (!is.character(samples)) stop("Bad type for samples.")
       if (!all(samples %in% all_samples)) {
         which_in <- samples %in% all_samples
-        message("The following samples have been removed fro host ", host, " dataset ", dataset)
+        message("The following samples have been removed from host ", host, " dataset ", dataset)
         print(samples[!which_in])
         samples <- samples[which_in]
+        if (length(samples) == 0) {
+          stop("Bad samples, no one left, check input?")
+        }
       }
     }
     message("-> Done.")
@@ -121,7 +129,32 @@ fetch_dense_values <- function(host, dataset, identifiers = NULL, samples = NULL
     message("-> Checking if the dataset has probeMap...")
     if (has_probeMap(host, dataset)) {
       message("-> Done. ProbeMap is found.")
-      res <- .p_dataset_gene_probe_avg(host, dataset, samples, identifiers)
+
+      t_start = Sys.time()
+      while (as.numeric(Sys.time() - t_start) < time_limit) {
+        res <- tryCatch(
+          {
+            .p_dataset_gene_probe_avg(host, dataset, samples, identifiers)
+          },
+          error = function(e) {
+            message("-> Query faild. Retrying...")
+            list(has_error = TRUE, error_info = e)
+          }
+        )
+        if (is.data.frame(res)) {
+          break()
+        }
+        Sys.sleep(1)
+      }
+
+      if (!is.data.frame(res)) {
+        stop(paste(
+          "The response times out and still returns an error",
+          res$error_info$message,
+          sep = "\n"
+        ))
+      }
+
       res <- t(sapply(res[["scores"]], base::rbind))
       rownames(res) <- identifiers
       colnames(res) <- samples
@@ -130,7 +163,31 @@ fetch_dense_values <- function(host, dataset, identifiers = NULL, samples = NULL
     message("-> Done. No probeMap found, use old way...")
   }
 
-  res <- .p_dataset_fetch(host, dataset, samples, identifiers)
+  t_start = Sys.time()
+  while (as.numeric(Sys.time() - t_start) < time_limit) {
+    res <- tryCatch(
+      {
+        .p_dataset_fetch(host, dataset, samples, identifiers)
+      },
+      error = function(e) {
+        message("-> Query faild. Retrying...")
+        list(has_error = TRUE, error_info = e)
+      }
+    )
+    if (is.atomic(res)) {
+      break()
+    }
+    Sys.sleep(1)
+  }
+
+  if (!is.atomic(res)) {
+    stop(paste(
+      "The response times out and still returns an error",
+      res$error_info$message,
+      sep = "\n"
+    ))
+  }
+
   rownames(res) <- identifiers
   colnames(res) <- samples
   res

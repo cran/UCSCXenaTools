@@ -16,7 +16,8 @@ fetch_dense_values(
   identifiers = NULL,
   samples = NULL,
   check = TRUE,
-  use_probeMap = FALSE
+  use_probeMap = FALSE,
+  time_limit = 30
 )
 
 fetch_dataset_samples(host, dataset, limit = NULL)
@@ -46,6 +47,8 @@ the whole datasets if you query many samples and genes.}
 \item{use_probeMap}{if \code{TRUE}, will check if the dataset has ProbeMap firstly.
 When the dataset you want to query has a identifier-to-gene mapping, identifiers can be
 gene symbols even the identifiers of dataset are probes or others.}
+
+\item{time_limit}{time limit for getting response in seconds.}
 
 \item{limit}{number of samples, if \code{NULL}, return all samples.}
 }
@@ -87,14 +90,14 @@ samples <- c("TCGA-02-0047-01", "TCGA-02-0055-01", "TCGA-02-2483-01", "TCGA-02-2
 probes <- c("ENSG00000282740.1", "ENSG00000000005.5", "ENSG00000000419.12")
 genes <- c("TP53", "RB1", "PIK3CA")
 
+\donttest{
 # Fetch samples
 fetch_dataset_samples(host, dataset, 2)
 # Fetch identifiers
-\donttest{
 fetch_dataset_identifiers(host, dataset)
-}
 # Fetch expression value by probes
 fetch_dense_values(host, dataset, probes, samples, check = FALSE)
 # Fetch expression value by gene symbol (if the dataset has probeMap)
 fetch_dense_values(host, dataset, genes, samples, check = FALSE, use_probeMap = TRUE)
+}
 }
