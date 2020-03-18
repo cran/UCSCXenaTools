@@ -1,14 +1,14 @@
-6531f5ee88a7b6ee577822a35c537a88 *DESCRIPTION
+1f86b6e5c2c2863d4bd02135700022a4 *DESCRIPTION
 5dfd070be868e6b3256d834422eddeb6 *NAMESPACE
-cf3e4af5bf744b39faa7fc9d4dee8d85 *NEWS.md
+67b524079350b11e57afb11c7839efad *NEWS.md
 629134f9ea6df44859ce5ae903085e6e *R/XenaBrowse.R
-14b7955084ad8c2e32495799f5b20015 *R/XenaDownload.R
+9e3fb8ca8a875560fd339fabdb9dd404 *R/XenaDownload.R
 e6235f3cacade5c18dcda098c66ef7bc *R/XenaFilter.R
 13bae504441a5cd80337164d605353d1 *R/XenaGenerate.R
 6bf39b82fa47949e014664080175df5d *R/XenaHub-class.R
 bef85c90d800143b0eac952ef4bb85ad *R/XenaPrepare.R
-be969b7ec771ff61c200ec0d13893c90 *R/XenaQuery.R
-7fcc25656486fb92c7834e0cb7303c16 *R/XenaQueryProbeMap.R
+99828437ebd51ac04e57959b45a63b71 *R/XenaQuery.R
+466d0a0035742c756bd0bbf6cca39bd2 *R/XenaQueryProbeMap.R
 ff909595b230b815a153144868a08be5 *R/XenaScan.R
 11e4467393d3bb92c1b680e101581aed *R/api_higher.R
 138a3140477fa18ddbc4c41768bb1d5b *R/api_inner.R
@@ -27,8 +27,8 @@ f66b01631d8e7e3554b36dee9cbcfd09 *inst/api.RData
 9fdbc9bec99a5efad82ed96a3e7ebb67 *inst/dataset_metadata.RData
 c8dd161a8d2c2c73ba440edd6d0daa25 *inst/develop.R
 8dacf166be5214ce32232fa1e54a2017 *inst/doc/USCSXenaTools.R
-6056018dc3e83919a25ea57e9d3a4bb2 *inst/doc/USCSXenaTools.Rmd
-9724998bbb8080bdefabf3830f77a13e *inst/doc/USCSXenaTools.html
+8979f653bd56167d334e353cbb023240 *inst/doc/USCSXenaTools.Rmd
+f0e445a874d8f208f18f72a1c4bc095b *inst/doc/USCSXenaTools.html
 d4986e55b4019552eb3df980f9b1ae1f *inst/queries/allCohorts.xq
 3ccea1db668c36c82e66225d774a4acc *inst/queries/allDatasets.xq
 250a662301faf4c984b0d457bb08dde4 *inst/queries/allDatasetsN.xq
@@ -71,7 +71,7 @@ cae9af4256a8d36581366a77866b7580 *inst/test_api.R
 89eacb4a23b42f0dd19c0aeae49189e7 *man/XenaBrowse.Rd
 c8fc47d87991aed2cb94c9114901fa44 *man/XenaData.Rd
 e42a854f3f1d47f33e3d90df5604ed90 *man/XenaDataUpdate.Rd
-a48f7533a13bda149aab0ee89a8215ce *man/XenaDownload.Rd
+85eb3895bad711c07675448ef2e63084 *man/XenaDownload.Rd
 8221e228a4e3b8addadc9753dbb87199 *man/XenaFilter.Rd
 eb0de9a9ec43068513f45a38924d6c55 *man/XenaGenerate.Rd
 81b183a0ffa104b89b28c0cce4c007b2 *man/XenaHub-class.Rd
@@ -97,4 +97,4 @@ e84bb0c14beda7bd638cafacb00c016b *man/xena_default_hosts.Rd
 5eeb8d365ff7b0be49181f088ef42f4c *tests/testthat.R
 76e44342ac64207d67a40cd13067e331 *tests/testthat/test-basic-workflow.R
 4cb9a32e0f3883fc83bef213b79c529b *tests/testthat/test-full-tests.R
-6056018dc3e83919a25ea57e9d3a4bb2 *vignettes/USCSXenaTools.Rmd
+8979f653bd56167d334e353cbb023240 *vignettes/USCSXenaTools.Rmd
