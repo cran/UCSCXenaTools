@@ -3,6 +3,7 @@
 \name{fetch}
 \alias{fetch}
 \alias{fetch_dense_values}
+\alias{fetch_sparse_values}
 \alias{fetch_dataset_samples}
 \alias{fetch_dataset_identifiers}
 \alias{has_probeMap}
@@ -19,6 +20,8 @@ fetch_dense_values(
   use_probeMap = FALSE,
   time_limit = 30
 )
+
+fetch_sparse_values(host, dataset, genes, samples = NULL, time_limit = 30)
 
 fetch_dataset_samples(host, dataset, limit = NULL)
 
@@ -50,10 +53,12 @@ gene symbols even the identifiers of dataset are probes or others.}
 
 \item{time_limit}{time limit for getting response in seconds.}
 
+\item{genes}{gene names.}
+
 \item{limit}{number of samples, if \code{NULL}, return all samples.}
 }
 \value{
-a \code{matirx} or character vector.
+a \code{matirx} or character vector or a \code{list}.
 }
 \description{
 When you want to query just data for several genes/samples from UCSC Xena datasets, a better way
@@ -73,6 +78,8 @@ used to map a gene location to a set of probes.
 \section{Functions}{
 \itemize{
 \item \code{fetch_dense_values}: fetches values from a dense matrix.
+
+\item \code{fetch_sparse_values}: fetches values from a sparse \code{data.frame}.
 
 \item \code{fetch_dataset_samples}: fetches samples from a dataset
 

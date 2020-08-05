@@ -1,3 +1,9 @@
+# UCSCXenaTools 1.3.3
+
+* Added `fetch_sparse_values()` function.
+* Updated treehouse URL.
+* Added treehouse datasets.
+
 # UCSCXenaTools 1.3.2
 
 * Fixed bug about an error happened when querying mutation data.

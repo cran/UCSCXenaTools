@@ -29,7 +29,7 @@
 #' When the dataset you want to query has a identifier-to-gene mapping, identifiers can be
 #' gene symbols even the identifiers of dataset are probes or others.
 #' @param time_limit time limit for getting response in seconds.
-#' @return a `matirx` or character vector.
+#' @return a `matirx` or character vector or a `list`.
 #' @examples
 #' library(UCSCXenaTools)
 #'
@@ -195,6 +195,42 @@ fetch_dense_values <- function(host, dataset, identifiers = NULL, samples = NULL
   res
 }
 
+#' @describeIn fetch fetches values from a sparse `data.frame`.
+#' @param genes gene names.
+#' @export
+fetch_sparse_values <- function(host, dataset, genes, samples = NULL,
+                               time_limit = 30) {
+  # fetch_sparse_values("https://ucscpublic.xenahubs.net", "ccle/CCLE_DepMap_18Q2_maf_20180502", c("TP53", "KRAS")) -> mm
+  stopifnot(
+    length(host) == 1, length(dataset) == 1,
+    is.character(host), is.character(dataset)
+  )
+  .attach_this()
+
+  if (is.null(samples)) {
+    samples <- fetch_dataset_samples(host, dataset)
+  }
+
+  t_start = Sys.time()
+  while (as.numeric(Sys.time() - t_start) < time_limit) {
+    res <- tryCatch(
+      {
+        .p_sparse_data(host, dataset, samples, genes)
+      },
+      error = function(e) {
+        message("-> Query faild. Retrying...")
+        list(has_error = TRUE, error_info = e)
+      }
+    )
+    if (is.list(res)) {
+      break()
+    }
+    Sys.sleep(1)
+  }
+
+  res
+}
+
 #' @describeIn fetch fetches samples from a dataset
 #' @param limit number of samples, if `NULL`, return all samples.
 #' @export
@@ -221,6 +257,6 @@ has_probeMap <- function(host, dataset) {
 utils::globalVariables(
   c(
     ".p_dataset_fetch", ".p_dataset_field", ".p_dataset_gene_probe_avg",
-    ".p_dataset_samples"
+    ".p_dataset_samples", ".p_sparse_data"
   )
 )
