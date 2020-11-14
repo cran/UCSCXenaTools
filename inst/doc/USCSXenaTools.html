@@ -12,43 +12,78 @@
 
 <meta name="author" content="Shixiang Wang ShanghaiTech University" />
 
-<meta name="date" content="2020-09-30" />
+<meta name="date" content="2020-11-15" />
 
 <title>UCSCXenaTools: an R package for Accessing Genomics Data from UCSC Xena platform, from Cancer Multi-omics to Single-cell RNA-seq</title>
 
-<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
-// v0.0.1
-// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
-
-document.addEventListener('DOMContentLoaded', function() {
-  const codeList = document.getElementsByClassName("sourceCode");
-  for (var i = 0; i < codeList.length; i++) {
-    var linkList = codeList[i].getElementsByTagName('a');
-    for (var j = 0; j < linkList.length; j++) {
-      if (linkList[j].innerHTML === "") {
-        linkList[j].setAttribute('aria-hidden', 'true');
-      }
-    }
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
   }
+});
+</script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
 });
 </script>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -68,7 +103,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -156,7 +191,7 @@ code span.ot { color: #007020; }
 <h1 class="title toc-ignore project-name">UCSCXenaTools: an R package for Accessing Genomics Data from UCSC Xena platform, from Cancer Multi-omics to Single-cell RNA-seq</h1>
 <h4 class="author project-author">Shixiang Wang<br />
 ShanghaiTech University</h4>
-<h4 class="date project-date">2020-09-30</h4>
+<h4 class="date project-date">2020-11-15</h4>
 </section>
 
 
@@ -165,13 +200,15 @@ ShanghaiTech University</h4>
 <ul>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#data-hub-list">Data Hub List</a></li>
-<li><a href="#usage">Usage</a><ul>
+<li><a href="#usage">Usage</a>
+<ul>
 <li><a href="#xenadata-data.frame">XenaData data.frame</a></li>
 <li><a href="#workflow">Workflow</a></li>
 <li><a href="#browse-datasets">Browse datasets</a></li>
 </ul></li>
 <li><a href="#more-usages">More usages</a></li>
-<li><a href="#qa">QA</a><ul>
+<li><a href="#qa">QA</a>
+<ul>
 <li><a href="#how-to-resume-file-from-breakpoint">How to resume file from breakpoint</a></li>
 </ul></li>
 <li><a href="#citation">Citation</a></li>
@@ -190,12 +227,12 @@ ShanghaiTech University</h4>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
 <p>Install stable release from CRAN with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;UCSCXenaTools&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;UCSCXenaTools&quot;</span>)</span></code></pre></div>
 <p>You can also install devel version of <strong>UCSCXenaTools</strong> from github with:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># install.packages(&quot;remotes&quot;)</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ropensci/UCSCXenaTools&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;remotes&quot;)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;ropensci/UCSCXenaTools&quot;</span>)</span></code></pre></div>
 <p>If you want to build vignette in local, please add two options:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ropensci/UCSCXenaTools&quot;</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;ropensci/UCSCXenaTools&quot;</span>, <span class="at">build_vignettes =</span> <span class="cn">TRUE</span>, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>The minimum versions to run the vignette is <code>1.2.4</code>. <a href="https://github.com/ropensci/UCSCXenaTools/issues">GitHub Issue</a> is a place for discussing any problem.</p>
 </div>
 <div id="data-hub-list" class="section level2">
@@ -213,6 +250,7 @@ ShanghaiTech University</h4>
 <li>ATAC-seq Hub: <a href="https://atacseq.xenahubs.net" class="uri">https://atacseq.xenahubs.net</a></li>
 <li>Singel Cell Xena Hub: <a href="https://singlecellnew.xenahubs.net" class="uri">https://singlecellnew.xenahubs.net</a></li>
 <li>Kids First Xena Hub: <a href="https://kidsfirst.xenahubs.net" class="uri">https://kidsfirst.xenahubs.net</a></li>
+<li>Tumor Deconvolution and Immunogenicity Xena Hub: <a href="https://tdi.xenahubs.net" class="uri">https://tdi.xenahubs.net</a></li>
 </ul>
 <p>Users can update dataset list from the newest version of UCSC Xena by hand with <code>XenaDataUpdate()</code> function, followed by restarting R and <code>library(UCSCXenaTools)</code>.</p>
 <p>If any url of data hub is changed or a new data hub is online, please remind me by emailing to <a href="mailto:w_shixiang@163.com" class="email">w_shixiang@163.com</a> or <a href="https://github.com/ropensci/UCSCXenaTools/issues">opening an issue on GitHub</a>.</p>
@@ -225,108 +263,108 @@ ShanghaiTech University</h4>
 <h3>XenaData data.frame</h3>
 <p><strong>UCSCXenaTools</strong> uses a <code>data.frame</code> object (built in package) <code>XenaData</code> to generate an instance of <code>XenaHub</code> class, which records information of all datasets of UCSC Xena Data Hubs.</p>
 <p>You can load <code>XenaData</code> after loading <code>UCSCXenaTools</code> into R.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">library</span>(UCSCXenaTools)</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt; =========================================================================================</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt; UCSCXenaTools version 1.3.4</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#&gt; Project URL: https://github.com/ropensci/UCSCXenaTools</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt; Usages: https://cran.r-project.org/web/packages/UCSCXenaTools/vignettes/USCSXenaTools.html</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#&gt; </span></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#&gt; If you use it in published research, please cite:</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="co">#&gt; Wang et al., (2019). The UCSCXenaTools R package: a toolkit for accessing genomics data</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a><span class="co">#&gt;   from UCSC Xena platform, from cancer multi-omics to single-cell RNA-seq.</span></span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="co">#&gt;   Journal of Open Source Software, 4(40), 1627, https://doi.org/10.21105/joss.01627</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a><span class="co">#&gt; =========================================================================================</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a><span class="co">#&gt;                               --Enjoy it--</span></span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="kw">data</span>(XenaData)</span>
-<span id="cb4-14"><a href="#cb4-14"></a></span>
-<span id="cb4-15"><a href="#cb4-15"></a><span class="kw">head</span>(XenaData)</span>
-<span id="cb4-16"><a href="#cb4-16"></a><span class="co">#&gt; # A tibble: 6 x 17</span></span>
-<span id="cb4-17"><a href="#cb4-17"></a><span class="co">#&gt;   XenaHosts XenaHostNames XenaCohorts XenaDatasets SampleCount DataSubtype Label</span></span>
-<span id="cb4-18"><a href="#cb4-18"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;         &lt;chr&gt;       &lt;chr&gt;              &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;</span></span>
-<span id="cb4-19"><a href="#cb4-19"></a><span class="co">#&gt; 1 https://… publicHub     Breast Can… ucsfNeve_pu…          51 gene expre… Neve…</span></span>
-<span id="cb4-20"><a href="#cb4-20"></a><span class="co">#&gt; 2 https://… publicHub     Breast Can… ucsfNeve_pu…          57 phenotype   Phen…</span></span>
-<span id="cb4-21"><a href="#cb4-21"></a><span class="co">#&gt; 3 https://… publicHub     Glioma (Ko… kotliarov20…         194 copy number Kotl…</span></span>
-<span id="cb4-22"><a href="#cb4-22"></a><span class="co">#&gt; 4 https://… publicHub     Glioma (Ko… kotliarov20…         194 phenotype   Phen…</span></span>
-<span id="cb4-23"><a href="#cb4-23"></a><span class="co">#&gt; 5 https://… publicHub     Lung Cance… weir2007_pu…         383 copy number CGH  </span></span>
-<span id="cb4-24"><a href="#cb4-24"></a><span class="co">#&gt; 6 https://… publicHub     Lung Cance… weir2007_pu…         383 phenotype   Phen…</span></span>
-<span id="cb4-25"><a href="#cb4-25"></a><span class="co">#&gt; # … with 10 more variables: Type &lt;chr&gt;, AnatomicalOrigin &lt;chr&gt;,</span></span>
-<span id="cb4-26"><a href="#cb4-26"></a><span class="co">#&gt; #   SampleType &lt;chr&gt;, Tags &lt;chr&gt;, ProbeMap &lt;chr&gt;, LongTitle &lt;chr&gt;,</span></span>
-<span id="cb4-27"><a href="#cb4-27"></a><span class="co">#&gt; #   Citation &lt;chr&gt;, Version &lt;chr&gt;, Unit &lt;chr&gt;, Platform &lt;chr&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(UCSCXenaTools)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =========================================================================================</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; UCSCXenaTools version 1.3.5</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Project URL: https://github.com/ropensci/UCSCXenaTools</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Usages: https://cran.r-project.org/web/packages/UCSCXenaTools/vignettes/USCSXenaTools.html</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; If you use it in published research, please cite:</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Wang et al., (2019). The UCSCXenaTools R package: a toolkit for accessing genomics data</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   from UCSC Xena platform, from cancer multi-omics to single-cell RNA-seq.</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Journal of Open Source Software, 4(40), 1627, https://doi.org/10.21105/joss.01627</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; =========================================================================================</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               --Enjoy it--</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(XenaData)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(XenaData)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 x 17</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   XenaHosts XenaHostNames XenaCohorts XenaDatasets SampleCount DataSubtype Label</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;         &lt;chr&gt;       &lt;chr&gt;              &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 https://… publicHub     Breast Can… ucsfNeve_pu…          51 gene expre… Neve…</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 https://… publicHub     Breast Can… ucsfNeve_pu…          57 phenotype   Phen…</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 https://… publicHub     Glioma (Ko… kotliarov20…         194 copy number Kotl…</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 https://… publicHub     Glioma (Ko… kotliarov20…         194 phenotype   Phen…</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 https://… publicHub     Lung Cance… weir2007_pu…         383 copy number CGH  </span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 https://… publicHub     Lung Cance… weir2007_pu…         383 phenotype   Phen…</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 10 more variables: Type &lt;chr&gt;, AnatomicalOrigin &lt;chr&gt;,</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   SampleType &lt;chr&gt;, Tags &lt;chr&gt;, ProbeMap &lt;chr&gt;, LongTitle &lt;chr&gt;,</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Citation &lt;chr&gt;, Version &lt;chr&gt;, Unit &lt;chr&gt;, Platform &lt;chr&gt;</span></span></code></pre></div>
 </div>
 <div id="workflow" class="section level3">
 <h3>Workflow</h3>
 <p>Select datasets.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># The options in XenaFilter function support Regular Expression</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">XenaGenerate</span>(<span class="dt">subset =</span> XenaHostNames<span class="op">==</span><span class="st">&quot;tcgaHub&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="st">  </span><span class="kw">XenaFilter</span>(<span class="dt">filterDatasets =</span> <span class="st">&quot;clinical&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="st">  </span><span class="kw">XenaFilter</span>(<span class="dt">filterDatasets =</span> <span class="st">&quot;LUAD|LUSC|LUNG&quot;</span>) -&gt;<span class="st"> </span>df_todo</span>
-<span id="cb5-5"><a href="#cb5-5"></a></span>
-<span id="cb5-6"><a href="#cb5-6"></a>df_todo</span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="co">#&gt; class: XenaHub </span></span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="co">#&gt; hosts():</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="co">#&gt;   https://tcga.xenahubs.net</span></span>
-<span id="cb5-10"><a href="#cb5-10"></a><span class="co">#&gt; cohorts() (3 total):</span></span>
-<span id="cb5-11"><a href="#cb5-11"></a><span class="co">#&gt;   TCGA Lung Cancer (LUNG)</span></span>
-<span id="cb5-12"><a href="#cb5-12"></a><span class="co">#&gt;   TCGA Lung Adenocarcinoma (LUAD)</span></span>
-<span id="cb5-13"><a href="#cb5-13"></a><span class="co">#&gt;   TCGA Lung Squamous Cell Carcinoma (LUSC)</span></span>
-<span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt; datasets() (3 total):</span></span>
-<span id="cb5-15"><a href="#cb5-15"></a><span class="co">#&gt;   TCGA.LUNG.sampleMap/LUNG_clinicalMatrix</span></span>
-<span id="cb5-16"><a href="#cb5-16"></a><span class="co">#&gt;   TCGA.LUAD.sampleMap/LUAD_clinicalMatrix</span></span>
-<span id="cb5-17"><a href="#cb5-17"></a><span class="co">#&gt;   TCGA.LUSC.sampleMap/LUSC_clinicalMatrix</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The options in XenaFilter function support Regular Expression</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">XenaGenerate</span>(<span class="at">subset =</span> XenaHostNames<span class="sc">==</span><span class="st">&quot;tcgaHub&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">XenaFilter</span>(<span class="at">filterDatasets =</span> <span class="st">&quot;clinical&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">XenaFilter</span>(<span class="at">filterDatasets =</span> <span class="st">&quot;LUAD|LUSC|LUNG&quot;</span>) <span class="ot">-&gt;</span> df_todo</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>df_todo</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class: XenaHub </span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hosts():</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   https://tcga.xenahubs.net</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cohorts() (3 total):</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA Lung Cancer (LUNG)</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA Lung Adenocarcinoma (LUAD)</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA Lung Squamous Cell Carcinoma (LUSC)</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; datasets() (3 total):</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA.LUNG.sampleMap/LUNG_clinicalMatrix</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA.LUAD.sampleMap/LUAD_clinicalMatrix</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA.LUSC.sampleMap/LUSC_clinicalMatrix</span></span></code></pre></div>
 <p>Sometimes we only know some keywords, <code>XenaScan()</code> can be used to scan all rows to detect if the keywords exist in <code>XenaData</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>x1 =<span class="st"> </span><span class="kw">XenaScan</span>(<span class="dt">pattern =</span> <span class="st">&#39;Blood&#39;</span>)</span>
-<span id="cb6-2"><a href="#cb6-2"></a>x2 =<span class="st"> </span><span class="kw">XenaScan</span>(<span class="dt">pattern =</span> <span class="st">&#39;LUNG&#39;</span>, <span class="dt">ignore.case =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb6-3"><a href="#cb6-3"></a></span>
-<span id="cb6-4"><a href="#cb6-4"></a>x1 <span class="op">%&gt;%</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="st">    </span><span class="kw">XenaGenerate</span>()</span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; class: XenaHub </span></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt; hosts():</span></span>
-<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt;   https://ucscpublic.xenahubs.net</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt;   https://tcga.xenahubs.net</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt; cohorts() (6 total):</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt;   Connectivity Map</span></span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt;   TARGET Acute Lymphoblastic Leukemia</span></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt;   Pediatric tumor (Khan)</span></span>
-<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt;   Acute lymphoblastic leukemia (Mullighan 2008)</span></span>
-<span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt;   TCGA Pan-Cancer (PANCAN)</span></span>
-<span id="cb6-16"><a href="#cb6-16"></a><span class="co">#&gt;   TCGA Acute Myeloid Leukemia (LAML)</span></span>
-<span id="cb6-17"><a href="#cb6-17"></a><span class="co">#&gt; datasets() (28 total):</span></span>
-<span id="cb6-18"><a href="#cb6-18"></a><span class="co">#&gt;   cmap/rankMatrix_reverse</span></span>
-<span id="cb6-19"><a href="#cb6-19"></a><span class="co">#&gt;   TARGET_ALL/TARGETcnv_genomicMatrix</span></span>
-<span id="cb6-20"><a href="#cb6-20"></a><span class="co">#&gt;   TARGET_ALL/TARGETexp_genomicMatrix</span></span>
-<span id="cb6-21"><a href="#cb6-21"></a><span class="co">#&gt;   ...</span></span>
-<span id="cb6-22"><a href="#cb6-22"></a><span class="co">#&gt;   TCGA.LAML.sampleMap/mutation_wustl</span></span>
-<span id="cb6-23"><a href="#cb6-23"></a><span class="co">#&gt;   TCGA.LAML.sampleMap/mutation_wustl_gene</span></span>
-<span id="cb6-24"><a href="#cb6-24"></a>x2 <span class="op">%&gt;%</span></span>
-<span id="cb6-25"><a href="#cb6-25"></a><span class="st">    </span><span class="kw">XenaGenerate</span>()</span>
-<span id="cb6-26"><a href="#cb6-26"></a><span class="co">#&gt; class: XenaHub </span></span>
-<span id="cb6-27"><a href="#cb6-27"></a><span class="co">#&gt; hosts():</span></span>
-<span id="cb6-28"><a href="#cb6-28"></a><span class="co">#&gt;   https://tcga.xenahubs.net</span></span>
-<span id="cb6-29"><a href="#cb6-29"></a><span class="co">#&gt; cohorts() (1 total):</span></span>
-<span id="cb6-30"><a href="#cb6-30"></a><span class="co">#&gt;   TCGA Lung Cancer (LUNG)</span></span>
-<span id="cb6-31"><a href="#cb6-31"></a><span class="co">#&gt; datasets() (15 total):</span></span>
-<span id="cb6-32"><a href="#cb6-32"></a><span class="co">#&gt;   TCGA.LUNG.sampleMap/HumanMethylation27</span></span>
-<span id="cb6-33"><a href="#cb6-33"></a><span class="co">#&gt;   TCGA.LUNG.sampleMap/HumanMethylation450</span></span>
-<span id="cb6-34"><a href="#cb6-34"></a><span class="co">#&gt;   TCGA.LUNG.sampleMap/Gistic2_CopyNumber_Gistic2_all_data_by_genes</span></span>
-<span id="cb6-35"><a href="#cb6-35"></a><span class="co">#&gt;   ...</span></span>
-<span id="cb6-36"><a href="#cb6-36"></a><span class="co">#&gt;   mc3/LUNG_mc3.txt</span></span>
-<span id="cb6-37"><a href="#cb6-37"></a><span class="co">#&gt;   mc3_gene_level/LUNG_mc3_gene_level.txt</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">=</span> <span class="fu">XenaScan</span>(<span class="at">pattern =</span> <span class="st">&#39;Blood&#39;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">=</span> <span class="fu">XenaScan</span>(<span class="at">pattern =</span> <span class="st">&#39;LUNG&#39;</span>, <span class="at">ignore.case =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>x1 <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">XenaGenerate</span>()</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class: XenaHub </span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hosts():</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   https://ucscpublic.xenahubs.net</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   https://tcga.xenahubs.net</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cohorts() (6 total):</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Connectivity Map</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TARGET Acute Lymphoblastic Leukemia</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Pediatric tumor (Khan)</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Acute lymphoblastic leukemia (Mullighan 2008)</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA Pan-Cancer (PANCAN)</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA Acute Myeloid Leukemia (LAML)</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; datasets() (28 total):</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   cmap/rankMatrix_reverse</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TARGET_ALL/TARGETcnv_genomicMatrix</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TARGET_ALL/TARGETexp_genomicMatrix</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ...</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA.LAML.sampleMap/mutation_wustl</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA.LAML.sampleMap/mutation_wustl_gene</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>x2 <span class="sc">%&gt;%</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">XenaGenerate</span>()</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class: XenaHub </span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hosts():</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   https://tcga.xenahubs.net</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cohorts() (1 total):</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA Lung Cancer (LUNG)</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; datasets() (15 total):</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA.LUNG.sampleMap/HumanMethylation27</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA.LUNG.sampleMap/HumanMethylation450</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA.LUNG.sampleMap/Gistic2_CopyNumber_Gistic2_all_data_by_genes</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ...</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   mc3/LUNG_mc3.txt</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   mc3_gene_level/LUNG_mc3_gene_level.txt</span></span></code></pre></div>
 <p>Query and download.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">XenaQuery</span>(df_todo) <span class="op">%&gt;%</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="st">  </span><span class="kw">XenaDownload</span>() -&gt;<span class="st"> </span>xe_download</span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="co">#&gt; This will check url status, please be patient.</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a><span class="co">#&gt; All downloaded files will under directory /var/folders/bj/nw1w4g1j37ddpgb6zmh3sfh80000gn/T//RtmpUdcDxg.</span></span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt; The &#39;trans_slash&#39; option is FALSE, keep same directory structure as Xena.</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="co">#&gt; Creating directories for datasets...</span></span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="co">#&gt; Downloading TCGA.LUNG.sampleMap/LUNG_clinicalMatrix</span></span>
-<span id="cb7-8"><a href="#cb7-8"></a><span class="co">#&gt; Downloading TCGA.LUAD.sampleMap/LUAD_clinicalMatrix</span></span>
-<span id="cb7-9"><a href="#cb7-9"></a><span class="co">#&gt; Downloading TCGA.LUSC.sampleMap/LUSC_clinicalMatrix</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">XenaQuery</span>(df_todo) <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">XenaDownload</span>() <span class="ot">-&gt;</span> xe_download</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This will check url status, please be patient.</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; All downloaded files will under directory /var/folders/bj/nw1w4g1j37ddpgb6zmh3sfh80000gn/T//RtmpvR1QG3.</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The &#39;trans_slash&#39; option is FALSE, keep same directory structure as Xena.</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Creating directories for datasets...</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Downloading TCGA.LUNG.sampleMap/LUNG_clinicalMatrix</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Downloading TCGA.LUAD.sampleMap/LUAD_clinicalMatrix</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Downloading TCGA.LUSC.sampleMap/LUSC_clinicalMatrix</span></span></code></pre></div>
 <p>Prepare data into R for analysis.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>cli =<span class="st"> </span><span class="kw">XenaPrepare</span>(xe_download)</span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="kw">class</span>(cli)</span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt; [1] &quot;list&quot;</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="kw">names</span>(cli)</span>
-<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt; [1] &quot;LUNG_clinicalMatrix&quot; &quot;LUAD_clinicalMatrix&quot; &quot;LUSC_clinicalMatrix&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cli <span class="ot">=</span> <span class="fu">XenaPrepare</span>(xe_download)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(cli)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;list&quot;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(cli)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;LUNG_clinicalMatrix&quot; &quot;LUAD_clinicalMatrix&quot; &quot;LUSC_clinicalMatrix&quot;</span></span></code></pre></div>
 </div>
 <div id="browse-datasets" class="section level3">
 <h3>Browse datasets</h3>
@@ -335,49 +373,49 @@ ShanghaiTech University</h4>
 <li><code>to_browse</code> - a XenaHub object containing a cohort and a dataset.</li>
 <li><code>to_browse2</code> - a XenaHub object containing 2 cohorts and 2 datasets.</li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">XenaGenerate</span>(<span class="dt">subset =</span> XenaHostNames<span class="op">==</span><span class="st">&quot;tcgaHub&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="st">    </span><span class="kw">XenaFilter</span>(<span class="dt">filterDatasets =</span> <span class="st">&quot;clinical&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="st">    </span><span class="kw">XenaFilter</span>(<span class="dt">filterDatasets =</span> <span class="st">&quot;LUAD&quot;</span>) -&gt;<span class="st"> </span>to_browse</span>
-<span id="cb9-4"><a href="#cb9-4"></a></span>
-<span id="cb9-5"><a href="#cb9-5"></a>to_browse</span>
-<span id="cb9-6"><a href="#cb9-6"></a><span class="co">#&gt; class: XenaHub </span></span>
-<span id="cb9-7"><a href="#cb9-7"></a><span class="co">#&gt; hosts():</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a><span class="co">#&gt;   https://tcga.xenahubs.net</span></span>
-<span id="cb9-9"><a href="#cb9-9"></a><span class="co">#&gt; cohorts() (1 total):</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a><span class="co">#&gt;   TCGA Lung Adenocarcinoma (LUAD)</span></span>
-<span id="cb9-11"><a href="#cb9-11"></a><span class="co">#&gt; datasets() (1 total):</span></span>
-<span id="cb9-12"><a href="#cb9-12"></a><span class="co">#&gt;   TCGA.LUAD.sampleMap/LUAD_clinicalMatrix</span></span>
-<span id="cb9-13"><a href="#cb9-13"></a></span>
-<span id="cb9-14"><a href="#cb9-14"></a><span class="kw">XenaGenerate</span>(<span class="dt">subset =</span> XenaHostNames<span class="op">==</span><span class="st">&quot;tcgaHub&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb9-15"><a href="#cb9-15"></a><span class="st">    </span><span class="kw">XenaFilter</span>(<span class="dt">filterDatasets =</span> <span class="st">&quot;clinical&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb9-16"><a href="#cb9-16"></a><span class="st">    </span><span class="kw">XenaFilter</span>(<span class="dt">filterDatasets =</span> <span class="st">&quot;LUAD|LUSC&quot;</span>) -&gt;<span class="st"> </span>to_browse2</span>
-<span id="cb9-17"><a href="#cb9-17"></a></span>
-<span id="cb9-18"><a href="#cb9-18"></a>to_browse2</span>
-<span id="cb9-19"><a href="#cb9-19"></a><span class="co">#&gt; class: XenaHub </span></span>
-<span id="cb9-20"><a href="#cb9-20"></a><span class="co">#&gt; hosts():</span></span>
-<span id="cb9-21"><a href="#cb9-21"></a><span class="co">#&gt;   https://tcga.xenahubs.net</span></span>
-<span id="cb9-22"><a href="#cb9-22"></a><span class="co">#&gt; cohorts() (2 total):</span></span>
-<span id="cb9-23"><a href="#cb9-23"></a><span class="co">#&gt;   TCGA Lung Adenocarcinoma (LUAD)</span></span>
-<span id="cb9-24"><a href="#cb9-24"></a><span class="co">#&gt;   TCGA Lung Squamous Cell Carcinoma (LUSC)</span></span>
-<span id="cb9-25"><a href="#cb9-25"></a><span class="co">#&gt; datasets() (2 total):</span></span>
-<span id="cb9-26"><a href="#cb9-26"></a><span class="co">#&gt;   TCGA.LUAD.sampleMap/LUAD_clinicalMatrix</span></span>
-<span id="cb9-27"><a href="#cb9-27"></a><span class="co">#&gt;   TCGA.LUSC.sampleMap/LUSC_clinicalMatrix</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">XenaGenerate</span>(<span class="at">subset =</span> XenaHostNames<span class="sc">==</span><span class="st">&quot;tcgaHub&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">XenaFilter</span>(<span class="at">filterDatasets =</span> <span class="st">&quot;clinical&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">XenaFilter</span>(<span class="at">filterDatasets =</span> <span class="st">&quot;LUAD&quot;</span>) <span class="ot">-&gt;</span> to_browse</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>to_browse</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class: XenaHub </span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hosts():</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   https://tcga.xenahubs.net</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cohorts() (1 total):</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA Lung Adenocarcinoma (LUAD)</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; datasets() (1 total):</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA.LUAD.sampleMap/LUAD_clinicalMatrix</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="fu">XenaGenerate</span>(<span class="at">subset =</span> XenaHostNames<span class="sc">==</span><span class="st">&quot;tcgaHub&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">XenaFilter</span>(<span class="at">filterDatasets =</span> <span class="st">&quot;clinical&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">XenaFilter</span>(<span class="at">filterDatasets =</span> <span class="st">&quot;LUAD|LUSC&quot;</span>) <span class="ot">-&gt;</span> to_browse2</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>to_browse2</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; class: XenaHub </span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hosts():</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   https://tcga.xenahubs.net</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cohorts() (2 total):</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA Lung Adenocarcinoma (LUAD)</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA Lung Squamous Cell Carcinoma (LUSC)</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; datasets() (2 total):</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA.LUAD.sampleMap/LUAD_clinicalMatrix</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   TCGA.LUSC.sampleMap/LUSC_clinicalMatrix</span></span></code></pre></div>
 <p><code>XenaBrowse()</code> function can be used to browse dataset/cohort links using your default web browser. At default, this function limits one dataset/cohort for preventing user to open too many links at once.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># This will open you web browser</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="kw">XenaBrowse</span>(to_browse)</span>
-<span id="cb10-3"><a href="#cb10-3"></a></span>
-<span id="cb10-4"><a href="#cb10-4"></a><span class="kw">XenaBrowse</span>(to_browse, <span class="dt">type =</span> <span class="st">&quot;cohort&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># This will throw error</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="kw">XenaBrowse</span>(to_browse2)</span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="co">#&gt; Error in XenaBrowse(to_browse2): This function limite 1 dataset to browse.</span></span>
-<span id="cb11-4"><a href="#cb11-4"></a><span class="co">#&gt;  Set multiple to TRUE if you want to browse multiple links.</span></span>
-<span id="cb11-5"><a href="#cb11-5"></a></span>
-<span id="cb11-6"><a href="#cb11-6"></a><span class="kw">XenaBrowse</span>(to_browse2, <span class="dt">type =</span> <span class="st">&quot;cohort&quot;</span>)</span>
-<span id="cb11-7"><a href="#cb11-7"></a><span class="co">#&gt; Error in XenaBrowse(to_browse2, type = &quot;cohort&quot;): This function limite 1 cohort to browse. </span></span>
-<span id="cb11-8"><a href="#cb11-8"></a><span class="co">#&gt;  Set multiple to TRUE if you want to browse multiple links.</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This will open you web browser</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">XenaBrowse</span>(to_browse)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">XenaBrowse</span>(to_browse, <span class="at">type =</span> <span class="st">&quot;cohort&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This will throw error</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">XenaBrowse</span>(to_browse2)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error in XenaBrowse(to_browse2): This function limite 1 dataset to browse.</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Set multiple to TRUE if you want to browse multiple links.</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">XenaBrowse</span>(to_browse2, <span class="at">type =</span> <span class="st">&quot;cohort&quot;</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error in XenaBrowse(to_browse2, type = &quot;cohort&quot;): This function limite 1 cohort to browse. </span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Set multiple to TRUE if you want to browse multiple links.</span></span></code></pre></div>
 <p>When you make sure you want to open multiple links, you can set <code>multiple</code> option to <code>TRUE</code>.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">XenaBrowse</span>(to_browse2, <span class="dt">multiple =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="kw">XenaBrowse</span>(to_browse2, <span class="dt">type =</span> <span class="st">&quot;cohort&quot;</span>, <span class="dt">multiple =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">XenaBrowse</span>(to_browse2, <span class="at">multiple =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">XenaBrowse</span>(to_browse2, <span class="at">type =</span> <span class="st">&quot;cohort&quot;</span>, <span class="at">multiple =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="more-usages" class="section level2">
@@ -396,16 +434,16 @@ ShanghaiTech University</h4>
 <p>Thanks to the UCSC Xena team, the new feature ‘resume from breakpoint’ is added and can be done by <strong>XenaDownload()</strong> with the <code>method</code> and <code>extra</code> flags specified.</p>
 <p>Of note, the corresponding <code>wget</code> or <code>curl</code> command must be installed by your OS and can be found by R.</p>
 <p>The folliwng code gives a test example, the data can be viewed on <a href="https://xenabrowser.net/datapages/?dataset=TcgaTargetGtex_expected_count&amp;host=https%3A%2F%2Ftoil.xenahubs.net&amp;removeHub=https%3A%2F%2Fxena.treehouse.gi.ucsc.edu%3A443">web page</a>.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">library</span>(UCSCXenaTools)</span>
-<span id="cb13-2"><a href="#cb13-2"></a>xe =<span class="st"> </span><span class="kw">XenaGenerate</span>(<span class="dt">subset =</span> XenaDatasets <span class="op">==</span><span class="st"> &quot;TcgaTargetGtex_expected_count&quot;</span>)</span>
-<span id="cb13-3"><a href="#cb13-3"></a>xe</span>
-<span id="cb13-4"><a href="#cb13-4"></a>xq =<span class="st"> </span><span class="kw">XenaQuery</span>(xe)</span>
-<span id="cb13-5"><a href="#cb13-5"></a><span class="co"># You cannot resume from breakpoint in default mode</span></span>
-<span id="cb13-6"><a href="#cb13-6"></a><span class="kw">XenaDownload</span>(xq, <span class="dt">destdir =</span> <span class="st">&quot;~/test/&quot;</span>, <span class="dt">force =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb13-7"><a href="#cb13-7"></a><span class="co"># You can do it with &#39;curl&#39; command</span></span>
-<span id="cb13-8"><a href="#cb13-8"></a><span class="kw">XenaDownload</span>(xq, <span class="dt">destdir =</span> <span class="st">&quot;~/test/&quot;</span>, <span class="dt">method =</span> <span class="st">&quot;curl&quot;</span>, <span class="dt">extra =</span> <span class="st">&quot;-C -&quot;</span>, <span class="dt">force =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb13-9"><a href="#cb13-9"></a><span class="co"># You can do it with &#39;wget&#39; command</span></span>
-<span id="cb13-10"><a href="#cb13-10"></a><span class="kw">XenaDownload</span>(xq, <span class="dt">destdir =</span> <span class="st">&quot;~/test/&quot;</span>, <span class="dt">method =</span> <span class="st">&quot;wget&quot;</span>, <span class="dt">extra =</span> <span class="st">&quot;-c&quot;</span>, <span class="dt">force =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(UCSCXenaTools)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>xe <span class="ot">=</span> <span class="fu">XenaGenerate</span>(<span class="at">subset =</span> XenaDatasets <span class="sc">==</span> <span class="st">&quot;TcgaTargetGtex_expected_count&quot;</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>xe</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>xq <span class="ot">=</span> <span class="fu">XenaQuery</span>(xe)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># You cannot resume from breakpoint in default mode</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">XenaDownload</span>(xq, <span class="at">destdir =</span> <span class="st">&quot;~/test/&quot;</span>, <span class="at">force =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># You can do it with &#39;curl&#39; command</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">XenaDownload</span>(xq, <span class="at">destdir =</span> <span class="st">&quot;~/test/&quot;</span>, <span class="at">method =</span> <span class="st">&quot;curl&quot;</span>, <span class="at">extra =</span> <span class="st">&quot;-C -&quot;</span>, <span class="at">force =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co"># You can do it with &#39;wget&#39; command</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">XenaDownload</span>(xq, <span class="at">destdir =</span> <span class="st">&quot;~/test/&quot;</span>, <span class="at">method =</span> <span class="st">&quot;wget&quot;</span>, <span class="at">extra =</span> <span class="st">&quot;-c&quot;</span>, <span class="at">force =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="citation" class="section level2">
