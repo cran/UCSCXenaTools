@@ -37,7 +37,13 @@ x1 %>%
 x2 %>%
     XenaGenerate()
 
+## ---- eval=FALSE--------------------------------------------------------------
+#  XenaQuery(df_todo) %>%
+#    XenaDownload() -> xe_download
+
 ## -----------------------------------------------------------------------------
+options(use_hiplot = TRUE)
+
 XenaQuery(df_todo) %>%
   XenaDownload() -> xe_download
 
