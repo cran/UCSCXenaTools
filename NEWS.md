@@ -1,4 +1,8 @@
-# UCSCXenaTools 1.4.1
+# UCSCXenaTools 1.4.3
+
+- Implemented using hiplot for `fetch()` functions.
+
+# UCSCXenaTools 1.4.1 (1.4.2)
 
 - Removed unpublished Xena hub TDI.
 
