@@ -1,8 +1,8 @@
-7828d184e9a24b22e6918efae02be649 *DESCRIPTION
+254e814d9f76109a2279643413d78ccb *DESCRIPTION
 ca06d414f77002eaeda311964509a978 *NAMESPACE
-ea4d4b8b8fccbb61acf9620db9ff1242 *NEWS.md
+a5940955e2923863a8a5f04177398ba4 *NEWS.md
 629134f9ea6df44859ce5ae903085e6e *R/XenaBrowse.R
-c3b51f9cb7e36a06e9d735017769323e *R/XenaDownload.R
+123749122d3d9b9c88100bf23745516d *R/XenaDownload.R
 e6235f3cacade5c18dcda098c66ef7bc *R/XenaFilter.R
 13bae504441a5cd80337164d605353d1 *R/XenaGenerate.R
 ffe07a81bdc90dd946f2f64bead86474 *R/XenaHub-class.R
@@ -28,7 +28,7 @@ f66b01631d8e7e3554b36dee9cbcfd09 *inst/api.RData
 c8dd161a8d2c2c73ba440edd6d0daa25 *inst/develop.R
 ad96fb5ec15814bb0d41124f5cbc507f *inst/doc/USCSXenaTools.R
 a8cd7f28ed15f0288bfa1340fd102eab *inst/doc/USCSXenaTools.Rmd
-a530e2b4e6eb4862e8e6039b5ab538db *inst/doc/USCSXenaTools.html
+ac71425f353fd0eb9b4781062d4dbd52 *inst/doc/USCSXenaTools.html
 d4986e55b4019552eb3df980f9b1ae1f *inst/queries/allCohorts.xq
 3ccea1db668c36c82e66225d774a4acc *inst/queries/allDatasets.xq
 250a662301faf4c984b0d457bb08dde4 *inst/queries/allDatasetsN.xq
