@@ -1,3 +1,10 @@
+# UCSCXenaTools 1.4.5
+
+- Fixed the download bug for pan-cancer data hub due to unvalid URL. `url_encode()`
+is added internally to transform reserved characters (`/` is kept).
+- Fixed the download bug because UCSCXenaShiny mutate the result of `XenaQuery()`
+and thus change the column number. This bug will not affect XenaTools itself.
+
 # UCSCXenaTools 1.4.4
 
 - Fixed the download bug because UCSCXenaShiny mutate the result of `XenaQuery()`

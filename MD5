@@ -1,14 +1,14 @@
-254e814d9f76109a2279643413d78ccb *DESCRIPTION
+c9f09887b3b1962db60622325fb3492f *DESCRIPTION
 ca06d414f77002eaeda311964509a978 *NAMESPACE
-a5940955e2923863a8a5f04177398ba4 *NEWS.md
+7b5711b051055d058751d6362af1f46c *NEWS.md
 629134f9ea6df44859ce5ae903085e6e *R/XenaBrowse.R
-123749122d3d9b9c88100bf23745516d *R/XenaDownload.R
+5c1dbc0c27d3aabfb625d0614c56d8f4 *R/XenaDownload.R
 e6235f3cacade5c18dcda098c66ef7bc *R/XenaFilter.R
 13bae504441a5cd80337164d605353d1 *R/XenaGenerate.R
 ffe07a81bdc90dd946f2f64bead86474 *R/XenaHub-class.R
 cf848665488e0e1389151058b5cfe3de *R/XenaPrepare.R
-3729daa5b9a2dd104a6b4afb9cc41955 *R/XenaQuery.R
-ff6aac4c0cef7a6358ab0ed1ed2eb46b *R/XenaQueryProbeMap.R
+5485d9c76ec3b74d8b7ea66269456f06 *R/XenaQuery.R
+3414c755be9d592534003eba25c78bd1 *R/XenaQueryProbeMap.R
 ff909595b230b815a153144868a08be5 *R/XenaScan.R
 3ea8a7425922a7a24f560dec935eb273 *R/api_higher.R
 46c0e358b17a3d954537f4c0ba25866f *R/api_inner.R
@@ -20,7 +20,7 @@ b3fb616d0257da317aa3d8005f48bd07 *R/shiny.R
 abce66728e0228f5e982de8ef8dddb36 *R/utils-pipe.R
 e474e4e054e2ae09605a25f2339e08b1 *R/zzz.R
 77195514c122c834b70778fad59bfd2d *README.md
-4dbfacb06be86dbbc9922c2b1c68b57b *build/vignette.rds
+74633d95adde3120806a8ca3dde07a05 *build/vignette.rds
 5d8056d3a055450c093aa4d626b32b2e *data/XenaData.rda
 e576a25e8741d16770294eb7a977926b *inst/CITATION
 f66b01631d8e7e3554b36dee9cbcfd09 *inst/api.RData
@@ -28,7 +28,7 @@ f66b01631d8e7e3554b36dee9cbcfd09 *inst/api.RData
 c8dd161a8d2c2c73ba440edd6d0daa25 *inst/develop.R
 ad96fb5ec15814bb0d41124f5cbc507f *inst/doc/USCSXenaTools.R
 a8cd7f28ed15f0288bfa1340fd102eab *inst/doc/USCSXenaTools.Rmd
-ac71425f353fd0eb9b4781062d4dbd52 *inst/doc/USCSXenaTools.html
+6f2d09a6b0636f2fb607d3e0c87c8614 *inst/doc/USCSXenaTools.html
 d4986e55b4019552eb3df980f9b1ae1f *inst/queries/allCohorts.xq
 3ccea1db668c36c82e66225d774a4acc *inst/queries/allDatasets.xq
 250a662301faf4c984b0d457bb08dde4 *inst/queries/allDatasetsN.xq
