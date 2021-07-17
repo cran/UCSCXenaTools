@@ -1,3 +1,8 @@
+# UCSCXenaTools 1.4.6
+
+- Added code to check hiplot server status.
+- Fixed check warnings to follow CRAN policy (#36).
+
 # UCSCXenaTools 1.4.5
 
 - Fixed the download bug for pan-cancer data hub due to unvalid URL. `url_encode()`
@@ -20,7 +25,7 @@ and thus change the column order. This bug will not affect XenaTools itself.
 
 # UCSCXenaTools 1.4.0
 
-- Supported downloading data from Hiplot mirror site <https://xena.hiplot.com.cn/>.
+- Supported downloading data from Hiplot mirror site (`https://xena.hiplot.com.cn/`).
 
 # UCSCXenaTools 1.3.6
 
