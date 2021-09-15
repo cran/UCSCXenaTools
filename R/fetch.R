@@ -47,6 +47,7 @@
 #' # Fetch expression value by probes
 #' fetch_dense_values(host, dataset, probes, samples, check = FALSE)
 #' # Fetch expression value by gene symbol (if the dataset has probeMap)
+#' has_probeMap(host, dataset)
 #' fetch_dense_values(host, dataset, genes, samples, check = FALSE, use_probeMap = TRUE)
 #' }
 #' @export
@@ -98,12 +99,19 @@ fetch_dense_values <- function(host, dataset, identifiers = NULL, samples = NULL
     # obtain all samples
     all_samples <- fetch_dataset_samples(host, dataset)
     # obtain all identifiers
-    all_identifiers <- fetch_dataset_identifiers(host, dataset)
+    use_probe <- use_probeMap && has_probeMap(host, dataset)
+    if (use_probe) {
+        message("-> Obtaining gene symbols from probeMap...")
+        url <- has_probeMap(host, dataset, return_url = TRUE)
+        all_identifiers <- use_cache(url, op = "readr::read_tsv(url,
+            col_types = readr::cols()
+        )[[2]]")
+    } else {
+        all_identifiers <- fetch_dataset_identifiers(host, dataset)
+    }
 
     message("-> Checking identifiers...")
-    if (use_probeMap) {
-      message("-> use_probeMap is TRUE, skipping checking identifiers...")
-    } else if (is.null(identifiers)) {
+    if (is.null(identifiers)) {
       identifiers <- all_identifiers
     } else {
       if (!is.character(identifiers)) stop("Bad type for identifiers.")
@@ -219,6 +227,7 @@ fetch_dense_values <- function(host, dataset, identifiers = NULL, samples = NULL
     ))
   }
 
+  message("-> Query done.")
   rownames(res) <- identifiers
   colnames(res) <- samples
   res
@@ -279,14 +288,22 @@ fetch_dataset_identifiers <- function(host, dataset) {
 }
 
 #' @describeIn fetch checks if a dataset has ProbeMap.
+#' @param return_url if `TRUE`, returns the info of probeMap
+#' instead of a logical value when the result exists.
 #' @export
-has_probeMap <- function(host, dataset) {
+has_probeMap <- function(host, dataset, return_url = FALSE) {
   .attach_this()
   if (! host %in% .xena_mirror_map) {
     host <- .xena_mirror_map[host]
   }
   df <- base::subset(UCSCXenaTools::XenaData, XenaHosts == host & XenaDatasets == dataset)
-  !is.na(df[["ProbeMap"]])
+  rv <- !is.na(df[["ProbeMap"]])
+  if (rv && return_url) {
+      paste0(
+          df$XenaHosts, "/download/",
+          df[["ProbeMap"]]
+      )
+  } else rv
 }
 
 utils::globalVariables(
