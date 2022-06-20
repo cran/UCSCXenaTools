@@ -1,3 +1,7 @@
+# UCSCXenaTools 1.4.8
+
+- Updated to latest Xena dataset list.
+
 # UCSCXenaTools 1.4.7
 
 - 3 datasets were added into `XenaData`.
