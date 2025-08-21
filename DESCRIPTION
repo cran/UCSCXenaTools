@@ -1,6 +1,6 @@
 Package: UCSCXenaTools
 Title: Download and Explore Datasets from UCSC Xena Data Hubs
-Version: 1.4.8
+Version: 1.6.1
 Authors@R: 
     c(person(given = "Shixiang",
              family = "Wang",
@@ -34,20 +34,20 @@ BugReports: https://github.com/ropensci/UCSCXenaTools/issues
 Depends: R (>= 3.5)
 Imports: digest, dplyr, httr, jsonlite, magrittr, methods, readr,
         rlang, utils
-Suggests: covr, DT, knitr, prettydoc, rmarkdown, shiny, shinydashboard,
-        testthat (>= 2.1.0)
+Suggests: covr, knitr, prettydoc, rmarkdown, testthat (>= 2.1.0)
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.0
+RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2022-06-20 07:53:49 UTC; wsx
-Author: Shixiang Wang [aut, cre] (<https://orcid.org/0000-0001-9855-7357>),
-  Xue-Song Liu [aut] (<https://orcid.org/0000-0002-7736-0077>),
+Packaged: 2025-08-20 03:22:24 UTC; wsx
+Author: Shixiang Wang [aut, cre] (ORCID:
+    <https://orcid.org/0000-0001-9855-7357>),
+  Xue-Song Liu [aut] (ORCID: <https://orcid.org/0000-0002-7736-0077>),
   Martin Morgan [ctb],
   Christine Stawitz [rev] (Christine reviewed the package for ropensci,
     see <https://github.com/ropensci/software-review/issues/315>),
   Carl Ganz [rev] (Carl reviewed the package for ropensci, see
     <https://github.com/ropensci/software-review/issues/315>)
 Repository: CRAN
-Date/Publication: 2022-06-20 08:10:02 UTC
+Date/Publication: 2025-08-21 10:00:02 UTC

@@ -73,9 +73,8 @@ Currently, **UCSCXenaTools** supports the following data hubs of UCSC Xena.
 * UCSC Toil RNAseq Recompute Compendium Hub: <https://toil.xenahubs.net/>
 * PCAWG Xena Hub: <https://pcawg.xenahubs.net/>
 * ATAC-seq Hub: <https://atacseq.xenahubs.net/>
-* Singel Cell Xena Hub: <https://singlecellnew.xenahubs.net/>
-* Kids First Xena Hub: <https://kidsfirst.xenahubs.net/>
 * Treehouse Xena Hub: <https://xena.treehouse.gi.ucsc.edu:443/>
+* ...
 
 Users can update dataset list from the newest version of UCSC Xena by hand with `XenaDataUpdate()` function, followed
 by restarting R and `library(UCSCXenaTools)`.
@@ -131,16 +130,7 @@ x2 %>%
 
 Query and download.
 
-```{r, eval=FALSE}
-XenaQuery(df_todo) %>%
-  XenaDownload() -> xe_download
-```
-
-**For researchers in China, now Hiplot team has deployed several Xena mirror sites (`https://xena.hiplot.com.cn/`) at Shanghai. You can set an option `options(use_hiplot = TRUE)` before querying data step to speed up both data querying and downloading.**
-
 ```{r}
-options(use_hiplot = TRUE)
-
 XenaQuery(df_todo) %>%
   XenaDownload() -> xe_download
 ```
@@ -230,7 +220,7 @@ xq = XenaQuery(xe)
 # You cannot resume from breakpoint in default mode
 XenaDownload(xq, destdir = "~/test/", force = TRUE)
 # You can do it with 'curl' command
-XenaDownload(xq, destdir = "~/test/", method = "curl", extra = "-C -", force = TRUE)
+XenaDownload(xq, destdir = "~/test/", method = "curl", extra = "-C - -L", force = TRUE)
 # You can do it with 'wget' command
 XenaDownload(xq, destdir = "~/test/", method = "wget", extra = "-c", force = TRUE)
 ```

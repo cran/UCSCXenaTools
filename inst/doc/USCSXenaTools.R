@@ -4,14 +4,14 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  install.packages("UCSCXenaTools")
 
 ## ----gh-installation, eval = FALSE--------------------------------------------
 #  # install.packages("remotes")
 #  remotes::install_github("ropensci/UCSCXenaTools")
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  remotes::install_github("ropensci/UCSCXenaTools", build_vignettes = TRUE, dependencies = TRUE)
 
 ## -----------------------------------------------------------------------------
@@ -37,13 +37,7 @@ x1 %>%
 x2 %>%
     XenaGenerate()
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  XenaQuery(df_todo) %>%
-#    XenaDownload() -> xe_download
-
 ## -----------------------------------------------------------------------------
-options(use_hiplot = TRUE)
-
 XenaQuery(df_todo) %>%
   XenaDownload() -> xe_download
 
@@ -71,13 +65,13 @@ to_browse2
 #  
 #  XenaBrowse(to_browse, type = "cohort")
 
-## ---- error=TRUE--------------------------------------------------------------
+## ----error=TRUE---------------------------------------------------------------
 # This will throw error
 XenaBrowse(to_browse2)
 
 XenaBrowse(to_browse2, type = "cohort")
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  XenaBrowse(to_browse2, multiple = TRUE)
 #  XenaBrowse(to_browse2, type = "cohort", multiple = TRUE)
 

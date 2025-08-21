@@ -8,9 +8,9 @@ XenaHub(
   hosts = xena_default_hosts(),
   cohorts = character(),
   datasets = character(),
-  hostName = c("publicHub", "tcgaHub", "gdcHub", "icgcHub", "toilHub",
+  hostName = c("publicHub", "tcgaHub", "gdcHub", "gdcHubV18", "icgcHub", "toilHub",
     "pancanAtlasHub", "treehouseHub", "pcawgHub", "atacseqHub", "singlecellHub",
-    "kidsfirstHub")
+    "kidsfirstHub", "tdiHub")
 )
 }
 \arguments{

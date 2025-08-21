@@ -54,15 +54,16 @@ xena_default_hosts <- function() {
     "https://ucscpublic.xenahubs.net",
     "https://tcga.xenahubs.net",
     "https://gdc.xenahubs.net",
+    "https://gdcV18.xenahubs.net",
     "https://icgc.xenahubs.net",
     "https://toil.xenahubs.net",
     "https://pancanatlas.xenahubs.net",
     "https://xena.treehouse.gi.ucsc.edu:443",
     "https://pcawg.xenahubs.net",
     "https://atacseq.xenahubs.net",
-    "https://singlecellnew.xenahubs.net",
-    "https://kidsfirst.xenahubs.net"
-    #"https://tdi.xenahubs.net"
+    "https://previewsinglecell.xenahubs.net",
+    "https://kidsfirst.xenahubs.net",
+    "https://tdi.xenahubs.net"
   )
 }
 
@@ -70,6 +71,7 @@ xena_default_hosts <- function() {
   "publicHub",
   "tcgaHub",
   "gdcHub",
+  "gdcHubV18",
   "icgcHub",
   "toilHub",
   "pancanAtlasHub",
@@ -77,8 +79,8 @@ xena_default_hosts <- function() {
   "pcawgHub",
   "atacseqHub",
   "singlecellHub",
-  "kidsfirstHub"
-  #"tdiHub"
+  "kidsfirstHub",
+  "tdiHub"
 )
 
 names(.xena_hosts) <- xena_default_hosts()
@@ -148,6 +150,7 @@ XenaHub <- function(hosts = xena_default_hosts(),
                       "publicHub",
                       "tcgaHub",
                       "gdcHub",
+                      "gdcHubV18",
                       "icgcHub",
                       "toilHub",
                       "pancanAtlasHub",
@@ -155,8 +158,8 @@ XenaHub <- function(hosts = xena_default_hosts(),
                       "pcawgHub",
                       "atacseqHub",
                       "singlecellHub",
-                      "kidsfirstHub"
-                      #"tdiHub"
+                      "kidsfirstHub",
+                      "tdiHub"
                     )) {
   stopifnot(
     is.character(hosts),
@@ -343,7 +346,7 @@ XenaDataUpdate <- function(saveTolocal = TRUE) { # nocov start
     message("=> Saving...")
     data_dir <- base::system.file("data", package = "UCSCXenaTools")
     if (dir.exists(data_dir)) {
-      save(XenaData, file = file.path(data_dir, "XenaData.rda"))
+      save(XenaData, file = file.path(data_dir, "XenaData.rda"), compress = "xz")
     } else {
       message("There is no data directory ", data_dir)
       message("Please check it.")

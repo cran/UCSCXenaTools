@@ -1,3 +1,24 @@
+# UCSCXenaTools 1.6.1
+
+- Added new single cell hub url.
+- Added docs for dynamics.
+
+# UCSCXenaTools 1.6.0
+
+- Totally 2511 datasets are included in the current list.
+- Single cell hub was found disabled.
+- GDC hub was completely updated. The old GDC hub has been renamed to gdcHubV18.
+
+# UCSCXenaTools 1.5.0
+
+- Bugs fixed.
+- Removed useless action or check config files.
+- Removed the `XenaShiny()` function to reduce the dependencies.
+- Updated XenaData. Only minor datasets change found from previous data release.
+- Hiplot mirror is down, so we removed its usage in documentation (not delete internal code).
+- Added two new queries from xenaPython.
+
+
 # UCSCXenaTools 1.4.8
 
 - Updated to latest Xena dataset list.
