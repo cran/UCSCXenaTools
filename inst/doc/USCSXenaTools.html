@@ -12,7 +12,7 @@
 
 <meta name="author" content="Shixiang Wang ShanghaiTech University" />
 
-<meta name="date" content="2025-08-20" />
+<meta name="date" content="2026-02-07" />
 
 <title>UCSCXenaTools: an R package for Accessing Genomics Data from UCSC Xena platform, from Cancer Multi-omics to Single-cell RNA-seq</title>
 
@@ -33,8 +33,9 @@ document.addEventListener('DOMContentLoaded', function(e) {
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -45,7 +46,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -153,7 +154,7 @@ for Accessing Genomics Data from UCSC Xena platform, from Cancer
 Multi-omics to Single-cell RNA-seq</h1>
 <h4 class="author project-author">Shixiang Wang<br />
 ShanghaiTech University</h4>
-<h4 class="date project-date">2025-08-20</h4>
+<h4 class="date project-date">2026-02-07</h4>
 </section>
 
 
@@ -259,7 +260,7 @@ UCSC Xena Data Hubs.</p>
 <code>UCSCXenaTools</code> into R.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">library</span>(UCSCXenaTools)</span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; =========================================================================================</span></span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; UCSCXenaTools version 1.6.1</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; UCSCXenaTools version 1.7.0</span></span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; Project URL: https://github.com/ropensci/UCSCXenaTools</span></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; Usages: https://cran.r-project.org/web/packages/UCSCXenaTools/vignettes/USCSXenaTools.html</span></span>
 <span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
@@ -317,44 +318,99 @@ used to scan all rows to detect if the keywords exist in
 <span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt; hosts():</span></span>
 <span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt;   https://ucscpublic.xenahubs.net</span></span>
 <span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt;   https://tcga.xenahubs.net</span></span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt; cohorts() (6 total):</span></span>
-<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt;   Connectivity Map</span></span>
-<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt;   TARGET Acute Lymphoblastic Leukemia</span></span>
-<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt;   Pediatric tumor (Khan)</span></span>
-<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt;   Acute lymphoblastic leukemia (Mullighan 2008)</span></span>
-<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt;   TCGA Pan-Cancer (PANCAN)</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt;   https://previewsinglecell.xenahubs.net</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; cohorts() (7 total):</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt;   Connectivity Map</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt;   TARGET Acute Lymphoblastic Leukemia</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt;   Pediatric tumor (Khan)</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt;   ...</span></span>
 <span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt;   TCGA Acute Myeloid Leukemia (LAML)</span></span>
-<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; datasets() (28 total):</span></span>
-<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt;   cmap/rankMatrix_reverse</span></span>
-<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt;   TARGET_ALL/TARGETcnv_genomicMatrix</span></span>
-<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt;   TARGET_ALL/TARGETexp_genomicMatrix</span></span>
-<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt;   ...</span></span>
-<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co">#&gt;   TCGA.LAML.sampleMap/mutation_wustl</span></span>
-<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co">#&gt;   TCGA.LAML.sampleMap/mutation_wustl_gene</span></span>
-<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>x2 <span class="sc">%&gt;%</span></span>
-<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>    <span class="fu">XenaGenerate</span>()</span>
-<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a><span class="co">#&gt; class: XenaHub </span></span>
-<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a><span class="co">#&gt; hosts():</span></span>
-<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a><span class="co">#&gt;   https://tcga.xenahubs.net</span></span>
-<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a><span class="co">#&gt; cohorts() (1 total):</span></span>
-<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a><span class="co">#&gt;   TCGA Lung Cancer (LUNG)</span></span>
-<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a><span class="co">#&gt; datasets() (15 total):</span></span>
-<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a><span class="co">#&gt;   TCGA.LUNG.sampleMap/HumanMethylation27</span></span>
-<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a><span class="co">#&gt;   TCGA.LUNG.sampleMap/HumanMethylation450</span></span>
-<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a><span class="co">#&gt;   TCGA.LUNG.sampleMap/Gistic2_CopyNumber_Gistic2_all_data_by_genes</span></span>
-<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a><span class="co">#&gt;   ...</span></span>
-<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a><span class="co">#&gt;   mc3/LUNG_mc3.txt</span></span>
-<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a><span class="co">#&gt;   mc3_gene_level/LUNG_mc3_gene_level.txt</span></span></code></pre></div>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt;   HTAN CHOP_Blood</span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; datasets() (33 total):</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt;   cmap/rankMatrix_reverse</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt;   TARGET_ALL/TARGETcnv_genomicMatrix</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt;   TARGET_ALL/TARGETexp_genomicMatrix</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co">#&gt;   ...</span></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co">#&gt;   HTAN_CHOP/seurat_regrCycleHeatShockGenes_pool_18Infants_scRNA_VEG3000_updated_rename/tsne_3D.tsv</span></span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a><span class="co">#&gt;   HTAN_CHOP/seurat_regrCycleHeatShockGenes_pool_18Infants_scRNA_VEG3000_updated_rename/exprMatrix.tsv</span></span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>x2 <span class="sc">%&gt;%</span></span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>    <span class="fu">XenaGenerate</span>()</span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a><span class="co">#&gt; class: XenaHub </span></span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a><span class="co">#&gt; hosts():</span></span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a><span class="co">#&gt;   https://tcga.xenahubs.net</span></span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a><span class="co">#&gt; cohorts() (1 total):</span></span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a><span class="co">#&gt;   TCGA Lung Cancer (LUNG)</span></span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a><span class="co">#&gt; datasets() (15 total):</span></span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a><span class="co">#&gt;   TCGA.LUNG.sampleMap/HumanMethylation27</span></span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a><span class="co">#&gt;   TCGA.LUNG.sampleMap/HumanMethylation450</span></span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a><span class="co">#&gt;   TCGA.LUNG.sampleMap/Gistic2_CopyNumber_Gistic2_all_data_by_genes</span></span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a><span class="co">#&gt;   ...</span></span>
+<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a><span class="co">#&gt;   mc3/LUNG_mc3.txt</span></span>
+<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a><span class="co">#&gt;   mc3_gene_level/LUNG_mc3_gene_level.txt</span></span></code></pre></div>
 <p>Query and download.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">XenaQuery</span>(df_todo) <span class="sc">%&gt;%</span></span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">XenaDownload</span>() <span class="ot">-&gt;</span> xe_download</span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">#&gt; This will check url status, please be patient.</span></span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt; All downloaded files will under directory /var/folders/h0/s_35svc15n1glmp65lbbkx9w0000gn/T//RtmpUS5Toi.</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt; All downloaded files will under directory /var/folders/1w/371ktd8j0fv8mp_dsgtvssnw0000gn/T//Rtmp73CURs.</span></span>
 <span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt; The &#39;trans_slash&#39; option is FALSE, keep same directory structure as Xena.</span></span>
 <span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; Creating directories for datasets...</span></span>
 <span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; Downloading TCGA.LUNG.sampleMap/LUNG_clinicalMatrix</span></span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; Downloading TCGA.LUAD.sampleMap/LUAD_clinicalMatrix</span></span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt; Downloading TCGA.LUSC.sampleMap/LUSC_clinicalMatrix</span></span></code></pre></div>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): downloaded length 480262 !=</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt; reported length 1114651</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): URL</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt; &#39;https://tcga-xena-hub.s3.dualstack.us-east-1.amazonaws.com:443/download/TCGA.LUNG.sampleMap/LUNG_clinicalMatrix&#39;:</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt; Timeout of 60 seconds was reached</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt; ==&gt; Trying #2</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): downloaded length 611106 !=</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt; reported length 1114651</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): URL</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co">#&gt; &#39;https://tcga-xena-hub.s3.dualstack.us-east-1.amazonaws.com:443/download/TCGA.LUNG.sampleMap/LUNG_clinicalMatrix&#39;:</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="co">#&gt; Timeout of 60 seconds was reached</span></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="co">#&gt; ==&gt; Trying #3</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): downloaded length 521744 !=</span></span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a><span class="co">#&gt; reported length 1114651</span></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): URL</span></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="co">#&gt; &#39;https://tcga-xena-hub.s3.dualstack.us-east-1.amazonaws.com:443/download/TCGA.LUNG.sampleMap/LUNG_clinicalMatrix&#39;:</span></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a><span class="co">#&gt; Timeout of 60 seconds was reached</span></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="co">#&gt; Tried 3 times but failed, please check your internet connection!</span></span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a><span class="co">#&gt; Downloading TCGA.LUAD.sampleMap/LUAD_clinicalMatrix</span></span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): downloaded length 558883 !=</span></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a><span class="co">#&gt; reported length 710194</span></span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): URL</span></span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a><span class="co">#&gt; &#39;https://tcga-xena-hub.s3.dualstack.us-east-1.amazonaws.com:443/download/TCGA.LUAD.sampleMap/LUAD_clinicalMatrix&#39;:</span></span>
+<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a><span class="co">#&gt; Timeout of 60 seconds was reached</span></span>
+<span id="cb7-32"><a href="#cb7-32" tabindex="-1"></a><span class="co">#&gt; ==&gt; Trying #2</span></span>
+<span id="cb7-33"><a href="#cb7-33" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): downloaded length 584711 !=</span></span>
+<span id="cb7-34"><a href="#cb7-34" tabindex="-1"></a><span class="co">#&gt; reported length 710194</span></span>
+<span id="cb7-35"><a href="#cb7-35" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): URL</span></span>
+<span id="cb7-36"><a href="#cb7-36" tabindex="-1"></a><span class="co">#&gt; &#39;https://tcga-xena-hub.s3.dualstack.us-east-1.amazonaws.com:443/download/TCGA.LUAD.sampleMap/LUAD_clinicalMatrix&#39;:</span></span>
+<span id="cb7-37"><a href="#cb7-37" tabindex="-1"></a><span class="co">#&gt; Timeout of 60 seconds was reached</span></span>
+<span id="cb7-38"><a href="#cb7-38" tabindex="-1"></a><span class="co">#&gt; ==&gt; Trying #3</span></span>
+<span id="cb7-39"><a href="#cb7-39" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): downloaded length 558895 !=</span></span>
+<span id="cb7-40"><a href="#cb7-40" tabindex="-1"></a><span class="co">#&gt; reported length 710194</span></span>
+<span id="cb7-41"><a href="#cb7-41" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): URL</span></span>
+<span id="cb7-42"><a href="#cb7-42" tabindex="-1"></a><span class="co">#&gt; &#39;https://tcga-xena-hub.s3.dualstack.us-east-1.amazonaws.com:443/download/TCGA.LUAD.sampleMap/LUAD_clinicalMatrix&#39;:</span></span>
+<span id="cb7-43"><a href="#cb7-43" tabindex="-1"></a><span class="co">#&gt; Timeout of 60 seconds was reached</span></span>
+<span id="cb7-44"><a href="#cb7-44" tabindex="-1"></a><span class="co">#&gt; Tried 3 times but failed, please check your internet connection!</span></span>
+<span id="cb7-45"><a href="#cb7-45" tabindex="-1"></a><span class="co">#&gt; Downloading TCGA.LUSC.sampleMap/LUSC_clinicalMatrix</span></span>
+<span id="cb7-46"><a href="#cb7-46" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): downloaded length 541487 !=</span></span>
+<span id="cb7-47"><a href="#cb7-47" tabindex="-1"></a><span class="co">#&gt; reported length 604901</span></span>
+<span id="cb7-48"><a href="#cb7-48" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): URL</span></span>
+<span id="cb7-49"><a href="#cb7-49" tabindex="-1"></a><span class="co">#&gt; &#39;https://tcga-xena-hub.s3.dualstack.us-east-1.amazonaws.com:443/download/TCGA.LUSC.sampleMap/LUSC_clinicalMatrix&#39;:</span></span>
+<span id="cb7-50"><a href="#cb7-50" tabindex="-1"></a><span class="co">#&gt; Timeout of 60 seconds was reached</span></span>
+<span id="cb7-51"><a href="#cb7-51" tabindex="-1"></a><span class="co">#&gt; ==&gt; Trying #2</span></span>
+<span id="cb7-52"><a href="#cb7-52" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): downloaded length 549895 !=</span></span>
+<span id="cb7-53"><a href="#cb7-53" tabindex="-1"></a><span class="co">#&gt; reported length 604901</span></span>
+<span id="cb7-54"><a href="#cb7-54" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): URL</span></span>
+<span id="cb7-55"><a href="#cb7-55" tabindex="-1"></a><span class="co">#&gt; &#39;https://tcga-xena-hub.s3.dualstack.us-east-1.amazonaws.com:443/download/TCGA.LUSC.sampleMap/LUSC_clinicalMatrix&#39;:</span></span>
+<span id="cb7-56"><a href="#cb7-56" tabindex="-1"></a><span class="co">#&gt; Timeout of 60 seconds was reached</span></span>
+<span id="cb7-57"><a href="#cb7-57" tabindex="-1"></a><span class="co">#&gt; ==&gt; Trying #3</span></span>
+<span id="cb7-58"><a href="#cb7-58" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): downloaded length 524079 !=</span></span>
+<span id="cb7-59"><a href="#cb7-59" tabindex="-1"></a><span class="co">#&gt; reported length 604901</span></span>
+<span id="cb7-60"><a href="#cb7-60" tabindex="-1"></a><span class="co">#&gt; Warning in download.file(url, destfile, ...): URL</span></span>
+<span id="cb7-61"><a href="#cb7-61" tabindex="-1"></a><span class="co">#&gt; &#39;https://tcga-xena-hub.s3.dualstack.us-east-1.amazonaws.com:443/download/TCGA.LUSC.sampleMap/LUSC_clinicalMatrix&#39;:</span></span>
+<span id="cb7-62"><a href="#cb7-62" tabindex="-1"></a><span class="co">#&gt; Timeout of 60 seconds was reached</span></span>
+<span id="cb7-63"><a href="#cb7-63" tabindex="-1"></a><span class="co">#&gt; Tried 3 times but failed, please check your internet connection!</span></span></code></pre></div>
 <p>Prepare data into R for analysis.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>cli <span class="ot">=</span> <span class="fu">XenaPrepare</span>(xe_download)</span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">class</span>(cli)</span>

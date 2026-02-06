@@ -5,14 +5,14 @@ knitr::opts_chunk$set(
 )
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  install.packages("UCSCXenaTools")
+# install.packages("UCSCXenaTools")
 
 ## ----gh-installation, eval = FALSE--------------------------------------------
-#  # install.packages("remotes")
-#  remotes::install_github("ropensci/UCSCXenaTools")
+# # install.packages("remotes")
+# remotes::install_github("ropensci/UCSCXenaTools")
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  remotes::install_github("ropensci/UCSCXenaTools", build_vignettes = TRUE, dependencies = TRUE)
+# remotes::install_github("ropensci/UCSCXenaTools", build_vignettes = TRUE, dependencies = TRUE)
 
 ## -----------------------------------------------------------------------------
 library(UCSCXenaTools)
@@ -60,18 +60,20 @@ XenaGenerate(subset = XenaHostNames=="tcgaHub") %>%
 to_browse2
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  # This will open you web browser
-#  XenaBrowse(to_browse)
-#  
-#  XenaBrowse(to_browse, type = "cohort")
+# # This will open you web browser
+# XenaBrowse(to_browse)
+# 
+# XenaBrowse(to_browse, type = "cohort")
 
 ## ----error=TRUE---------------------------------------------------------------
+try({
 # This will throw error
 XenaBrowse(to_browse2)
 
 XenaBrowse(to_browse2, type = "cohort")
+})
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  XenaBrowse(to_browse2, multiple = TRUE)
-#  XenaBrowse(to_browse2, type = "cohort", multiple = TRUE)
+# XenaBrowse(to_browse2, multiple = TRUE)
+# XenaBrowse(to_browse2, type = "cohort", multiple = TRUE)
 
